@@ -616,7 +616,7 @@ pip install mcrcon</code></pre>
 <pre><code class="language-python"><span class="k">from</span> mcrcon <span class="k">import</span> MCRcon
 
 HOST = <span class="s">"localhost"</span>
-PASSWORD = <span class="s">"398beb68ef0ef143788e7ecd"</span>   <span class="c"># from your compose.yml</span>
+PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from your compose.yml</span>
 
 <span class="k">with</span> <span class="f">MCRcon</span>(HOST, PASSWORD, port=<span class="n">25575</span>) <span class="k">as</span> mcr:
     <span class="k">print</span>(mcr.<span class="f">command</span>(<span class="s">"list"</span>))            <span class="c"># who's online</span>
@@ -1002,7 +1002,7 @@ con.<span class="f">commit</span>()
       - <span class="s">"8000:8000"</span>
     <span class="k">environment</span>:
       <span class="f">RCON_HOST</span>: <span class="s">"minecraft-fabric"</span>   <span class="c"># reach the game by service name!</span>
-      <span class="f">RCON_PASSWORD</span>: <span class="s">"398beb68ef0ef143788e7ecd"</span>
+      <span class="f">RCON_PASSWORD</span>: <span class="s">"your-rcon-password"</span>
     <span class="k">depends_on</span>:
       - <span class="s">minecraft-fabric</span></code></pre>
 <p>Inside a Compose network, services find each other <strong>by name</strong> — your API connects to <code>minecraft-fabric:25575</code>, no IP addresses needed.</p>
