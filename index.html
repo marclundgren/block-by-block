@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Block by Block — Python · Minecraft · Full-Stack</title>
+<title>Block by Block: Python · Minecraft · Full-Stack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script>(function(){var t=localStorage.getItem("bxb-theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);})();</script>
 <style>
 /* ===========================================================
-   Block by Block — GitHub Primer docs × Minecraft
+   Block by Block, GitHub Primer docs × Minecraft
    Light + dark themes (toggle), system type, pixel accents.
    =========================================================== */
 :root{
@@ -48,7 +48,7 @@ body{
   font-family:var(--sans); font-size:16px; line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
-/* faint blocky backdrop — barely-there in light, subtle in dark */
+/* faint blocky backdrop, barely-there in light, subtle in dark */
 .iso{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
   background-image:radial-gradient(currentColor 1px, transparent 1px);
   background-size:22px 22px; color:var(--line);
@@ -154,7 +154,7 @@ pre code .n{color:var(--synN)}
 pre code .o{color:var(--synO)}
 pre code .nd{color:var(--synA)}
 
-/* callouts — GitHub alert style + Minecraft "Quest" */
+/* callouts, GitHub alert style + Minecraft "Quest" */
 .box{margin:18px 0;border-radius:var(--r);padding:13px 16px 13px 16px;border:1px solid var(--line);
   border-left:4px solid var(--muted);background:var(--bg);font-size:15px;line-height:1.55}
 .box .h{font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px;margin-bottom:4px}
@@ -272,46 +272,113 @@ html[data-theme="dark"] .xp .track{background:#010409}
 <!-- ============================ LESSON CONTENT ============================ -->
 
 <template data-id="p0-1"><div class="content">
-<p>Welcome. This book turns you — step by step, block by block — into someone who can write <strong>Python</strong>, build <strong>Minecraft mods</strong>, and ship <strong>full-stack web apps</strong>, all on a Minecraft server you host yourself. There's no prior experience assumed beyond "I can use a computer."</p>
-<h2>The throughline</h2>
-<p>Most courses teach topics in isolation. This one has a spine: <strong>your own Minecraft 1.21.11 Fabric server</strong>. Python scripts will talk to it. Mods will run inside it. A web dashboard will monitor it. Every abstract concept gets anchored to something you can see happen in a world you control.</p>
-<h2>How to use it</h2>
+<p>Hey, I'm glad you're here. I made this book because I learned a ton by treating my own Minecraft server as a playground for code, and I wanted to package that path for anyone who wants to follow it. You don't need any programming experience. If you can install an app and type into a terminal, you can do this.</p>
+<h2>What you'll actually build</h2>
+<p>Everything in here is anchored to one thing: a Minecraft server you run yourself. Python scripts will talk to it, mods will run inside it, and by the end you'll have a web dashboard that watches it live. I find abstract lessons hard to care about, so I tied every concept to something you can see happen in a world you control.</p>
+<p>Along the way, without making a big deal of it, you'll pick up a real high level feel for how networking works, how game servers work, and what self hosting actually means. We won't go deep into any of those, but you'll come out understanding the shape of them, which is honestly more than most people ever get.</p>
+<div class="box note"><span class="h">Pick your platform first</span><p>Setup depends on your computer. Most readers are on Windows, so that's the default path I'll guide you through. Jump to the one that fits you:</p>
+<p><strong>→ <a onclick="go('p0-3')" style="cursor:pointer">Windows + WSL2</a></strong> (my recommended default)<br>
+<strong>→ <a onclick="go('p0-4')" style="cursor:pointer">macOS</a></strong> (a little different, and a little simpler)<br>
+<strong>→ <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a></strong> (native Windows, or a Raspberry Pi)</p>
+<p>Not sure why I'm pushing WSL? The next lesson explains it.</p></div>
+<h2>The four parts</h2>
+<p><strong>0, Launchpad:</strong> get your machine ready and run the server.<br>
+<strong>1, Python:</strong> from your first <code>print()</code> to classes, generators, and typing.<br>
+<strong>2, Minecraft:</strong> Fabric mods, events, commands, mixins.<br>
+<strong>3, Full-Stack:</strong> HTTP, a FastAPI backend, and a live web dashboard wired to your server.</p>
+<h2>How I'd use it</h2>
 <ul>
-<li><strong>Go in order</strong> the first time through — later parts lean on earlier ones.</li>
-<li>Every lesson ends with a <span style="color:var(--ember)">⛏ Try it</span> task. Do it. Reading code is not the same as writing it.</li>
-<li>Hit <strong>Mark complete</strong> to fill your XP bar. Use <kbd>←</kbd> / <kbd>→</kbd> to move between lessons and <kbd>c</kbd> to toggle complete.</li>
-<li>Your progress is saved in this browser (localStorage) — no account, no cloud.</li>
+<li>Go in order your first time through. Later parts lean on earlier ones.</li>
+<li>Every lesson ends with a <span style="color:var(--purple)">⛏ Quest</span>. Do it. Reading code is not the same as writing it.</li>
+<li>Tap <strong>Mark complete</strong> to fill your XP bar. On a keyboard you can use the arrow keys to move and <kbd>c</kbd> to mark a lesson done.</li>
+<li>Your progress saves in your browser, so there's no account and nothing in the cloud.</li>
 </ul>
-<div class="box note"><span class="h">The four parts</span>
-<p><strong>0 · Launchpad</strong> — WSL, Docker, Compose, your server, your tools.<br>
-<strong>1 · Python</strong> — from <code>print()</code> to classes, generators, and typing.<br>
-<strong>2 · Minecraft</strong> — Fabric mods, events, commands, mixins.<br>
-<strong>3 · Full-Stack</strong> — HTTP, JS, a FastAPI backend, a live web dashboard wired to your server.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Click <strong>Mark complete</strong> below, then press <kbd>→</kbd>. You just leveled up. Now let's set up your machine.</p></div>
+<div class="box try"><span class="h"></span><p>Tap <strong>Mark complete</strong> below, then head to "Pick your path" to sort out your setup.</p></div>
 </div></template>
 
 <template data-id="p0-2"><div class="content">
-<p>You're on Windows, but real backend and Minecraft development lives in <strong>Linux</strong>. <strong>WSL2</strong> (Windows Subsystem for Linux) gives you a genuine Linux kernel running alongside Windows — no dual boot, no virtual machine to babysit. This is where your code, Docker, and server will live.</p>
-<h2>Install WSL2</h2>
-<p>Open <strong>PowerShell as Administrator</strong> and run:</p>
-<pre><code class="language-powershell">wsl --install</code></pre>
-<p>That single command enables the features, installs Ubuntu, and sets WSL2 as default. Reboot when asked. On first launch Ubuntu asks you to create a Linux username and password — these are <em>separate</em> from your Windows login. Remember the password; you'll type it for <code>sudo</code>.</p>
-<h2>Sanity checks</h2>
-<pre><code class="language-bash"><span class="c"># from PowerShell — confirm version 2</span>
-wsl -l -v
-<span class="c"># jump into Linux</span>
-wsl
-<span class="c"># inside Ubuntu now:</span>
-uname -a
-whoami</code></pre>
-<div class="box tip"><span class="h">Where am I?</span><p>Your Linux home is <code>/home/&lt;you&gt;</code>. Your Windows C: drive is mounted at <code>/mnt/c</code>. <strong>Keep project files inside the Linux filesystem</strong> (e.g. <code>~/Dev</code>) — it's dramatically faster than working under <code>/mnt/c</code>, and Docker likes it better.</p></div>
-<h2>Update the system</h2>
-<pre><code class="language-bash">sudo apt update && sudo apt upgrade -y</code></pre>
-<div class="box try"><span class="h">Try it</span><p>Get into Ubuntu, run the update command, then <code>mkdir -p ~/Dev && cd ~/Dev</code>. This is your workshop for the rest of the book.</p></div>
+<p>Before we install anything, let's figure out where your server and your code are going to live. There are a few valid options. I'll lay them all out, but I'm going to steer you toward one default, because choosing for yourself is hard when you're just starting.</p>
+<h2>My default: Windows with WSL2</h2>
+<p>Most people reading this are on a Windows PC, and if that's you, I recommend installing <strong>WSL2</strong> (Windows Subsystem for Linux). It gives you a real Linux system running inside Windows, with no separate machine and no dual boot.</p>
+<h3>Why I push Linux for this</h3>
+<p>Here's the honest version. Almost all of the backend and server world runs on Linux. The tools you'll use (Docker, Python, and the Minecraft server image) are happiest there. WSL2 also tends to be a lot faster than plain Windows for the kind of work developers do, especially anything that touches a lot of files, like installing packages or building a project. If you've ever heard someone say their project crawled on Windows but flew on WSL, that's the file system difference at work.</p>
+<div class="box note"><span class="h">Does WSL make Minecraft itself faster?</span><p>Honestly, not really, and I want to be straight with you. A Minecraft server runs on Java, which performs about the same on Windows and on WSL2 (WSL2 is a lightweight real Linux VM, so the raw speed is close). The reason I still use WSL here isn't some giant Minecraft speed boost. It's that the whole toolchain is cleaner, the Docker setup just works, and you get to learn Linux while you're at it.</p></div>
+<h3>The sneaky benefit: you learn Linux</h3>
+<p>Even when you're not writing code, the operating system is a big part of any real dev setup. Learning the Linux basics (moving around folders, running commands, permissions) is valuable all on its own. You'll use it for the rest of your coding life, so picking it up now while you're having fun with Minecraft is a great deal. It's not the only option, it's just my opinion that it's the one worth learning.</p>
+<h2>All the paths, quickly</h2>
+<p>Pick the line that matches you and follow that lesson. You don't need to read the others.</p>
+<ul>
+<li><strong>On Windows?</strong> Use <a onclick="go('p0-3')" style="cursor:pointer">Windows + WSL2</a>. This is the main path the rest of the book assumes.</li>
+<li><strong>On a Mac?</strong> Go to <a onclick="go('p0-4')" style="cursor:pointer">Set up on a Mac</a>. macOS is already Unix underneath, so you skip WSL entirely.</li>
+<li><strong>On Windows but your hardware can't run WSL2?</strong> It's rare, but it happens. See <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a> for a native Windows setup and the trade-offs.</li>
+<li><strong>Got a Raspberry Pi or a little home server?</strong> You can host on those too. I cover the idea, and the catch, in <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a>.</li>
+</ul>
+<div class="box tip"><span class="h">You can change your mind</span><p>None of this locks you in. The Python, the mods, and the web app are the same no matter where the server runs. The only thing that changes is these first few setup steps.</p></div>
+<div class="box try"><span class="h"></span><p>Decide your path and open its setup lesson. If you're on Windows and unsure, just go with WSL2. That's what I'd do.</p></div>
+</div></template>
+
+<template data-id="p0-4"><div class="content">
+<p>Good news if you're on a Mac: you've got an easier road than the Windows folks. macOS is built on Unix, which is close enough to Linux that you don't need WSL at all. The built in <strong>Terminal</strong> app is already a real shell.</p>
+<h2>1. Open Terminal</h2>
+<p>Press <kbd>Cmd</kbd>+<kbd>Space</kbd>, type <strong>Terminal</strong>, and hit enter. This is where you'll run commands. Try one:</p>
+<pre><code class="language-bash">uname -a</code></pre>
+<h2>2. Install Docker Desktop</h2>
+<p>Download <strong>Docker Desktop for Mac</strong> from docker.com, and grab the build for your chip:</p>
+<ul>
+<li><strong>Apple Silicon</strong> (M1, M2, M3, and newer): the "Apple chip" download.</li>
+<li><strong>Intel</strong> (older Macs): the "Intel chip" download.</li>
+<li>Not sure? Click the Apple menu, choose "About This Mac", and read the chip line.</li>
+</ul>
+<p>Install it like any Mac app (drag it to Applications), then launch Docker Desktop and leave it running. Confirm it works in Terminal:</p>
+<pre><code class="language-bash">docker --version
+docker compose version
+docker run --rm hello-world</code></pre>
+<p>If you get a friendly hello message, you're set.</p>
+<div class="box tip"><span class="h">Optional: Homebrew</span><p>Homebrew is a package manager for Mac that makes installing dev tools easy. It's not required for this book, but it's handy. If you want it, the one line installer is at brew.sh, and later you could install things like git with <code>brew install git</code> (newer Macs often already have git).</p></div>
+<div class="box note"><span class="h">From here, you're with everyone else</span><p>The rest of the book's commands run the same in your Terminal as they do in Linux. When a lesson mentions WSL or PowerShell, that's a Windows thing, so you can ignore it. Wherever you see a path like <code>~/Dev</code>, that works for you too.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>docker run --rm hello-world</code>, make your project folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>, then continue to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a> for the core concepts. You've already installed it, so just skip the Windows-only steps there.</p></div>
+</div></template>
+
+<template data-id="p0-5"><div class="content">
+<p>WSL2 on Windows, or Terminal on a Mac, will cover almost everyone. But a few of you have a different setup, so here are the alternatives with my honest take on each. If one of these is you, skim it and then meet everyone back at the Docker lesson.</p>
+<h2>Windows without WSL2</h2>
+<p>A small number of machines can't run WSL2, usually because virtualization is turned off in the BIOS or the hardware is fairly old. First, it's worth trying to turn on virtualization in your BIOS settings, since that often fixes it. If you truly can't, you still have an option: install <strong>Docker Desktop for Windows</strong> and let it use its <strong>Hyper-V</strong> backend instead of WSL2.</p>
+<p>The trade-off, and I want to be honest about it, is that this is the less optimized path in my opinion. You give up the nice Linux environment and some speed, and a few commands in this book that assume Linux will need small tweaks. It works, it's just not as smooth. If this is you, install Docker Desktop, then continue to the Docker lesson and use Windows PowerShell wherever I show a Linux shell.</p>
+<h2>Raspberry Pi or a small home server</h2>
+<p>This one is fun. A Raspberry Pi (a tiny, cheap computer) can run Docker and a Minecraft server. It's a great way to learn self hosting on hardware you can hold in your hand.</p>
+<p>The catch is performance. A Pi will happily run the tools and a small server, but Minecraft is heavy, so don't expect a big, busy world to feel smooth. For one or two people poking around and learning, it's totally fine. You'd want a Raspberry Pi 4 or 5 with as much memory as you can get.</p>
+<div class="box note"><span class="h">It's the same book either way</span><p>On a Pi you're already on Linux, so you'd install Docker for your Pi's operating system and then follow along normally. Everything in Parts 1 to 3 is identical. Only the speed of your server changes.</p></div>
+<div class="box warn"><span class="h">My advice</span><p>If you have a normal Windows PC or a Mac, use that as your default and treat a Pi as a fun second project later. Start where it's easiest, then branch out once you know the ropes.</p></div>
+<div class="box try"><span class="h"></span><p>If one of these paths is yours, get Docker installed for your setup, then jump to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a> for the shared concepts and keep going from there.</p></div>
 </div></template>
 
 <template data-id="p0-3"><div class="content">
-<p><strong>Docker</strong> packages software and everything it needs into a <em>container</em> — a sealed box that runs the same on your machine, your friend's, or a cloud server. Your Minecraft server runs in a container, which is why you never had to manually install Java or the Fabric launcher.</p>
+<p>This is the main path, and the one the rest of the book assumes. We're going to install WSL2, a full Linux system that lives inside your Windows machine. It takes about ten minutes, and most of that is just waiting.</p>
+<h2>1. Install WSL2</h2>
+<p>Open the Start menu, type <strong>PowerShell</strong>, right click it, and choose <strong>Run as administrator</strong>. In that window, run:</p>
+<pre><code class="language-powershell">wsl --install</code></pre>
+<p>That one command turns on the Windows features you need, installs Ubuntu (a friendly, popular flavor of Linux), and sets WSL2 as the default. When it tells you to reboot, do it.</p>
+<div class="box warn"><span class="h">If that command isn't found</span><p>On older Windows builds <code>wsl --install</code> might not exist. The fix is to update Windows first (Settings, then Windows Update), then try again. You want Windows 10 version 2004 or newer, or any Windows 11.</p></div>
+<h2>2. First launch</h2>
+<p>After the reboot, Ubuntu finishes setting itself up and asks you to create a <strong>username</strong> and <strong>password</strong>. These are just for Linux and are separate from your Windows login. Pick something you'll remember, because you'll type that password whenever you run a command as admin (you'll see <code>sudo</code> for that).</p>
+<h2>3. Confirm it worked</h2>
+<p>You can open Ubuntu any time from the Start menu. Run a few checks:</p>
+<pre><code class="language-bash"><span class="c"># from PowerShell, confirm you're on version 2</span>
+wsl -l -v
+<span class="c"># inside Ubuntu, see who and where you are</span>
+whoami
+uname -a</code></pre>
+<h2>4. Update your system</h2>
+<p>Linux installs software through a package manager. Freshen everything once:</p>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade -y</code></pre>
+<div class="box tip"><span class="h">The one habit that really matters: where files live</span><p>Your Linux home is <code>/home/&lt;you&gt;</code>. Your Windows C: drive shows up at <code>/mnt/c</code>. Keep your projects on the Linux side (I use <code>~/Dev</code>). Working out of <code>/mnt/c</code> is much slower and Docker likes it less. This single habit saves a lot of frustration later.</p></div>
+<div class="box try"><span class="h"></span><p>Open Ubuntu, run the update command, then make your workshop folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>. That's where everything in this book will live. Then skip ahead to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a>. You can ignore the Mac and other-paths lessons.</p></div>
+</div></template>
+
+<template data-id="p0-6"><div class="content">
+<div class="box note"><span class="h">Already installed Docker?</span><p>If you set up on a Mac or another path, you already have Docker running. Skim this for the concepts (the difference between an image and a container) and skip the Windows-only install steps.</p></div>
+
+<p><strong>Docker</strong> packages software and everything it needs into a <em>container</em>, a sealed box that runs the same on your machine, your friend's, or a cloud server. Your Minecraft server runs in a container, which is why you never had to manually install Java or the Fabric launcher.</p>
 <h2>Install Docker Desktop</h2>
 <ol>
 <li>Download <strong>Docker Desktop for Windows</strong> from docker.com.</li>
@@ -328,7 +395,7 @@ docker run --rm hello-world</code></pre>
 <div class="box try"><span class="h">Try it</span><p>Run <code>docker run --rm hello-world</code>, then <code>docker ps -a</code> to see the stopped container, then <code>docker image ls</code> to see the downloaded image.</p></div>
 </div></template>
 
-<template data-id="p0-4"><div class="content">
+<template data-id="p0-7"><div class="content">
 <p>Typing long <code>docker run</code> commands by hand is error-prone. <strong>Docker Compose</strong> lets you describe your services in a single <code>compose.yml</code> file and bring the whole stack up with one command. This is exactly how your Minecraft server is defined.</p>
 <h2>Anatomy of a compose file</h2>
 <pre><code class="language-yaml"><span class="k">services</span>:
@@ -346,11 +413,11 @@ docker run --rm hello-world</code></pre>
 docker compose ps           <span class="c"># what's running?</span>
 docker compose logs -f      <span class="c"># follow the logs live (Ctrl+C to stop)</span>
 docker compose down         <span class="c"># stop and remove the containers</span></code></pre>
-<div class="box tip"><span class="h">Volumes are your save game</span><p>Containers are disposable; <strong>volumes</strong> are not. The <code>./minecraft-data:/data</code> line is why your world survives a <code>down</code>/<code>up</code> cycle. Delete the container — fine. Delete the volume folder — you lose the world.</p></div>
+<div class="box tip"><span class="h">Volumes are your save game</span><p>Containers are disposable; <strong>volumes</strong> are not. The <code>./minecraft-data:/data</code> line is why your world survives a <code>down</code>/<code>up</code> cycle. Delete the container, fine. Delete the volume folder, you lose the world.</p></div>
 <div class="box try"><span class="h">Try it</span><p>In <code>~/Games/Minecraft/fabric-minecraft-server</code>, run <code>docker compose ps</code> and <code>docker compose logs --tail 20</code>. Read what your server is telling you.</p></div>
 </div></template>
 
-<template data-id="p0-5"><div class="content">
+<template data-id="p0-8"><div class="content">
 <p>Here's the actual stack you're running. Let's read it line by line so it's not magic.</p>
 <pre><code class="language-yaml"><span class="k">services</span>:
   <span class="f">minecraft-fabric</span>:
@@ -371,7 +438,7 @@ docker compose down         <span class="c"># stop and remove the containers</sp
     <span class="k">restart</span>: <span class="s">unless-stopped</span></code></pre>
 <h2>The mental model</h2>
 <ul>
-<li><strong>Mods</strong> go in <code>minecraft-data/mods/</code> — that maps to <code>/data/mods</code> inside the container.</li>
+<li><strong>Mods</strong> go in <code>minecraft-data/mods/</code>, that maps to <code>/data/mods</code> inside the container.</li>
 <li><strong>RCON</strong> (port 25575) is a remote console: send console commands over the network. Your Python scripts and web dashboard will drive the server through it.</li>
 <li><strong>VERSION pinned to 1.21.11</strong> matters: a Fabric mod must be built against the exact MC version the server runs.</li>
 </ul>
@@ -382,14 +449,14 @@ docker exec minecraft-fabric rcon-cli list</code></pre>
 <div class="box try"><span class="h">Try it</span><p>Run <code>docker exec minecraft-fabric rcon-cli "say Hello from the console"</code>. If a player is online they'll see it. You just controlled the game without touching the game.</p></div>
 </div></template>
 
-<template data-id="p0-6"><div class="content">
+<template data-id="p0-9"><div class="content">
 <p>A few tools will make everything smoother. Install them once.</p>
 <h2>VS Code + the WSL extension</h2>
 <p>Install <strong>VS Code</strong> on Windows, then the <strong>WSL</strong> extension. Now from Ubuntu you can run:</p>
 <pre><code class="language-bash">cd ~/Dev/block-by-block
 code .</code></pre>
-<p>VS Code opens <em>connected to Linux</em> — editing Linux files with a Windows UI. Best of both worlds. Also grab the <strong>Python</strong> and <strong>Docker</strong> extensions.</p>
-<h2>Git — your time machine</h2>
+<p>VS Code opens <em>connected to Linux</em>, editing Linux files with a Windows UI. Best of both worlds. Also grab the <strong>Python</strong> and <strong>Docker</strong> extensions.</p>
+<h2>Git: your time machine</h2>
 <pre><code class="language-bash">sudo apt install -y git
 git config --global user.name  "Your Name"
 git config --global user.email "you@example.com"</code></pre>
@@ -404,7 +471,7 @@ git commit -m "first commit"</code></pre>
 
 <!-- ===== PART 1: PYTHON ===== -->
 <template data-id="p1-1"><div class="content">
-<p>Python is the friendliest serious language there is — readable, batteries-included, and everywhere (web backends, scripting, data, automation). It's already on your Ubuntu.</p>
+<p>Python is the friendliest serious language there is, readable, batteries-included, and everywhere (web backends, scripting, data, automation). It's already on your Ubuntu.</p>
 <pre><code class="language-bash">python3 --version</code></pre>
 <h2>The REPL: a conversation with Python</h2>
 <p>Type <code>python3</code> and you get an interactive prompt. Try:</p>
@@ -422,7 +489,7 @@ hello, world
 
 <span class="k">print</span>(<span class="f">greet</span>(<span class="s">"Steve"</span>))</code></pre>
 <pre><code class="language-bash">python3 hello.py</code></pre>
-<div class="box tip"><span class="h">Bonus: you already have a web server</span><p>Run <code>python3 -m http.server 8000</code> in any folder, then open <code>http://localhost:8000</code>. Python just served files over HTTP — a preview of Part 3. (This is also how you can host <em>this book</em>.)</p></div>
+<div class="box tip"><span class="h">Bonus: you already have a web server</span><p>Run <code>python3 -m http.server 8000</code> in any folder, then open <code>http://localhost:8000</code>. Python just served files over HTTP, a preview of Part 3. (This is also how you can host <em>this book</em>.)</p></div>
 <div class="box try"><span class="h">Try it</span><p>Change <code>greet</code> to also print the length of the name. Run it with three different names.</p></div>
 </div></template>
 
@@ -452,13 +519,13 @@ back    = <span class="f">int</span>(<span class="s">"24000"</span>)         <sp
 </div></template>
 
 <template data-id="p1-3"><div class="content">
-<p>Programs make decisions and repeat work. Python uses <strong>indentation</strong> (4 spaces) to define blocks — no curly braces.</p>
+<p>Programs make decisions and repeat work. Python uses <strong>indentation</strong> (4 spaces) to define blocks, no curly braces.</p>
 <h2>if / elif / else</h2>
 <pre><code class="language-python">hp = <span class="n">6</span>
 <span class="k">if</span> hp &lt;= <span class="n">0</span>:
     <span class="k">print</span>(<span class="s">"You died."</span>)
 <span class="k">elif</span> hp &lt; <span class="n">8</span>:
-    <span class="k">print</span>(<span class="s">"Low health — eat something!"</span>)
+    <span class="k">print</span>(<span class="s">"Low health, eat something!"</span>)
 <span class="k">else</span>:
     <span class="k">print</span>(<span class="s">"You're fine."</span>)</code></pre>
 <h2>Loops</h2>
@@ -482,13 +549,13 @@ fuel = <span class="n">5</span>
 
 <template data-id="p1-4"><div class="content">
 <p>Four containers carry almost all your data. Know when to reach for each.</p>
-<h2>Lists — ordered, changeable</h2>
+<h2>Lists: ordered, changeable</h2>
 <pre><code class="language-python">inv = [<span class="s">"sword"</span>, <span class="s">"pickaxe"</span>, <span class="s">"bread"</span>]
 inv.<span class="f">append</span>(<span class="s">"torch"</span>)        <span class="c"># add</span>
 inv[<span class="n">0</span>] = <span class="s">"netherite sword"</span>  <span class="c"># replace by index</span>
 <span class="k">print</span>(inv[<span class="o">-</span><span class="n">1</span>])               <span class="c"># last item: "torch"</span>
 <span class="k">print</span>(inv[<span class="n">1</span>:<span class="n">3</span>])              <span class="c"># slice: items 1,2</span></code></pre>
-<h2>Dicts — key → value lookups</h2>
+<h2>Dicts: key → value lookups</h2>
 <pre><code class="language-python">player = {<span class="s">"name"</span>: <span class="s">"Alex"</span>, <span class="s">"hp"</span>: <span class="n">20</span>, <span class="s">"xp"</span>: <span class="n">17</span>}
 <span class="k">print</span>(player[<span class="s">"hp"</span>])          <span class="c"># 20</span>
 player[<span class="s">"hp"</span>] = <span class="n">15</span>            <span class="c"># update</span>
@@ -498,7 +565,7 @@ player[<span class="s">"gamemode"</span>] = <span class="s">"survival"</span>  <
 <h2>Tuples &amp; sets</h2>
 <pre><code class="language-python">spawn = (<span class="n">0</span>, <span class="n">64</span>, <span class="n">0</span>)         <span class="c"># tuple: fixed, ordered (great for coords)</span>
 online = {<span class="s">"alex"</span>, <span class="s">"steve"</span>}   <span class="c"># set: unique, unordered</span>
-online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span class="c"># still just two — no duplicates</span></code></pre>
+online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span class="c"># still just two, no duplicates</span></code></pre>
 <div class="box try"><span class="h">Try it</span><p>Build a dict mapping mob names to their health. Loop over it and print only mobs with more than 20 HP. Then add the mob names to a set and print how many unique mobs you have.</p></div>
 </div></template>
 
@@ -512,7 +579,7 @@ online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span 
 
 <span class="k">print</span>(<span class="f">ticks_for_time</span>(<span class="n">12</span>))       <span class="c"># 6000  (noon)</span>
 <span class="k">print</span>(<span class="f">ticks_for_time</span>(<span class="n">18</span>, <span class="n">30</span>))   <span class="c"># sunset-ish</span></code></pre>
-<p>This is the <em>exact</em> math your time-sync mod uses — Python is a perfect place to prototype mod logic before writing Java.</p>
+<p>This is the <em>exact</em> math your time-sync mod uses, Python is a perfect place to prototype mod logic before writing Java.</p>
 <div class="box note"><span class="h">Default &amp; keyword arguments</span><p><code>minute=0</code> is a default. Call <code>ticks_for_time(hour=9, minute=15)</code> with keywords for readability. Functions that do one thing and return a value are easy to test and reuse.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Write <code>damage(hp, amount)</code> that returns the new HP but never below 0 (use <code>max()</code>). Then write <code>heal(hp, amount)</code> capped at 20 (use <code>min()</code>). Chain them.</p></div>
 </div></template>
@@ -529,7 +596,7 @@ online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span 
     <span class="k">for</span> line <span class="k">in</span> f:
         <span class="k">print</span>(line.<span class="f">strip</span>())</code></pre>
 <p>The <code>with</code> block auto-closes the file even if an error happens.</p>
-<h2>JSON — the language of APIs</h2>
+<h2>JSON: the language of APIs</h2>
 <pre><code class="language-python"><span class="k">import</span> json
 
 config = {<span class="s">"timezone"</span>: <span class="s">"America/Los_Angeles"</span>, <span class="s">"interval"</span>: <span class="n">20</span>}
@@ -591,7 +658,7 @@ alex.<span class="f">take_damage</span>(<span class="n">5</span>)
 <pre><code class="language-python"><span class="k">class</span> <span class="f">Admin</span>(<span class="f">Player</span>):           <span class="c"># Admin IS-A Player</span>
     <span class="k">def</span> <span class="f">take_damage</span>(self, amount):
         <span class="k">return</span> self.hp        <span class="c"># admins are invincible</span></code></pre>
-<div class="box note"><span class="h">self</span><p><code>self</code> is the object the method is called on. You never pass it explicitly — Python does. <code>__init__</code> is the constructor, run when you create the object.</p></div>
+<div class="box note"><span class="h">self</span><p><code>self</code> is the object the method is called on. You never pass it explicitly, Python does. <code>__init__</code> is the constructor, run when you create the object.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Add an <code>Inventory</code> class with <code>add(item)</code>, <code>remove(item)</code>, and a <code>__len__</code> method so <code>len(inv)</code> works. Give your <code>Player</code> an inventory attribute.</p></div>
 </div></template>
 
@@ -602,24 +669,24 @@ alex.<span class="f">take_damage</span>(<span class="n">5</span>)
 squares = [n*n <span class="k">for</span> n <span class="k">in</span> nums]               <span class="c"># [1,4,9,16,25]</span>
 evens   = [n <span class="k">for</span> n <span class="k">in</span> nums <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>]   <span class="c"># [2,4]</span>
 lookup  = {p: <span class="f">len</span>(p) <span class="k">for</span> p <span class="k">in</span> [<span class="s">"alex"</span>,<span class="s">"steve"</span>]}  <span class="c"># dict comp</span></code></pre>
-<h2>Generators — lazy sequences</h2>
+<h2>Generators: lazy sequences</h2>
 <pre><code class="language-python"><span class="k">def</span> <span class="f">countdown</span>(n):
     <span class="k">while</span> n &gt; <span class="n">0</span>:
         <span class="k">yield</span> n          <span class="c"># produces values one at a time</span>
         n <span class="o">-</span>= <span class="n">1</span>
 
 <span class="k">for</span> x <span class="k">in</span> <span class="f">countdown</span>(<span class="n">3</span>):
-    <span class="k">print</span>(x)            <span class="c"># 3, 2, 1 — without building a list</span></code></pre>
+    <span class="k">print</span>(x)            <span class="c"># 3, 2, 1, without building a list</span></code></pre>
 <h2>Type hints</h2>
 <pre><code class="language-python"><span class="k">def</span> <span class="f">heal</span>(hp: <span class="f">int</span>, amount: <span class="f">int</span>) -&gt; <span class="f">int</span>:
     <span class="k">return</span> <span class="f">min</span>(<span class="n">20</span>, hp + amount)</code></pre>
 <p>Hints don't change runtime behavior, but editors and tools (like <code>mypy</code>) use them to catch bugs. FastAPI in Part 3 uses them to validate API requests automatically.</p>
-<div class="box note"><span class="h">Decorators</span><p>A <code>@decorator</code> wraps a function to add behavior. You'll meet them in FastAPI (<code>@app.get("/")</code>) — just know that <code>@thing</code> above a function transforms it.</p></div>
+<div class="box note"><span class="h">Decorators</span><p>A <code>@decorator</code> wraps a function to add behavior. You'll meet them in FastAPI (<code>@app.get("/")</code>), just know that <code>@thing</code> above a function transforms it.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Rewrite a loop that filters online admins from a player list as a single list comprehension. Add type hints to one of your earlier functions.</p></div>
 </div></template>
 
 <template data-id="p1-10"><div class="content">
-<p>Time to connect Python to your world. The server has <strong>RCON</strong> enabled — a protocol for sending console commands over the network. We'll drive it from Python.</p>
+<p>Time to connect Python to your world. The server has <strong>RCON</strong> enabled, a protocol for sending console commands over the network. We'll drive it from Python.</p>
 <pre><code class="language-bash">source .venv/bin/activate
 pip install mcrcon</code></pre>
 <pre><code class="language-python"><span class="k">from</span> mcrcon <span class="k">import</span> MCRcon
@@ -645,15 +712,15 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 
 <!-- ===== PART 2: MINECRAFT ===== -->
 <template data-id="p2-1"><div class="content">
-<p>Minecraft Java Edition wasn't built to be modded — the community made it moddable. <strong>Fabric</strong> is a lightweight mod loader that injects your code into the game. Before writing a mod, internalize the single most important distinction.</p>
+<p>Minecraft Java Edition wasn't built to be modded, the community made it moddable. <strong>Fabric</strong> is a lightweight mod loader that injects your code into the game. Before writing a mod, internalize the single most important distinction.</p>
 <h2>Client vs. Server</h2>
 <ul>
-<li><strong>Server-side</strong> mods change <em>world state</em> the server owns — time, blocks, entities, game rules. Installed on the server; all players see the effect. (Your time-sync mod.)</li>
-<li><strong>Client-side</strong> mods change <em>your own game</em> — keybinds, rendering, input, UI. Installed in your client; the server doesn't know. (Your auto-run mod.)</li>
+<li><strong>Server-side</strong> mods change <em>world state</em> the server owns, time, blocks, entities, game rules. Installed on the server; all players see the effect. (Your time-sync mod.)</li>
+<li><strong>Client-side</strong> mods change <em>your own game</em>, keybinds, rendering, input, UI. Installed in your client; the server doesn't know. (Your auto-run mod.)</li>
 </ul>
 <p>Ask: <em>whose machine owns the thing I'm changing?</em> That answers where the mod runs.</p>
-<h2>Mappings — why versions matter</h2>
-<p>Minecraft ships <em>obfuscated</em> (class/method names scrambled). <strong>Mappings</strong> translate those into readable names. Because the scrambling differs per version, <strong>a mod must be built against the exact MC version it runs on</strong> — which is why your server is pinned to 1.21.11.</p>
+<h2>Mappings: why versions matter</h2>
+<p>Minecraft ships <em>obfuscated</em> (class/method names scrambled). <strong>Mappings</strong> translate those into readable names. Because the scrambling differs per version, <strong>a mod must be built against the exact MC version it runs on</strong>, which is why your server is pinned to 1.21.11.</p>
 <div class="box note"><span class="h">The toolchain</span><p><strong>Gradle</strong> builds the project. <strong>Loom</strong> is the Gradle plugin that fetches Minecraft + mappings. <strong>Fabric API</strong> provides the hooks (events, registries) your mod uses. <strong>Fabric Loader</strong> loads everything at runtime.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Open your two mod projects in <code>~/Dev</code>. Find the <code>"environment"</code> field in each <code>fabric.mod.json</code>. One says <code>server</code>, one says <code>client</code>. Now you know why.</p></div>
 </div></template>
@@ -670,7 +737,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
     └── resources/
         ├── fabric.mod.json            # the mod's manifest
         └── assets/.../lang/en_us.json # translatable text</code></pre>
-<h2>fabric.mod.json — the manifest</h2>
+<h2>fabric.mod.json: the manifest</h2>
 <pre><code class="language-json">{
   <span class="s">"schemaVersion"</span>: <span class="n">1</span>,
   <span class="s">"id"</span>: <span class="s">"my-mod"</span>,
@@ -691,7 +758,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 </div></template>
 
 <template data-id="p2-3"><div class="content">
-<p>Let's read a complete, minimal server mod — the core of your time-sync project, stripped to essentials.</p>
+<p>Let's read a complete, minimal server mod, the core of your time-sync project, stripped to essentials.</p>
 <pre><code class="language-java"><span class="k">package</span> dev.you.example;
 
 <span class="k">import</span> net.fabricmc.api.DedicatedServerModInitializer;
@@ -716,23 +783,23 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 }</code></pre>
 <h2>What to notice</h2>
 <ul>
-<li>The class <code>implements DedicatedServerModInitializer</code> — matching the <code>server</code> entrypoint.</li>
+<li>The class <code>implements DedicatedServerModInitializer</code>, matching the <code>server</code> entrypoint.</li>
 <li><code>onInitializeServer()</code> runs once at startup; it <em>registers</em> a callback.</li>
 <li>The lambda runs every tick. Counting to 20 throttles work to once a second.</li>
 </ul>
-<div class="box note"><span class="h">Java vs. Python</span><p>Java is <em>statically typed</em> and verbose (types everywhere, semicolons, braces). The upside: the compiler catches whole classes of bugs before the game ever runs. Your Python instincts transfer — it's the same logic, more ceremony.</p></div>
+<div class="box note"><span class="h">Java vs. Python</span><p>Java is <em>statically typed</em> and verbose (types everywhere, semicolons, braces). The upside: the compiler catches whole classes of bugs before the game ever runs. Your Python instincts transfer, it's the same logic, more ceremony.</p></div>
 <div class="box try"><span class="h">Try it</span><p>In your time-sync project, find the real <code>currentDayTimeTicks()</code> method and compare it to the Python <code>ticks_for_time()</code> you wrote in Part 1. Same math, two languages.</p></div>
 </div></template>
 
 <template data-id="p2-4"><div class="content">
-<p>Mods are <strong>event-driven</strong>: Fabric API fires events, you register callbacks. You don't call the game — the game calls you.</p>
+<p>Mods are <strong>event-driven</strong>: Fabric API fires events, you register callbacks. You don't call the game, the game calls you.</p>
 <h2>The tick loop</h2>
 <pre><code class="language-java">ServerTickEvents.END_SERVER_TICK.<span class="f">register</span>(server -&gt; {
     <span class="c">// every server tick (~20/sec)</span>
 });</code></pre>
 <h2>Lifecycle events</h2>
 <pre><code class="language-java">ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt; {
-    <span class="c">// world is loaded — safe to touch levels &amp; game rules</span>
+    <span class="c">// world is loaded, safe to touch levels &amp; game rules</span>
 });</code></pre>
 <h2>Player &amp; world events</h2>
 <pre><code class="language-java"><span class="c">// react when a player joins</span>
@@ -755,7 +822,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
         level.<span class="f">getGameRules</span>().<span class="f">set</span>(GameRules.ADVANCE_TIME, <span class="k">false</span>, server);
     }
 });</code></pre>
-<div class="box warn"><span class="h">This is why you decompile</span><p>Older tutorials show <code>GameRules.RULE_DAYLIGHT</code> — that name no longer exists in 1.21.11. When code won't compile, inspect the real mapped jar with <code>javap</code> (next lesson) instead of trusting a tutorial.</p></div>
+<div class="box warn"><span class="h">This is why you decompile</span><p>Older tutorials show <code>GameRules.RULE_DAYLIGHT</code>, that name no longer exists in 1.21.11. When code won't compile, inspect the real mapped jar with <code>javap</code> (next lesson) instead of trusting a tutorial.</p></div>
 <h2>Custom commands</h2>
 <pre><code class="language-java">CommandRegistrationCallback.EVENT.<span class="f">register</span>((dispatcher, reg, env) -&gt; {
     dispatcher.<span class="f">register</span>(
@@ -770,7 +837,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 </div></template>
 
 <template data-id="p2-6"><div class="content">
-<p>Client mods register <strong>keybindings</strong> and read input — things that only exist on your machine. This is your auto-run mod, explained.</p>
+<p>Client mods register <strong>keybindings</strong> and read input, things that only exist on your machine. This is your auto-run mod, explained.</p>
 <pre><code class="language-java"><span class="k">public class</span> <span class="f">AutoRun</span> <span class="k">implements</span> ClientModInitializer {
     <span class="k">private static</span> KeyMapping toggleKey;
     <span class="k">private boolean</span> autoRun = <span class="k">false</span>;
@@ -792,14 +859,14 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 <ol>
 <li><strong>Register</strong> a keybinding → appears in Options → Controls, rebindable.</li>
 <li><strong>Each tick</strong>, drain presses with <code>consumeClick()</code> and flip a boolean.</li>
-<li>While on, force the <strong>forward key</strong> down — the game thinks you're holding W.</li>
+<li>While on, force the <strong>forward key</strong> down, the game thinks you're holding W.</li>
 </ol>
 <div class="box note"><span class="h">Same skeleton, different entrypoint</span><p><code>ClientModInitializer</code> + <code>"environment": "client"</code>. Everything you learned about server mods applies; only the APIs (keybinds, options) are client-only.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Extend the idea: also hold <code>client.options.keySprint</code> so it's auto-<em>sprint</em>. One line. Rebuild and drop it in your client's mods folder.</p></div>
 </div></template>
 
 <template data-id="p2-7"><div class="content">
-<p><strong>Mixins</strong> are the advanced superpower of Fabric: they let you weave code <em>into Minecraft's own classes</em> at load time — changing vanilla behavior that no event exposes. Power comes with sharp edges.</p>
+<p><strong>Mixins</strong> are the advanced superpower of Fabric: they let you weave code <em>into Minecraft's own classes</em> at load time, changing vanilla behavior that no event exposes. Power comes with sharp edges.</p>
 <pre><code class="language-java"><span class="nd">@Mixin</span>(Zombie.class)
 <span class="k">public class</span> <span class="f">ZombieMixin</span> {
     <span class="c">// run our code at the start of the zombie's tick</span>
@@ -810,7 +877,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 }</code></pre>
 <p>You list mixins in a <code>mymod.mixins.json</code> file and reference it from <code>fabric.mod.json</code>. Common injection points: <code>@At("HEAD")</code> (before the method), <code>@At("RETURN")</code> (after), and <code>@Inject(... cancellable = true)</code> to <em>cancel</em> vanilla behavior.</p>
 <div class="box warn"><span class="h">Use sparingly</span><p>Mixins touch internal code that can change between versions and can conflict with other mods. <strong>Always prefer a Fabric API event if one exists.</strong> Reach for a mixin only when there's no other hook.</p></div>
-<div class="box note"><span class="h">When you'd need one</span><p>Changing mob AI, altering damage calculations, injecting into the render pipeline, tweaking world generation — places vanilla offers no event.</p></div>
+<div class="box note"><span class="h">When you'd need one</span><p>Changing mob AI, altering damage calculations, injecting into the render pipeline, tweaking world generation, places vanilla offers no event.</p></div>
 <div class="box try"><span class="h">Try it</span><p>You don't have to write one yet. Instead, browse a popular open-source Fabric mod on GitHub and find its <code>mixins</code> folder. Read one mixin and identify the target class, method, and injection point.</p></div>
 </div></template>
 
@@ -825,7 +892,7 @@ docker run --rm -v "$JAR":/mc.jar eclipse-temurin:21-jdk bash -c '
   javap net/minecraft/server/level/ServerLevel.class | grep -i setDayTime'</code></pre>
 <p>Output:</p>
 <pre><code class="language-text">public void setDayTime(long);</code></pre>
-<p>Now you <em>know</em> the exact method signature — no guessing, no failed builds.</p>
+<p>Now you <em>know</em> the exact method signature, no guessing, no failed builds.</p>
 <div class="box tip"><span class="h">Verify before you write</span><p>When porting to a new Minecraft version, <code>javap</code> the classes you touch first. Five minutes of inspection saves an hour of cryptic compile errors. This is a pro workflow most tutorials never teach.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Use the technique to confirm <code>net.minecraft.client.Options</code> really has a public <code>keyUp</code> field. Grep for <code>KeyMapping key</code> and you'll see all the movement keys.</p></div>
 </div></template>
@@ -874,7 +941,7 @@ docker run --rm -v "$JAR":/mc.jar eclipse-temurin:21-jdk bash -c '
 </div></template>
 
 <template data-id="p3-3"><div class="content">
-<p><strong>JavaScript</strong> makes pages interactive — it runs in the browser, reacts to clicks, and fetches data from APIs.</p>
+<p><strong>JavaScript</strong> makes pages interactive, it runs in the browser, reacts to clicks, and fetches data from APIs.</p>
 <h2>Selecting &amp; reacting</h2>
 <pre><code class="language-javascript"><span class="k">const</span> button = document.<span class="f">getElementById</span>(<span class="s">"refresh"</span>);
 <span class="k">const</span> count  = document.<span class="f">getElementById</span>(<span class="s">"count"</span>);
@@ -890,7 +957,7 @@ button.<span class="f">addEventListener</span>(<span class="s">"click"</span>, (
 }
 <span class="f">loadStatus</span>();
 <span class="f">setInterval</span>(loadStatus, <span class="n">5000</span>);             <span class="c">// refresh every 5s</span></code></pre>
-<div class="box note"><span class="h">async / await</span><p>Network calls take time. <code>await</code> pauses until the response arrives without freezing the page. It's the JS cousin of waiting for a server reply — you'll see the same shape in Python.</p></div>
+<div class="box note"><span class="h">async / await</span><p>Network calls take time. <code>await</code> pauses until the response arrives without freezing the page. It's the JS cousin of waiting for a server reply, you'll see the same shape in Python.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Without a backend yet, fake it: <code>const data = {online: 3}</code> instead of fetching, and wire the button to display it. You'll swap in the real <code>fetch</code> in lesson 3.6.</p></div>
 </div></template>
 
@@ -914,7 +981,7 @@ app = <span class="f">FastAPI</span>()
 <pre><code class="language-bash">fastapi dev main.py     <span class="c"># runs at http://localhost:8000</span></code></pre>
 <p>Visit <code>http://localhost:8000/api/health</code> → JSON. Visit <code>/docs</code> → interactive API docs FastAPI built for you, free.</p>
 <div class="box note"><span class="h">That @app.get is a decorator</span><p>Remember decorators from Part 1? <code>@app.get("/api/health")</code> wraps your function so FastAPI calls it whenever someone GETs that URL. The function's return value becomes JSON automatically.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Add a <code>GET /api/add/{a}/{b}</code> endpoint that returns their sum. Type-hint <code>a: int, b: int</code> and watch FastAPI reject <code>/api/add/x/2</code> with a clean 422 error — validation for free.</p></div>
+<div class="box try"><span class="h">Try it</span><p>Add a <code>GET /api/add/{a}/{b}</code> endpoint that returns their sum. Type-hint <code>a: int, b: int</code> and watch FastAPI reject <code>/api/add/x/2</code> with a clean 422 error, validation for free.</p></div>
 </div></template>
 
 <template data-id="p3-5"><div class="content">
@@ -942,16 +1009,16 @@ RCON_PASS = os.<span class="f">getenv</span>(<span class="s">"RCON_PASSWORD"</sp
     <span class="k">if</span> <span class="s">":"</span> <span class="k">in</span> resp:
         players = [p.<span class="f">strip</span>() <span class="k">for</span> p <span class="k">in</span> resp.<span class="f">split</span>(<span class="s">":"</span>,<span class="n">1</span>)[<span class="n">1</span>].<span class="f">split</span>(<span class="s">","</span>) <span class="k">if</span> p.<span class="f">strip</span>()]
     <span class="k">return</span> {<span class="s">"online"</span>: <span class="f">len</span>(players), <span class="s">"players"</span>: players}</code></pre>
-<div class="box warn"><span class="h">Secrets via environment</span><p>Notice <code>os.getenv("RCON_PASSWORD")</code> — the password comes from the environment, not the source. In Compose you'll pass it in, and it never touches git.</p></div>
-<div class="box tip"><span class="h">CORS</span><p>If your frontend is served from a different origin than the API, browsers block the request. Add FastAPI's <code>CORSMiddleware</code>, or — simpler — serve the frontend from the same FastAPI app (next lesson).</p></div>
+<div class="box warn"><span class="h">Secrets via environment</span><p>Notice <code>os.getenv("RCON_PASSWORD")</code>, the password comes from the environment, not the source. In Compose you'll pass it in, and it never touches git.</p></div>
+<div class="box tip"><span class="h">CORS</span><p>If your frontend is served from a different origin than the API, browsers block the request. Add FastAPI's <code>CORSMiddleware</code>, or, simpler, serve the frontend from the same FastAPI app (next lesson).</p></div>
 <div class="box try"><span class="h">Try it</span><p>Run <code>RCON_PASSWORD=... fastapi dev main.py</code> and hit <code>/api/status</code> while you're logged into the game. See your own name come back as JSON.</p></div>
 </div></template>
 
 <template data-id="p3-6"><div class="content">
-<p>This is the payoff. You'll build a real, self-updating control panel for your server — live player count, a roster that refreshes itself, a connection light that goes red when the server's down, and buttons that fire commands back into the game. Everything from Parts 0–3 converges here.</p>
+<p>This is the payoff. You'll build a real, self-updating control panel for your server, live player count, a roster that refreshes itself, a connection light that goes red when the server's down, and buttons that fire commands back into the game. Everything from Parts 0 to 3 converges here.</p>
 
 <h2>1 · The project layout</h2>
-<p>Your dashboard folder grows one directory — a <code>static/</code> folder holding the frontend the API will serve:</p>
+<p>Your dashboard folder grows one directory, a <code>static/</code> folder holding the frontend the API will serve:</p>
 <pre><code class="language-text">mc-dashboard/
 ├── main.py            # the FastAPI backend (lessons 3.4 & 3.5)
 ├── requirements.txt
@@ -961,16 +1028,16 @@ RCON_PASS = os.<span class="f">getenv</span>(<span class="s">"RCON_PASSWORD"</sp
     └── app.js         # the behavior</code></pre>
 
 <h2>2 · Serve the frontend from FastAPI</h2>
-<p>Letting the API serve the page means both come from the same origin (<code>http://localhost:8000</code>), so the browser never blocks the call — no CORS to configure. Add this to <code>main.py</code>, <strong>below</strong> your API routes:</p>
+<p>Letting the API serve the page means both come from the same origin (<code>http://localhost:8000</code>), so the browser never blocks the call, no CORS to configure. Add this to <code>main.py</code>, <strong>below</strong> your API routes:</p>
 <pre><code class="language-python"><span class="k">from</span> fastapi.staticfiles <span class="k">import</span> StaticFiles
 
 <span class="c"># ... all your @app.get("/api/...") routes go ABOVE this line ...</span>
 
 <span class="c"># mount LAST: this catch-all claims every remaining URL</span>
 app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">StaticFiles</span>(directory=<span class="s">"static"</span>, html=<span class="k">True</span>), name=<span class="s">"static"</span>)</code></pre>
-<div class="box warn"><span class="h">Order matters</span><p>The <code>mount("/")</code> is a catch-all. Put it <em>above</em> your <code>/api/...</code> routes and it swallows them — every API call returns the HTML page instead of JSON. Define API routes first, mount static last.</p></div>
+<div class="box warn"><span class="h">Order matters</span><p>The <code>mount("/")</code> is a catch-all. Put it <em>above</em> your <code>/api/...</code> routes and it swallows them, every API call returns the HTML page instead of JSON. Define API routes first, mount static last.</p></div>
 
-<h2>3 · The HTML — structure only</h2>
+<h2>3 · The HTML: structure only</h2>
 <p>HTML describes <em>what's on the page</em>, not how it looks. Every value JS will change gets an <code>id</code> so the code can find it. Save as <code>static/index.html</code>:</p>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -987,7 +1054,7 @@ app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">Sta
       &lt;span id="status" class="badge"&gt;&lt;i&gt;&lt;/i&gt; connecting…&lt;/span&gt;
     &lt;/header&gt;
 
-    &lt;p class="count"&gt;&lt;b id="online"&gt;–&lt;/b&gt; players online&lt;/p&gt;
+    &lt;p class="count"&gt;&lt;b id="online"&gt;-&lt;/b&gt; players online&lt;/p&gt;
     &lt;ul id="players" class="roster"&gt;&lt;/ul&gt;
 
     &lt;div class="controls"&gt;
@@ -1003,7 +1070,7 @@ app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">Sta
 &lt;/html&gt;</code></pre>
 <div class="box note"><span class="h">Read the structure</span><p>A <code>#status</code> badge, an <code>#online</code> number, an empty <code>#players</code> list JS will fill, three command <code>&lt;button&gt;</code>s tagged with <code>data-cmd</code>, and a <code>#toast</code> line for feedback. The <code>&lt;script&gt;</code> sits last so the elements exist before the code runs.</p></div>
 
-<h2>4 · The CSS — make it feel alive</h2>
+<h2>4 · The CSS: make it feel alive</h2>
 <p>Save as <code>static/style.css</code>. The <code>.badge.up</code> / <code>.badge.down</code> classes are the trick: JavaScript toggles them to flip the light green or red.</p>
 <pre><code class="language-css"><span class="f">:root</span> { --bg:#0c0f13; --card:#141a22; --line:#222a36; --ink:#ece9e0; --grass:#5fcf80; --red:#e0573d; }
 <span class="f">*</span> { box-sizing:border-box; }
@@ -1028,7 +1095,7 @@ app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">Sta
 <span class="f">button:disabled</span> { opacity:.4; cursor:not-allowed; }
 <span class="f">.toast</span> { min-height:18px; margin:14px 0 0; font-size:13px; }</code></pre>
 
-<h2>5 · The JavaScript — bring it to life</h2>
+<h2>5 · The JavaScript: bring it to life</h2>
 <p>Save as <code>static/app.js</code>. This is the heart: a polling loop that fetches status and re-renders, plus click handlers that POST commands. Read the comments.</p>
 <pre><code class="language-javascript"><span class="c">// grab elements once</span>
 <span class="k">const</span> $ = (id) =&gt; document.<span class="f">getElementById</span>(id);
@@ -1049,10 +1116,10 @@ app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">Sta
       ? data.players.<span class="f">map</span>(p =&gt; <span class="s">`&lt;li&gt;${p}&lt;/li&gt;`</span>).<span class="f">join</span>(<span class="s">""</span>)
       : <span class="s">`&lt;li style="opacity:.5"&gt;nobody online&lt;/li&gt;`</span>;
   } <span class="k">catch</span> (err) {
-    <span class="c">// server down or unreachable — show it clearly instead of freezing</span>
+    <span class="c">// server down or unreachable, show it clearly instead of freezing</span>
     statusEl.className = <span class="s">"badge down"</span>;
     statusEl.innerHTML = <span class="s">"&lt;i&gt;&lt;/i&gt; offline"</span>;
-    onlineEl.textContent = <span class="s">"–"</span>;
+    onlineEl.textContent = <span class="s">"-"</span>;
     rosterEl.innerHTML = <span class="s">""</span>;
   }
 }
@@ -1082,13 +1149,13 @@ document.<span class="f">querySelectorAll</span>(<span class="s">"button[data-cm
 <span class="c">// --- 3. start the loop ---</span>
 <span class="f">refresh</span>();
 <span class="f">setInterval</span>(refresh, <span class="n">4000</span>);                     <span class="c">// re-check every 4 seconds</span></code></pre>
-<div class="box note"><span class="h">async / await, again</span><p>Both functions are <code>async</code> because network calls take time. <code>await</code> pauses that function until the response lands — without freezing the page — exactly the shape you saw in Python. The <code>try/catch/finally</code> means a dead server shows "offline" instead of a broken page, and buttons always re-enable.</p></div>
+<div class="box note"><span class="h">async / await, again</span><p>Both functions are <code>async</code> because network calls take time. <code>await</code> pauses that function until the response lands, without freezing the page, exactly the shape you saw in Python. The <code>try/catch/finally</code> means a dead server shows "offline" instead of a broken page, and buttons always re-enable.</p></div>
 
-<h2>6 · The command endpoint — safely</h2>
-<p>The buttons POST to <code>/api/command/{cmd}</code>. <strong>Never</strong> pass raw web text straight to RCON — that's a remote backdoor into your server. Instead map short, safe keys to fixed commands (an <em>allowlist</em>). Add to <code>main.py</code>:</p>
+<h2>6 · The command endpoint: safely</h2>
+<p>The buttons POST to <code>/api/command/{cmd}</code>. <strong>Never</strong> pass raw web text straight to RCON, that's a remote backdoor into your server. Instead map short, safe keys to fixed commands (an <em>allowlist</em>). Add to <code>main.py</code>:</p>
 <pre><code class="language-python"><span class="k">from</span> fastapi <span class="k">import</span> HTTPException
 
-<span class="c"># only these run — the web cannot trigger anything else</span>
+<span class="c"># only these run, the web cannot trigger anything else</span>
 ALLOWED = {
     <span class="s">"day"</span>:   <span class="s">"time set day"</span>,
     <span class="s">"night"</span>: <span class="s">"time set night"</span>,
@@ -1106,9 +1173,9 @@ ALLOWED = {
 <h2>7 · Run the whole thing</h2>
 <pre><code class="language-bash">cd ~/Dev/mc-dashboard &amp;&amp; source .venv/bin/activate
 RCON_PASSWORD=your-rcon-password fastapi dev main.py</code></pre>
-<p>Open <code>http://localhost:8000</code>. The badge turns green, your name appears when you log in, and the buttons change the sky in your world. Now stop the Minecraft container — within four seconds the badge flips red on its own. That's your error handling, working.</p>
-<div class="box tip"><span class="h">Why polling, and what beats it</span><p>Re-fetching every 4 s is simple and totally fine here. For instant updates without the steady stream of requests, <strong>WebSockets</strong> let the server <em>push</em> changes the moment they happen — the upgrade waiting for you in the capstone (3.9).</p></div>
-<div class="box try"><span class="h">Try it</span><p>Ship a feature across the whole stack: add <code>"rain": "weather rain"</code> to <code>ALLOWED</code> <em>and</em> a <code>&lt;button data-cmd="rain"&gt;</code> to the HTML. Then break it on purpose — stop the server and confirm the badge goes red and the toast reads "request failed." Handling failure is half of real engineering.</p></div>
+<p>Open <code>http://localhost:8000</code>. The badge turns green, your name appears when you log in, and the buttons change the sky in your world. Now stop the Minecraft container, within four seconds the badge flips red on its own. That's your error handling, working.</p>
+<div class="box tip"><span class="h">Why polling, and what beats it</span><p>Re-fetching every 4 s is simple and totally fine here. For instant updates without the steady stream of requests, <strong>WebSockets</strong> let the server <em>push</em> changes the moment they happen, the upgrade waiting for you in the capstone (3.9).</p></div>
+<div class="box try"><span class="h">Try it</span><p>Ship a feature across the whole stack: add <code>"rain": "weather rain"</code> to <code>ALLOWED</code> <em>and</em> a <code>&lt;button data-cmd="rain"&gt;</code> to the HTML. Then break it on purpose, stop the server and confirm the badge goes red and the toast reads "request failed." Handling failure is half of real engineering.</p></div>
 </div></template>
 
 <template data-id="p3-7"><div class="content">
@@ -1129,7 +1196,7 @@ con.<span class="f">commit</span>()
     <span class="k">print</span>(row)</code></pre>
 <div class="box warn"><span class="h">Always use parameters</span><p>Pass values as <code>(?)</code> placeholders, never by string-building SQL. Concatenating user input into SQL is how <strong>SQL injection</strong> attacks happen.</p></div>
 <h2>The leap to Postgres</h2>
-<p>Same SQL, but a networked server that many clients can hit at once. You run it as — what else — a Docker service. An <strong>ORM</strong> like SQLAlchemy lets you work with Python objects instead of raw SQL once tables get complex.</p>
+<p>Same SQL, but a networked server that many clients can hit at once. You run it as, what else, a Docker service. An <strong>ORM</strong> like SQLAlchemy lets you work with Python objects instead of raw SQL once tables get complex.</p>
 <div class="box try"><span class="h">Try it</span><p>In your dashboard's <code>/api/status</code>, log each seen player into SQLite. Add a <code>GET /api/leaderboard</code> that returns login counts per player, ordered. Render it on the page.</p></div>
 </div></template>
 
@@ -1149,7 +1216,7 @@ con.<span class="f">commit</span>()
       <span class="f">RCON_PASSWORD</span>: <span class="s">"your-rcon-password"</span>
     <span class="k">depends_on</span>:
       - <span class="s">minecraft-fabric</span></code></pre>
-<p>Inside a Compose network, services find each other <strong>by name</strong> — your API connects to <code>minecraft-fabric:25575</code>, no IP addresses needed.</p>
+<p>Inside a Compose network, services find each other <strong>by name</strong>, your API connects to <code>minecraft-fabric:25575</code>, no IP addresses needed.</p>
 <h2>The Dockerfile</h2>
 <pre><code class="language-text"># mc-dashboard/Dockerfile
 FROM python:3.12-slim
@@ -1158,7 +1225,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
-<div class="box note"><span class="h">You've come full circle</span><p>The Docker/Compose skills from Part 0 now deploy software <em>you wrote</em>. This is real deployment — the same pattern scales to a cloud VM.</p></div>
+<div class="box note"><span class="h">You've come full circle</span><p>The Docker/Compose skills from Part 0 now deploy software <em>you wrote</em>. This is real deployment, the same pattern scales to a cloud VM.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Write the Dockerfile, add the service, run <code>docker compose up -d --build</code>, and load the dashboard. Your whole stack now starts with one command.</p></div>
 </div></template>
 
@@ -1167,36 +1234,39 @@ CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
 <h2>The capstone project</h2>
 <p>Grow the dashboard into a real app:</p>
 <ul>
-<li><strong>Auth</strong> — a login so only you can run commands (JWT tokens, password hashing).</li>
-<li><strong>Live updates</strong> — swap polling for <strong>WebSockets</strong> so events push instantly.</li>
-<li><strong>A real frontend framework</strong> — rebuild the UI in <strong>React</strong> (components, state, hooks).</li>
-<li><strong>Charts</strong> — player-count history from your database, graphed.</li>
-<li><strong>Deploy</strong> — put it on a cloud VM (or Fly.io/Railway) with a real domain and HTTPS.</li>
+<li><strong>Auth</strong>, a login so only you can run commands (JWT tokens, password hashing).</li>
+<li><strong>Live updates</strong>, swap polling for <strong>WebSockets</strong> so events push instantly.</li>
+<li><strong>A real frontend framework</strong>, rebuild the UI in <strong>React</strong> (components, state, hooks).</li>
+<li><strong>Charts</strong>, player-count history from your database, graphed.</li>
+<li><strong>Deploy</strong>, put it on a cloud VM (or Fly.io/Railway) with a real domain and HTTPS.</li>
 </ul>
 <h2>What to learn next, in order</h2>
 <ol>
-<li><strong>Git &amp; GitHub</strong> deeply — branches, pull requests, code review.</li>
-<li><strong>React + TypeScript</strong> — the dominant frontend stack.</li>
-<li><strong>A backend framework</strong> in depth — FastAPI or Node/Express.</li>
-<li><strong>Databases &amp; SQL</strong> — schema design, indexes, migrations.</li>
-<li><strong>Testing</strong> — pytest, automated checks, CI with GitHub Actions.</li>
-<li><strong>Cloud &amp; deployment</strong> — Docker (✓), a VM, DNS, HTTPS, logging.</li>
+<li><strong>Git &amp; GitHub</strong> deeply, branches, pull requests, code review.</li>
+<li><strong>React + TypeScript</strong>, the dominant frontend stack.</li>
+<li><strong>A backend framework</strong> in depth, FastAPI or Node/Express.</li>
+<li><strong>Databases &amp; SQL</strong>, schema design, indexes, migrations.</li>
+<li><strong>Testing</strong>, pytest, automated checks, CI with GitHub Actions.</li>
+<li><strong>Cloud &amp; deployment</strong>, Docker (✓), a VM, DNS, HTTPS, logging.</li>
 </ol>
-<div class="box tip"><span class="h">The meta-skill</span><p>You already practiced the thing senior engineers do that juniors don't: <strong>verify against the source of truth</strong> (you decompiled jars instead of trusting tutorials). Apply that everywhere — read the docs, read the code, test your assumptions.</p></div>
-<div class="box note"><span class="h">Build in public</span><p>Push every project to GitHub with a clear README. Your Minecraft dashboard, your two mods, your scripts — that's a portfolio that tells a story. Employers hire the story.</p></div>
-<div class="box try"><span class="h">Final quest</span><p>Pick one capstone upgrade above and ship it this week. Then write a README explaining what it does and how to run it. You're not "learning to code" anymore — you're building.</p></div>
+<div class="box tip"><span class="h">The meta-skill</span><p>You already practiced the thing senior engineers do that juniors don't: <strong>verify against the source of truth</strong> (you decompiled jars instead of trusting tutorials). Apply that everywhere, read the docs, read the code, test your assumptions.</p></div>
+<div class="box note"><span class="h">Build in public</span><p>Push every project to GitHub with a clear README. Your Minecraft dashboard, your two mods, your scripts, that's a portfolio that tells a story. Employers hire the story.</p></div>
+<div class="box try"><span class="h">Final quest</span><p>Pick one capstone upgrade above and ship it this week. Then write a README explaining what it does and how to run it. You're not "learning to code" anymore, you're building.</p></div>
 </div></template>
 
 <script>
 // ----------------- curriculum manifest -----------------
 const PARTS = [
-  { id:"0", title:"Launchpad", sub:"WSL · Docker · your server · your tools", lessons:[
+  { id:"0", title:"Launchpad", sub:"why this setup, then getting your machine ready", lessons:[
     ["p0-1","How this book works"],
-    ["p0-2","WSL2: Linux on Windows"],
-    ["p0-3","Installing Docker"],
-    ["p0-4","Docker Compose fundamentals"],
-    ["p0-5","Your Fabric 1.21.11 server, line by line"],
-    ["p0-6","Dev toolkit: VS Code, Git, terminal"],
+    ["p0-2","Pick your path"],
+    ["p0-3","Set up Windows + WSL2"],
+    ["p0-4","Set up on a Mac"],
+    ["p0-5","Other paths: native Windows & Pi"],
+    ["p0-6","Installing Docker"],
+    ["p0-7","Docker Compose basics"],
+    ["p0-8","Your Fabric 1.21.11 server"],
+    ["p0-9","Dev toolkit: VS Code, Git, terminal"],
   ]},
   { id:"1", title:"Python", sub:"from print() to classes & generators", lessons:[
     ["p1-1","Hello, Python"],
@@ -1321,7 +1391,7 @@ function render(id){
       <h1 class="title">${m.title}</h1>
       ${body}
       <button class="markbtn ${isDone?'done':''}" onclick="toggleDone('${id}')">
-        ${isDone? '✓ Completed — click to undo' : 'Mark complete  ⛏'}
+        ${isDone? '✓ Completed, tap to undo' : 'Mark complete  ⛏'}
       </button>
       <div class="pager">
         ${prev?`<a onclick="go('${prev}')"><div class="dir">◀ Previous</div><div class="nm">${META[prev].title}</div></a>`:`<a style="opacity:.3;cursor:default"><div class="dir">Start</div><div class="nm">Cover</div></a>`}
@@ -1343,10 +1413,19 @@ function setActive(id){
   }
 }
 function toggleDone(id){
-  if(done.has(id)) done.delete(id); else done.add(id);
+  const nowDone = !done.has(id);
+  if(nowDone) done.add(id); else done.delete(id);
   saveProgress();
-  document.querySelector(`.lk[data-id="${id}"]`)?.classList.toggle("done", done.has(id));
-  if(current===id) render(id);
+  document.querySelector(`.lk[data-id="${id}"]`)?.classList.toggle("done", nowDone);
+  // update the button in place instead of re-rendering, so we keep scroll position
+  if(current===id){
+    const btn = document.querySelector(".markbtn");
+    if(btn){
+      btn.classList.toggle("done", nowDone);
+      btn.innerHTML = nowDone ? '✓ Completed, tap to undo' : 'Mark complete  ⛏';
+    }
+  }
+  updateXP();
 }
 function resumeId(){
   for(const id of ORDER) if(!done.has(id)) return id;
