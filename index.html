@@ -939,32 +939,167 @@ RCON_PASS = os.<span class="f">getenv</span>(<span class="s">"RCON_PASSWORD"</sp
 </div></template>
 
 <template data-id="p3-6"><div class="content">
-<p>Let's render that JSON as a live dashboard. FastAPI can serve the static frontend too, so everything's one origin (no CORS headaches).</p>
-<pre><code class="language-python"><span class="c"># serve a static folder at the root</span>
-<span class="k">from</span> fastapi.staticfiles <span class="k">import</span> StaticFiles
-app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">StaticFiles</span>(directory=<span class="s">"static"</span>, html=<span class="k">True</span>), name=<span class="s">"static"</span>)</code></pre>
-<pre><code class="language-html"><span class="c">&lt;!-- static/index.html --&gt;</span>
-&lt;h1&gt;Server Status&lt;/h1&gt;
-&lt;p&gt;&lt;span id="dot"&gt;●&lt;/span&gt; &lt;b id="online"&gt;–&lt;/b&gt; players online&lt;/p&gt;
-&lt;ul id="list"&gt;&lt;/ul&gt;
+<p>This is the payoff. You'll build a real, self-updating control panel for your server — live player count, a roster that refreshes itself, a connection light that goes red when the server's down, and buttons that fire commands back into the game. Everything from Parts 0–3 converges here.</p>
 
-&lt;script&gt;
-async function tick() {
-  try {
-    const r = await fetch("/api/status");
-    const d = await r.json();
-    document.getElementById("online").textContent = d.online;
-    document.getElementById("dot").style.color = "#5fcf80";
-    document.getElementById("list").innerHTML =
-      d.players.map(p =&gt; `&lt;li&gt;${p}&lt;/li&gt;`).join("");
-  } catch {
-    document.getElementById("dot").style.color = "#e0573d";
+<h2>1 · The project layout</h2>
+<p>Your dashboard folder grows one directory — a <code>static/</code> folder holding the frontend the API will serve:</p>
+<pre><code class="language-text">mc-dashboard/
+├── main.py            # the FastAPI backend (lessons 3.4 & 3.5)
+├── requirements.txt
+└── static/
+    ├── index.html     # the page structure
+    ├── style.css      # the look
+    └── app.js         # the behavior</code></pre>
+
+<h2>2 · Serve the frontend from FastAPI</h2>
+<p>Letting the API serve the page means both come from the same origin (<code>http://localhost:8000</code>), so the browser never blocks the call — no CORS to configure. Add this to <code>main.py</code>, <strong>below</strong> your API routes:</p>
+<pre><code class="language-python"><span class="k">from</span> fastapi.staticfiles <span class="k">import</span> StaticFiles
+
+<span class="c"># ... all your @app.get("/api/...") routes go ABOVE this line ...</span>
+
+<span class="c"># mount LAST: this catch-all claims every remaining URL</span>
+app.<span class="f">mount</span>(<span class="s">"/"</span>, <span class="f">StaticFiles</span>(directory=<span class="s">"static"</span>, html=<span class="k">True</span>), name=<span class="s">"static"</span>)</code></pre>
+<div class="box warn"><span class="h">Order matters</span><p>The <code>mount("/")</code> is a catch-all. Put it <em>above</em> your <code>/api/...</code> routes and it swallows them — every API call returns the HTML page instead of JSON. Define API routes first, mount static last.</p></div>
+
+<h2>3 · The HTML — structure only</h2>
+<p>HTML describes <em>what's on the page</em>, not how it looks. Every value JS will change gets an <code>id</code> so the code can find it. Save as <code>static/index.html</code>:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Server Control&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="card"&gt;
+    &lt;header&gt;
+      &lt;h1&gt;My Server&lt;/h1&gt;
+      &lt;span id="status" class="badge"&gt;&lt;i&gt;&lt;/i&gt; connecting…&lt;/span&gt;
+    &lt;/header&gt;
+
+    &lt;p class="count"&gt;&lt;b id="online"&gt;–&lt;/b&gt; players online&lt;/p&gt;
+    &lt;ul id="players" class="roster"&gt;&lt;/ul&gt;
+
+    &lt;div class="controls"&gt;
+      &lt;button data-cmd="day"&gt;☀ Set Day&lt;/button&gt;
+      &lt;button data-cmd="night"&gt;☾ Set Night&lt;/button&gt;
+      &lt;button data-cmd="clear"&gt;⛅ Clear Weather&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p id="toast" class="toast"&gt;&lt;/p&gt;
+  &lt;/main&gt;
+
+  &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<div class="box note"><span class="h">Read the structure</span><p>A <code>#status</code> badge, an <code>#online</code> number, an empty <code>#players</code> list JS will fill, three command <code>&lt;button&gt;</code>s tagged with <code>data-cmd</code>, and a <code>#toast</code> line for feedback. The <code>&lt;script&gt;</code> sits last so the elements exist before the code runs.</p></div>
+
+<h2>4 · The CSS — make it feel alive</h2>
+<p>Save as <code>static/style.css</code>. The <code>.badge.up</code> / <code>.badge.down</code> classes are the trick: JavaScript toggles them to flip the light green or red.</p>
+<pre><code class="language-css"><span class="f">:root</span> { --bg:#0c0f13; --card:#141a22; --line:#222a36; --ink:#ece9e0; --grass:#5fcf80; --red:#e0573d; }
+<span class="f">*</span> { box-sizing:border-box; }
+<span class="f">body</span> { margin:0; min-height:100vh; display:grid; place-items:center;
+       background:var(--bg); color:var(--ink); font-family:system-ui,sans-serif; }
+<span class="f">.card</span> { width:min(440px,92vw); background:var(--card); border:1px solid var(--line);
+        border-radius:16px; padding:28px; }
+<span class="f">header</span> { display:flex; align-items:center; justify-content:space-between; }
+<span class="f">h1</span> { font-size:22px; margin:0; }
+<span class="f">.badge</span> { font-size:13px; display:flex; align-items:center; gap:7px; color:#8a93a0; }
+<span class="f">.badge i</span> { width:9px; height:9px; border-radius:50%; background:#8a93a0; }
+<span class="f">.badge.up</span> { color:var(--grass); } <span class="f">.badge.up i</span> { background:var(--grass); box-shadow:0 0 8px var(--grass); }
+<span class="f">.badge.down</span> { color:var(--red); } <span class="f">.badge.down i</span> { background:var(--red); }
+<span class="f">.count</span> { font-size:18px; margin:22px 0 6px; }
+<span class="f">.count b</span> { color:var(--grass); font-size:26px; }
+<span class="f">.roster</span> { list-style:none; padding:0; margin:0 0 20px; display:flex; flex-wrap:wrap; gap:8px; min-height:24px; }
+<span class="f">.roster li</span> { background:#0a0d11; border:1px solid var(--line); border-radius:8px; padding:4px 10px; font-size:14px; }
+<span class="f">.controls</span> { display:flex; gap:10px; flex-wrap:wrap; }
+<span class="f">button</span> { flex:1; cursor:pointer; background:#0a0d11; color:var(--ink); border:1px solid var(--line);
+         border-radius:10px; padding:11px; font-size:14px; transition:.15s; }
+<span class="f">button:hover:not(:disabled)</span> { border-color:var(--grass); color:var(--grass); }
+<span class="f">button:disabled</span> { opacity:.4; cursor:not-allowed; }
+<span class="f">.toast</span> { min-height:18px; margin:14px 0 0; font-size:13px; }</code></pre>
+
+<h2>5 · The JavaScript — bring it to life</h2>
+<p>Save as <code>static/app.js</code>. This is the heart: a polling loop that fetches status and re-renders, plus click handlers that POST commands. Read the comments.</p>
+<pre><code class="language-javascript"><span class="c">// grab elements once</span>
+<span class="k">const</span> $ = (id) =&gt; document.<span class="f">getElementById</span>(id);
+<span class="k">const</span> statusEl = $(<span class="s">"status"</span>), onlineEl = $(<span class="s">"online"</span>),
+      rosterEl = $(<span class="s">"players"</span>), toastEl = $(<span class="s">"toast"</span>);
+
+<span class="c">// --- 1. poll the API and render ---</span>
+<span class="k">async function</span> <span class="f">refresh</span>() {
+  <span class="k">try</span> {
+    <span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"/api/status"</span>);
+    <span class="k">if</span> (!res.ok) <span class="k">throw new</span> <span class="f">Error</span>(res.status);
+    <span class="k">const</span> data = <span class="k">await</span> res.<span class="f">json</span>();          <span class="c">// {online, players}</span>
+
+    statusEl.className = <span class="s">"badge up"</span>;
+    statusEl.innerHTML = <span class="s">"&lt;i&gt;&lt;/i&gt; online"</span>;
+    onlineEl.textContent = data.online;
+    rosterEl.innerHTML = data.players.length
+      ? data.players.<span class="f">map</span>(p =&gt; <span class="s">`&lt;li&gt;${p}&lt;/li&gt;`</span>).<span class="f">join</span>(<span class="s">""</span>)
+      : <span class="s">`&lt;li style="opacity:.5"&gt;nobody online&lt;/li&gt;`</span>;
+  } <span class="k">catch</span> (err) {
+    <span class="c">// server down or unreachable — show it clearly instead of freezing</span>
+    statusEl.className = <span class="s">"badge down"</span>;
+    statusEl.innerHTML = <span class="s">"&lt;i&gt;&lt;/i&gt; offline"</span>;
+    onlineEl.textContent = <span class="s">"–"</span>;
+    rosterEl.innerHTML = <span class="s">""</span>;
   }
 }
-tick(); setInterval(tick, 5000);
-&lt;/script&gt;</code></pre>
-<p>Open <code>http://localhost:8000</code> — a self-updating dashboard reading your live server. <strong>That's full-stack</strong>: browser → API → game → back to browser.</p>
-<div class="box try"><span class="h">Try it</span><p>Add a "Set Day" button that does <code>fetch("/api/command/day", {method:"POST"})</code>, and a matching <code>@app.post</code> endpoint that runs <code>time set day</code>. Now your web page changes the game world.</p></div>
+
+<span class="c">// --- 2. send a command when a button is clicked ---</span>
+<span class="k">async function</span> <span class="f">sendCommand</span>(cmd, btn) {
+  btn.disabled = <span class="k">true</span>;                          <span class="c">// no double-clicks</span>
+  toastEl.textContent = <span class="s">""</span>;
+  <span class="k">try</span> {
+    <span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">`/api/command/${cmd}`</span>, { method: <span class="s">"POST"</span> });
+    <span class="k">const</span> data = <span class="k">await</span> res.<span class="f">json</span>();
+    toastEl.style.color = res.ok ? <span class="s">"#5fcf80"</span> : <span class="s">"#e0573d"</span>;
+    toastEl.textContent = data.detail || data.result || <span class="s">"done ✓"</span>;
+    <span class="f">refresh</span>();                                  <span class="c">// reflect the change right away</span>
+  } <span class="k">catch</span> {
+    toastEl.style.color = <span class="s">"#e0573d"</span>;
+    toastEl.textContent = <span class="s">"request failed"</span>;
+  } <span class="k">finally</span> {
+    btn.disabled = <span class="k">false</span>;
+  }
+}
+
+<span class="c">// wire every button by its data-cmd attribute</span>
+document.<span class="f">querySelectorAll</span>(<span class="s">"button[data-cmd]"</span>).<span class="f">forEach</span>(btn =&gt;
+  btn.<span class="f">addEventListener</span>(<span class="s">"click"</span>, () =&gt; <span class="f">sendCommand</span>(btn.dataset.cmd, btn)));
+
+<span class="c">// --- 3. start the loop ---</span>
+<span class="f">refresh</span>();
+<span class="f">setInterval</span>(refresh, <span class="n">4000</span>);                     <span class="c">// re-check every 4 seconds</span></code></pre>
+<div class="box note"><span class="h">async / await, again</span><p>Both functions are <code>async</code> because network calls take time. <code>await</code> pauses that function until the response lands — without freezing the page — exactly the shape you saw in Python. The <code>try/catch/finally</code> means a dead server shows "offline" instead of a broken page, and buttons always re-enable.</p></div>
+
+<h2>6 · The command endpoint — safely</h2>
+<p>The buttons POST to <code>/api/command/{cmd}</code>. <strong>Never</strong> pass raw web text straight to RCON — that's a remote backdoor into your server. Instead map short, safe keys to fixed commands (an <em>allowlist</em>). Add to <code>main.py</code>:</p>
+<pre><code class="language-python"><span class="k">from</span> fastapi <span class="k">import</span> HTTPException
+
+<span class="c"># only these run — the web cannot trigger anything else</span>
+ALLOWED = {
+    <span class="s">"day"</span>:   <span class="s">"time set day"</span>,
+    <span class="s">"night"</span>: <span class="s">"time set night"</span>,
+    <span class="s">"clear"</span>: <span class="s">"weather clear"</span>,
+}
+
+<span class="nd">@app.post</span>(<span class="s">"/api/command/{cmd}"</span>)
+<span class="k">def</span> <span class="f">run_command</span>(cmd: <span class="f">str</span>):
+    <span class="k">if</span> cmd <span class="k">not in</span> ALLOWED:
+        <span class="k">raise</span> <span class="f">HTTPException</span>(<span class="n">400</span>, <span class="s">f"unknown command: {cmd}"</span>)
+    result = <span class="f">rcon</span>(ALLOWED[cmd])          <span class="c"># rcon() helper from lesson 3.5</span>
+    <span class="k">return</span> {<span class="s">"result"</span>: result <span class="k">or</span> <span class="s">"ok"</span>}</code></pre>
+<div class="box warn"><span class="h">This is real security</span><p>An allowlist is the difference between "three safe buttons" and "anyone who reaches your dashboard can <code>/op</code> themselves." Whenever the web can trigger server actions, constrain <em>exactly</em> what's possible. Lesson 3.9 layers authentication on top so only you can press them.</p></div>
+
+<h2>7 · Run the whole thing</h2>
+<pre><code class="language-bash">cd ~/Dev/mc-dashboard &amp;&amp; source .venv/bin/activate
+RCON_PASSWORD=your-rcon-password fastapi dev main.py</code></pre>
+<p>Open <code>http://localhost:8000</code>. The badge turns green, your name appears when you log in, and the buttons change the sky in your world. Now stop the Minecraft container — within four seconds the badge flips red on its own. That's your error handling, working.</p>
+<div class="box tip"><span class="h">Why polling, and what beats it</span><p>Re-fetching every 4 s is simple and totally fine here. For instant updates without the steady stream of requests, <strong>WebSockets</strong> let the server <em>push</em> changes the moment they happen — the upgrade waiting for you in the capstone (3.9).</p></div>
+<div class="box try"><span class="h">Try it</span><p>Ship a feature across the whole stack: add <code>"rain": "weather rain"</code> to <code>ALLOWED</code> <em>and</em> a <code>&lt;button data-cmd="rain"&gt;</code> to the HTML. Then break it on purpose — stop the server and confirm the badge goes red and the toast reads "request failed." Handling failure is half of real engineering.</p></div>
 </div></template>
 
 <template data-id="p3-7"><div class="content">
