@@ -232,6 +232,25 @@ html[data-theme="dark"] .xp .track{background:#010409}
 }
 .menu-btn{display:none;place-items:center;width:34px;height:34px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);cursor:pointer}
 .menu-btn div{width:16px;height:2px;background:var(--ink);box-shadow:0 5px 0 var(--ink),0 -5px 0 var(--ink)}
+
+/* ---------- secret chapter (bonus) ---------- */
+:root{ --gold:#9a6700; }
+html[data-theme="dark"]{ --gold:#e3b341; }
+.bonus-link{display:flex;align-items:center;gap:11px;margin:0 4px 16px;padding:11px 12px;cursor:pointer;
+  border:1px solid var(--gold);border-radius:var(--r);
+  background:linear-gradient(90deg,rgba(227,179,65,.14),transparent);transition:.15s}
+.bonus-link:hover{background:linear-gradient(90deg,rgba(227,179,65,.24),transparent)}
+.bonus-link.active{box-shadow:inset 3px 0 0 var(--gold)}
+.bonus-link .bk{font-size:18px;color:var(--gold);flex:none}
+.bonus-link .bt{font-family:var(--pixel);font-size:11px;color:var(--gold);line-height:1.4}
+.bonus-link .bs{font-size:12px;color:var(--muted);margin-top:2px}
+.unlock-toast{position:fixed;left:50%;bottom:64px;transform:translate(-50%,30px);z-index:60;opacity:0;
+  background:var(--bg);border:1px solid var(--gold);border-left:4px solid var(--gold);border-radius:10px;
+  padding:14px 18px;box-shadow:var(--shadow);max-width:90vw;font-size:14px;color:var(--ink);
+  transition:opacity .4s, transform .4s;text-align:center}
+.unlock-toast.show{opacity:1;transform:translate(-50%,0)}
+.unlock-toast b{color:var(--gold)} .unlock-toast span{color:var(--muted);font-size:13px}
+.unlock-toast a{display:inline-block;margin-top:8px;cursor:pointer;font-weight:600;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -1254,6 +1273,189 @@ CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
 <div class="box try"><span class="h">Final quest</span><p>Pick one capstone upgrade above and ship it this week. Then write a README explaining what it does and how to run it. You're not "learning to code" anymore, you're building.</p></div>
 </div></template>
 
+<template data-id="bonus"><div class="content">
+<p>You did it. Every lesson, every quest, all the way through. This chapter was hidden until now, and it's the most fun thing in the whole book, so let's go out with a bang. We're going to bolt an AI brain onto your server.</p>
+<p>The goal: a chat box where you type plain English like "make it day and stop the rain," and an AI turns that into real server commands and runs them. It's the natural next step after the dashboard you built in Part 3, and it ties together RCON, your backend, and a language model.</p>
+
+<h2>The big picture</h2>
+<p>Here's the whole flow. Nothing magic, just the pieces you already know plus one new one (the model):</p>
+<pre><code class="language-text">You type:  "make it day and clear the weather"
+   │
+   ▼
+Browser chat  ──►  FastAPI  ──►  local AI model  (+ a local copy of the
+                                   │               real command reference)
+                                   │  returns JSON: {command, say}
+                                   ▼
+                            check the command against the reference  (safety!)
+                                   │
+                                   ▼
+                            run it over RCON
+                                   │
+                   result or error fed back into the chat ──► model can retry</code></pre>
+
+<h2>Local or paid API? For this book, local.</h2>
+<p>You can run the AI two ways. A paid cloud API (like the big-name providers) is the easy button, but it needs an account and a credit card, which is a hard no if you're a kid or just don't want a bill. So the default here is a <strong>local model</strong> that runs on your own machine. It's free, it's private, it works offline, and honestly it's more impressive to say you ran your own AI.</p>
+<div class="box note"><span class="h">Honest trade-offs</span><p>Small local models are not as smart as the giant cloud ones. Two things keep them reliable for us: we give the model the real command reference to work from, and we double check its answer before running anything. On a Raspberry Pi or an older laptop, replies take a few seconds. That's fine for an admin console.</p></div>
+
+<h2>1. Install Ollama and pull a model</h2>
+<p>Ollama is the easiest way to run a model locally. On Linux or WSL:</p>
+<pre><code class="language-bash">curl -fsSL https://ollama.com/install.sh | sh</code></pre>
+<p>On a Mac, download the Ollama app from ollama.com instead. Then pull a model that fits your hardware:</p>
+<pre><code class="language-bash"><span class="c"># good default on a normal laptop</span>
+ollama pull qwen2.5:3b
+<span class="c"># safer if RAM is tight</span>
+ollama pull qwen2.5:1.5b
+<span class="c"># tiny, for a Raspberry Pi 5 or an old machine</span>
+ollama pull qwen2.5:0.5b</code></pre>
+<pre><code class="language-bash"><span class="c"># add the python client to your dashboard project</span>
+source .venv/bin/activate
+pip install ollama</code></pre>
+
+<h2>2. Give it the real commands (grounding)</h2>
+<p>Here's the key insight, and it's a good one: a small model is great at understanding language, but I would not trust it to have memorized every Minecraft command and its exact syntax. Left on its own it might invent a command that doesn't exist. The fix is to stop relying on its memory and hand it the real reference instead.</p>
+<p>So we prefetch the commands we want to support into a local file once, store it next to our code, and feed it to the model in the prompt. The model then works from the actual commands, not its guesses. This trick has a name: <strong>grounding</strong>. It's the simple cousin of what people call RAG.</p>
+<p>Save this as <code>commands.json</code>. It's your own copy of the documentation, and you own it, so you can add to it any time:</p>
+<pre><code class="language-json">{
+  <span class="s">"time set"</span>:   { <span class="s">"syntax"</span>: <span class="s">"time set &lt;day|night|noon|midnight|number&gt;"</span>, <span class="s">"example"</span>: <span class="s">"time set day"</span> },
+  <span class="s">"weather"</span>:    { <span class="s">"syntax"</span>: <span class="s">"weather &lt;clear|rain|thunder&gt; [seconds]"</span>,    <span class="s">"example"</span>: <span class="s">"weather clear"</span> },
+  <span class="s">"say"</span>:        { <span class="s">"syntax"</span>: <span class="s">"say &lt;message&gt;"</span>,                          <span class="s">"example"</span>: <span class="s">"say Restarting soon"</span> },
+  <span class="s">"give"</span>:       { <span class="s">"syntax"</span>: <span class="s">"give &lt;player&gt; &lt;item&gt; [count]"</span>,            <span class="s">"example"</span>: <span class="s">"give @a bread 3"</span> },
+  <span class="s">"tp"</span>:         { <span class="s">"syntax"</span>: <span class="s">"tp &lt;player&gt; &lt;target&gt;"</span>,                    <span class="s">"example"</span>: <span class="s">"tp Alex Steve"</span> },
+  <span class="s">"gamemode"</span>:   { <span class="s">"syntax"</span>: <span class="s">"gamemode &lt;survival|creative|adventure|spectator&gt; [player]"</span>, <span class="s">"example"</span>: <span class="s">"gamemode creative Alex"</span> },
+  <span class="s">"difficulty"</span>: { <span class="s">"syntax"</span>: <span class="s">"difficulty &lt;peaceful|easy|normal|hard&gt;"</span>,   <span class="s">"example"</span>: <span class="s">"difficulty normal"</span> }
+}</code></pre>
+<div class="box tip"><span class="h">Where this list comes from</span><p>I seeded it with the common admin commands so you can run right away. The full, official list lives on the Minecraft Wiki's commands page. Whenever you want a new power, copy that command's syntax into this file. The model can only use what's in here, so this one file is both its instruction manual and your safety list.</p></div>
+
+<h2>3. Build the prompt from that file</h2>
+<p>We load <code>commands.json</code>, turn it into a short reference, and put it in the system prompt. We also ask the model to answer in a strict JSON shape so a small model can't wander off: just the <code>command</code> to run and a friendly <code>say</code> line.</p>
+<pre><code class="language-python"><span class="k">import</span> json
+<span class="k">from</span> ollama <span class="k">import</span> chat
+<span class="k">from</span> pydantic <span class="k">import</span> BaseModel
+
+MODEL = <span class="s">"qwen2.5:3b"</span>
+COMMANDS = json.<span class="f">load</span>(<span class="f">open</span>(<span class="s">"commands.json"</span>))
+
+<span class="c"># turn the file into a compact reference the model can read</span>
+REFERENCE = <span class="s">"\n"</span>.<span class="f">join</span>(<span class="s">f"- {name}: {info['syntax']}  (example: {info['example']})"</span>
+                       <span class="k">for</span> name, info <span class="k">in</span> COMMANDS.<span class="f">items</span>())
+
+SYSTEM = {<span class="s">"role"</span>: <span class="s">"system"</span>, <span class="s">"content"</span>: (
+  <span class="s">"You are an admin assistant for a Minecraft server.\n"</span>
+  <span class="s">"You may ONLY use commands from this reference:\n"</span> + REFERENCE +
+  <span class="s">"\nReturn the single exact command to run, with no leading slash. "</span>
+  <span class="s">"If nothing fits, return an empty command and explain in 'say'. "</span>
+  <span class="s">"Always include a short, friendly 'say'."</span>
+)}
+
+SCHEMA = {
+  <span class="s">"type"</span>: <span class="s">"object"</span>,
+  <span class="s">"properties"</span>: {
+    <span class="s">"command"</span>: {<span class="s">"type"</span>: <span class="s">"string"</span>},
+    <span class="s">"say"</span>:     {<span class="s">"type"</span>: <span class="s">"string"</span>},
+  },
+  <span class="s">"required"</span>: [<span class="s">"command"</span>, <span class="s">"say"</span>],
+}</code></pre>
+
+<h2>4. The backend endpoint</h2>
+<p>The model proposes a command, but <strong>your code</strong> decides whether it runs. We check that the command starts with one of the names from <code>commands.json</code>. If it isn't in the reference, we refuse it. That refusal is the most important part of the whole project.</p>
+<pre><code class="language-python"><span class="k">class</span> <span class="f">AiRequest</span>(BaseModel):
+    message: <span class="f">str</span>
+    history: <span class="f">list</span> = []     <span class="c"># prior turns, so it remembers context</span>
+
+<span class="k">def</span> <span class="f">is_allowed</span>(cmd):
+    <span class="k">return</span> <span class="f">bool</span>(cmd) <span class="k">and</span> <span class="f">any</span>(cmd.<span class="f">startswith</span>(name) <span class="k">for</span> name <span class="k">in</span> COMMANDS)
+
+<span class="nd">@app.post</span>(<span class="s">"/api/ai"</span>)
+<span class="k">def</span> <span class="f">ai</span>(req: AiRequest):
+    messages = [SYSTEM] + req.history + [{<span class="s">"role"</span>:<span class="s">"user"</span>,<span class="s">"content"</span>: req.message}]
+    out = <span class="f">chat</span>(model=MODEL, messages=messages, format=SCHEMA)
+    data = json.<span class="f">loads</span>(out.message.content)
+
+    cmd = (data.<span class="f">get</span>(<span class="s">"command"</span>) <span class="k">or</span> <span class="s">""</span>).<span class="f">strip</span>().<span class="f">lstrip</span>(<span class="s">"/"</span>)
+    result = error = <span class="k">None</span>
+    <span class="k">if</span> <span class="f">is_allowed</span>(cmd):
+        <span class="k">try</span>:
+            result = <span class="f">rcon</span>(cmd)            <span class="c"># the helper from lesson 3.5</span>
+        <span class="k">except</span> Exception <span class="k">as</span> e:
+            error = <span class="f">str</span>(e)
+    <span class="k">elif</span> cmd:
+        error = <span class="s">f"'{cmd}' is not in my command reference, so I won't run it."</span>
+    <span class="k">return</span> {<span class="s">"say"</span>: data.<span class="f">get</span>(<span class="s">"say"</span>),
+            <span class="s">"command"</span>: cmd <span class="k">if</span> <span class="f">is_allowed</span>(cmd) <span class="k">else</span> <span class="k">None</span>,
+            <span class="s">"result"</span>: result, <span class="s">"error"</span>: error}</code></pre>
+<div class="box warn"><span class="h">The model never runs commands. You do.</span><p>This is the whole safety story. The model can only suggest a command, and <code>is_allowed</code> only lets through commands that are actually in your reference file. Even if the model goes sideways, the worst it can do is suggest something off the list, and your code throws it away. Never send raw model text straight to RCON.</p></div>
+
+<h2>5. Let it learn from mistakes</h2>
+<p>This is your idea, and it's a good one. When a command fails, hand the error back to the model so it can try again, the same way you would. Because we send <code>history</code> on every call, the conversation remembers what happened. Here's a version that gives the model one automatic retry with the error as a hint:</p>
+<pre><code class="language-python"><span class="k">def</span> <span class="f">ask_with_retry</span>(req: AiRequest):
+    messages = [SYSTEM] + req.history + [{<span class="s">"role"</span>:<span class="s">"user"</span>,<span class="s">"content"</span>: req.message}]
+    last_error = <span class="k">None</span>
+    <span class="k">for</span> attempt <span class="k">in</span> <span class="f">range</span>(<span class="n">2</span>):
+        out = <span class="f">chat</span>(model=MODEL, messages=messages, format=SCHEMA)
+        data = json.<span class="f">loads</span>(out.message.content)
+        cmd = (data.<span class="f">get</span>(<span class="s">"command"</span>) <span class="k">or</span> <span class="s">""</span>).<span class="f">strip</span>().<span class="f">lstrip</span>(<span class="s">"/"</span>)
+        <span class="k">if</span> <span class="k">not</span> <span class="f">is_allowed</span>(cmd):
+            <span class="k">return</span> data, <span class="k">None</span>, last_error
+        <span class="k">try</span>:
+            <span class="k">return</span> data, <span class="f">rcon</span>(cmd), <span class="k">None</span>
+        <span class="k">except</span> Exception <span class="k">as</span> e:
+            last_error = <span class="f">str</span>(e)
+            <span class="c"># feed the failure back in and let it try once more</span>
+            messages.<span class="f">append</span>({<span class="s">"role"</span>:<span class="s">"assistant"</span>,<span class="s">"content"</span>: out.message.content})
+            messages.<span class="f">append</span>({<span class="s">"role"</span>:<span class="s">"user"</span>,
+                <span class="s">"content"</span>: <span class="s">f"That failed with: {last_error}. Try a valid command from the reference."</span>})
+    <span class="k">return</span> data, <span class="k">None</span>, last_error</code></pre>
+
+<h2>6. The chat front end</h2>
+<p>A simple chat box in your <code>static/</code> page. It keeps a running <code>log</code> so context carries between messages:</p>
+<pre><code class="language-html">&lt;div id="chat"&gt;&lt;/div&gt;
+&lt;input id="msg" placeholder="tell the server what to do..."&gt;
+
+&lt;script&gt;
+const log = [];
+const chat = document.getElementById("chat");
+
+function bubble(who, text){
+  const d = document.createElement("div");
+  d.className = "bubble " + who;
+  d.textContent = text;
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function send(text){
+  bubble("you", text);
+  const res = await fetch("/api/ai", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text, history: log })
+  });
+  const d = await res.json();
+  log.push({ role:"user", content:text });
+  log.push({ role:"assistant", content: JSON.stringify(d) });
+  let line = d.say;
+  if (d.command) line += `   (ran: ${d.command})`;
+  if (d.error)   line += `   note: ${d.error}`;
+  bubble("ai", line);
+}
+
+document.getElementById("msg").addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.value.trim()) {
+    send(e.target.value.trim());
+    e.target.value = "";
+  }
+});
+&lt;/script&gt;</code></pre>
+<p>Run Ollama in the background, start your FastAPI app, open the page, and type "make it day and clear the weather." Watch your world change from a sentence.</p>
+
+<div class="box note"><span class="h">If you're an adult and want the easy mode</span><p>You can swap the local model for a paid cloud API. The shape is identical: send the same system prompt with the same reference, ask for the same JSON, and keep the exact same <code>is_allowed</code> check. The only changes are an API key (kept in an environment variable, never in your code) and the cost per call. For kids and for learning, I'd stay local.</p></div>
+
+<h2>Where to go from here</h2>
+<p>You now have an AI that controls a real game server through a reference you prefetched and a safety check you wrote. That same pattern, ground the model in real docs and validate its output, is exactly how serious AI agents work. Make it yours: add commands to <code>commands.json</code>, give the model the live player list so it can teleport people by name, or add a login so only you can use it (see the capstone in 3.9). If your reference ever grows huge, that's when you'd reach for real RAG: store the docs as embeddings and pull in only the relevant lines per request.</p>
+<p>Thanks for going all the way through. Go build something nobody's seen before.</p>
+<div class="box try"><span class="h"></span><p>Wire up <code>commands.json</code>, the endpoint, and the chat box. Try a clear request ("set it to night"), then a vague one ("do something cool") and watch it return an empty command and explain itself. Finally, ask for something not in your reference and confirm <code>is_allowed</code> refuses it. Then add one new command to the file and watch the model start using it, no code change needed.</p></div>
+</div></template>
+
 <script>
 // ----------------- curriculum manifest -----------------
 const PARTS = [
@@ -1319,8 +1521,16 @@ function saveProgress(){ localStorage.setItem(KEY, JSON.stringify([...done])); }
 
 // ----------------- build the sidebar -----------------
 const toc = document.getElementById("toc");
+function allUnlocked(){ return ORDER.every(id=>done.has(id)); }
 function buildToc(){
   toc.innerHTML = "";
+  if(allUnlocked()){
+    const b = document.createElement("div");
+    b.className = "bonus-link" + (current==="bonus"?" active":"");
+    b.innerHTML = '<span class="bk">★</span><div><div class="bt">Secret Chapter</div><div class="bs">The AI Admin Console</div></div>';
+    b.onclick = () => { go("bonus"); if(window.innerWidth<=900) toc.classList.remove("open"); };
+    toc.appendChild(b);
+  }
   PARTS.forEach(p => {
     const part = document.createElement("div"); part.className = "part";
     const head = document.createElement("div"); head.className = "phead";
@@ -1361,6 +1571,9 @@ function renderCover(){
       <span>📈 <b>${pct}%</b> complete</span>
     </div>
     <button class="begin" onclick="go(resumeId())">${done.size? "Resume where you left off ▸":"Begin · Part 0 ▸"}</button>
+    ${allUnlocked()
+      ? `<p style="margin-top:18px;font-size:14px">★ <a onclick="go('bonus')" style="cursor:pointer;color:var(--gold);font-weight:600">Secret Chapter unlocked: The AI Admin Console</a></p>`
+      : `<p style="color:var(--faint);font-family:var(--mono);font-size:12px;margin-top:18px">🔒 Finish all ${TOTAL} lessons to unlock the secret chapter.</p>`}
     <div class="parts-grid">
       ${PARTS.map(p=>`<div class="pcard" onclick="go('${p.lessons[0][0]}')">
         <div class="pn">${p.id}</div><h3>${p.title}</h3><p>${p.sub}</p>
@@ -1370,6 +1583,30 @@ function renderCover(){
   setActive(null); updateXP(); window.scrollTo(0,0);
 }
 
+function renderBonus(){
+  current = "bonus";
+  const tpl = document.querySelector('template[data-id="bonus"]');
+  const last = ORDER[ORDER.length-1];
+  view.innerHTML = `<div class="wrap">
+    <div class="crumb" style="color:var(--gold)">★ Secret Chapter · unlocked</div>
+    <h1 class="title">The AI Admin Console</h1>
+    ${tpl ? tpl.innerHTML : "<div class='content'><p>Coming soon.</p></div>"}
+    <div class="pager">
+      <a onclick="go('${last}')"><div class="dir">◀ Last lesson</div><div class="nm">${META[last].title}</div></a>
+      <a class="nx" onclick="go('cover')"><div class="dir">Home ▶</div><div class="nm">Back to cover</div></a>
+    </div></div>`;
+  addCopyButtons();
+  document.querySelectorAll(".lk").forEach(l=>l.classList.remove("active"));
+  document.querySelector(".bonus-link")?.classList.add("active");
+  window.scrollTo(0,0);
+}
+function celebrateUnlock(){
+  const t = document.createElement("div"); t.className = "unlock-toast";
+  t.innerHTML = '★ Achievement unlocked: <b>Secret Chapter</b><br><span>The AI Admin Console is now at the top of the menu.</span><br><a onclick="go(\'bonus\');this.parentNode.remove()">Open it ▸</a>';
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add("show"));
+  setTimeout(()=>{ t.classList.remove("show"); setTimeout(()=>t.remove(),400); }, 9000);
+}
 function go(id){
   if(id==="cover"){ location.hash=""; renderCover(); return; }
   location.hash = id;
@@ -1413,6 +1650,7 @@ function setActive(id){
   }
 }
 function toggleDone(id){
+  const wasUnlocked = allUnlocked();
   const nowDone = !done.has(id);
   if(nowDone) done.add(id); else done.delete(id);
   saveProgress();
@@ -1426,6 +1664,10 @@ function toggleDone(id){
     }
   }
   updateXP();
+  // reveal or hide the secret chapter when crossing 100%
+  const nowUnlocked = allUnlocked();
+  if(nowUnlocked !== wasUnlocked){ buildToc(); setActive(current); }
+  if(nowUnlocked && !wasUnlocked) celebrateUnlock();
 }
 function resumeId(){
   for(const id of ORDER) if(!done.has(id)) return id;
@@ -1464,6 +1706,7 @@ function addCopyButtons(){
 // ----------------- routing & keys -----------------
 function route(){
   const id = location.hash.replace("#","");
+  if(id==="bonus"){ allUnlocked() ? renderBonus() : renderCover(); return; }
   id && META[id] ? render(id) : renderCover();
 }
 window.addEventListener("hashchange", route);
