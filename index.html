@@ -179,6 +179,21 @@ pre code .nd{color:var(--synA)}
   border:1px solid rgba(31,35,40,.15);border-radius:var(--r);padding:9px 18px;transition:.15s}
 .markbtn:hover{background:var(--grass-bri)}
 .markbtn.done{background:var(--bg);color:var(--grass);border:1px solid var(--line)}
+.markbtn:disabled,.markbtn:disabled:hover{opacity:.45;cursor:not-allowed;background:var(--grass)}
+
+/* in-lesson multiple-choice quiz */
+.quiz{margin:14px 0 2px}
+.quiz .qq{font-weight:600;color:var(--ink);margin:0 0 10px;font-size:15px}
+.quiz .opts{display:flex;flex-direction:column;gap:8px}
+.quiz .opt{text-align:left;cursor:pointer;font-family:var(--sans);font-size:14px;color:var(--ink);
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px 13px;transition:.15s}
+.quiz .opt:hover{border-color:var(--grass)}
+.quiz .opt.correct{border-color:var(--grass-bri);background:var(--grass-dim);color:var(--ink);font-weight:600}
+.quiz .opt.wrong{border-color:var(--red);background:var(--amber-bg)}
+.quiz.solved .opt{cursor:default;pointer-events:none}
+.quiz.solved .opt:not(.correct){opacity:.5}
+.quiz-msg{min-height:18px;margin:10px 0 0;font-size:13px;font-weight:600}
+.quiz-msg.ok{color:var(--grass-bri)} .quiz-msg.no{color:var(--red)}
 
 /* ---------- cover ---------- */
 .cover{padding:60px 40px 160px;max-width:1000px;margin:0 auto}
@@ -411,7 +426,7 @@ docker run --rm hello-world</code></pre>
 <p>That last line pulls a tiny image and runs it. If you see a "Hello from Docker!" message, your whole toolchain is alive.</p>
 <div class="box note"><span class="h">Image vs. container</span><p>An <strong>image</strong> is the blueprint (read-only, e.g. <code>itzg/minecraft-server</code>). A <strong>container</strong> is a running instance of that blueprint. You can start many containers from one image.</p></div>
 <div class="box warn"><span class="h">The engine has to be running</span><p>If <code>docker</code> commands hang or report they can't connect, the engine isn't up. On Windows and Mac that means the Docker Desktop app needs to be open; on Linux or a Raspberry Pi it means starting the service with <code>sudo systemctl start docker</code>.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Run <code>docker run --rm hello-world</code>, then <code>docker ps -a</code> to see the stopped container, then <code>docker image ls</code> to see the downloaded image.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>docker run --rm hello-world</code>, then <code>docker ps -a</code> to see the stopped container, then <code>docker image ls</code> to see the downloaded image.</p></div>
 </div></template>
 
 <template data-id="p0-7"><div class="content">
@@ -440,7 +455,7 @@ docker compose ps           <span class="c"># what's running?</span>
 docker compose logs -f      <span class="c"># follow the logs live (Ctrl+C to stop)</span>
 docker compose down         <span class="c"># stop and remove the containers</span></code></pre>
 <div class="box tip"><span class="h">Volumes are your save game</span><p>Containers are disposable; <strong>volumes</strong> are not. The <code>./minecraft-data:/data</code> line is why your world survives a <code>down</code>/<code>up</code> cycle. Delete the container, fine. Delete the volume folder, you lose the world.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Practice the cycle on something throwaway before building the real server next lesson. Make a scratch folder, write a tiny compose file, and run it through:</p>
+<div class="box try"><span class="h"></span><p>Practice the cycle on something throwaway before building the real server next lesson. Make a scratch folder, write a tiny compose file, and run it through:</p>
 <pre style="margin:8px 0"><code class="language-bash">mkdir -p ~/Dev/compose-test &amp;&amp; cd ~/Dev/compose-test
 printf 'services:\n  hello:\n    image: hashicorp/http-echo\n    command: ["-text=it works"]\n    ports:\n      - "5678:5678"\n' &gt; compose.yml
 docker compose up -d
@@ -487,7 +502,7 @@ docker compose logs -f      <span class="c"># watch it build the world (Ctrl+C s
 <pre><code class="language-bash"><span class="c"># the itzg image ships an rcon client</span>
 docker exec minecraft-fabric rcon-cli time set day
 docker exec minecraft-fabric rcon-cli list</code></pre>
-<div class="box try"><span class="h">Try it</span><p>Run <code>docker exec minecraft-fabric rcon-cli "say Hello from the console"</code>. If a player is online they'll see it. You just controlled the game without touching the game.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>docker exec minecraft-fabric rcon-cli "say Hello from the console"</code>. If a player is online they'll see it. You just controlled the game without touching the game.</p></div>
 </div></template>
 
 <template data-id="p0-9"><div class="content">
@@ -507,62 +522,153 @@ git init
 git add -A
 git commit -m "first commit"</code></pre>
 <div class="box tip"><span class="h">The terminal is home</span><p>Get comfortable with <code>cd</code> (change dir), <code>ls -la</code> (list), <code>cat file</code> (print), <code>mkdir</code>, <code>mv</code>, <code>rm</code>, and <kbd>Tab</kbd> to autocomplete paths. You'll use them every single day.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Run <code>code .</code> inside <code>~/Dev</code>, open a terminal in VS Code (<kbd>Ctrl</kbd>+<kbd>`</kbd>), and confirm it says you're in Linux. You're now fully equipped.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>code .</code> inside <code>~/Dev</code>, open a terminal in VS Code (<kbd>Ctrl</kbd>+<kbd>`</kbd>), and confirm it says you're in Linux. You're now fully equipped.</p></div>
 </div></template>
 
 <!-- ===== PART 1: PYTHON ===== -->
 <template data-id="p1-1"><div class="content">
-<p>Python is the friendliest serious language there is, readable, batteries-included, and everywhere (web backends, scripting, data, automation). It's already on your Ubuntu.</p>
+<p>Python is a great first language. The code reads almost like English, it comes with plenty built in, and it runs everywhere: websites, scripts, data work, and talking to a Minecraft server. This lesson gets you running Python two different ways and writing your first program. No experience assumed. If a step is new, that is fine, just follow along and type the commands yourself.</p>
+
+<h2>Open a terminal</h2>
+<p>Everything here happens in a terminal, the text window from Part 0. On Windows that is your Ubuntu (WSL) window. On a Mac it is the Terminal app. If you skipped the setup, go back to <a onclick="go('p0-2')" style="cursor:pointer">Pick your path</a> and do your platform first.</p>
+<p>Python comes preinstalled on Ubuntu and macOS. Check that it is there:</p>
 <pre><code class="language-bash">python3 --version</code></pre>
-<h2>The REPL: a conversation with Python</h2>
-<p>Type <code>python3</code> and you get an interactive prompt. Try:</p>
+<p>You should see something like <code>Python 3.12.3</code>. The exact numbers do not matter as long as it starts with a 3. If Linux says "command not found," install it:</p>
+<pre><code class="language-bash">sudo apt install -y python3</code></pre>
+<div class="box warn"><span class="h">python vs python3</span><p>On many systems, plain <code>python</code> is missing or points at an ancient version. Type <code>python3</code> everywhere in this book and you will skip a very common beginner headache.</p></div>
+
+<h2>The REPL: talk to Python live</h2>
+<p>The quickest way to try Python is the REPL, an interactive prompt where you type one line and Python answers immediately. Start it:</p>
+<pre><code class="language-bash">python3</code></pre>
+<p>The prompt changes to <code>&gt;&gt;&gt;</code>, which means Python is listening. Type each line below and press enter after it. The lines without <code>&gt;&gt;&gt;</code> are what Python prints back:</p>
 <pre><code class="language-python">&gt;&gt;&gt; <span class="n">2</span> + <span class="n">2</span>
 <span class="n">4</span>
 &gt;&gt;&gt; <span class="f">print</span>(<span class="s">"hello, world"</span>)
 hello, world
 &gt;&gt;&gt; <span class="f">len</span>(<span class="s">"creeper"</span>)
 <span class="n">7</span></code></pre>
-<p>Press <kbd>Ctrl</kbd>+<kbd>D</kbd> to exit. The REPL is where you test ideas instantly.</p>
-<h2>Your first script</h2>
-<p>Create <code>hello.py</code>:</p>
+<p>Three things just happened:</p>
+<ul>
+<li><code>2 + 2</code> is plain math, and the REPL shows the result, <code>4</code>.</li>
+<li><code>print(...)</code> is a <strong>function</strong>, a built-in command that does something. This one shows whatever you put inside the parentheses. The text inside quotes is a <strong>string</strong>, which just means a piece of text.</li>
+<li><code>len(...)</code> is another function. It counts the characters in a string. The word "creeper" has 7 letters.</li>
+</ul>
+<p>To leave the REPL, press <kbd>Ctrl</kbd>+<kbd>D</kbd>, or type <code>exit()</code> and press enter. Reach for the REPL any time you want to test a small idea.</p>
+<div class="box tip"><span class="h">Errors are friendly, read them</span><p>If you type something Python does not understand, it prints a message that ends with the problem, like <code>SyntaxError</code>. That is not a scolding, it is a hint about what to fix. Try <code>print("oops)</code> with a missing closing quote, read what it says, then fix it and run again.</p></div>
+
+<h2>Your first real program: a script</h2>
+<p>The REPL forgets everything once you close it. To keep a program, save it in a file (a <strong>script</strong>) and run that file. Open your projects folder in VS Code:</p>
+<pre><code class="language-bash">cd ~/Dev
+code .</code></pre>
+<p>Make a new file named <code>hello.py</code> (the <code>.py</code> ending marks it as Python) and type this in:</p>
 <pre><code class="language-python"><span class="k">def</span> <span class="f">greet</span>(name):
     <span class="k">return</span> <span class="s">f"Welcome to the server, {name}!"</span>
 
 <span class="k">print</span>(<span class="f">greet</span>(<span class="s">"Steve"</span>))</code></pre>
+<p>Reading it line by line:</p>
+<ul>
+<li><code>def greet(name):</code> creates your own function named <code>greet</code> that accepts one input, here called <code>name</code>.</li>
+<li>The indented line below it (four spaces) is the body of the function. Python uses that indentation to know which lines belong inside. <code>return</code> hands a value back to whoever called the function.</li>
+<li><code>f"..."</code> is an <strong>f-string</strong>. Anything inside the curly braces gets filled in, so <code>{name}</code> turns into the name you passed. The next lesson covers these properly.</li>
+<li>The last line calls <code>greet</code> with <code>"Steve"</code> and prints the result.</li>
+</ul>
+<p>Save the file, then run it from the terminal:</p>
 <pre><code class="language-bash">python3 hello.py</code></pre>
-<div class="box tip"><span class="h">Bonus: you already have a web server</span><p>Run <code>python3 -m http.server 8000</code> in any folder, then open <code>http://localhost:8000</code>. Python just served files over HTTP, a preview of Part 3. (This is also how you can host <em>this book</em>.)</p></div>
-<div class="box try"><span class="h">Try it</span><p>Change <code>greet</code> to also print the length of the name. Run it with three different names.</p></div>
+<p>Output:</p>
+<pre><code class="language-text">Welcome to the server, Steve!</code></pre>
+<div class="box warn"><span class="h">If it says "can't open file"</span><p>Python looks in the folder your terminal is currently in. Run <code>ls</code> to list the files there. If you do not see <code>hello.py</code>, use <code>cd</code> to move into the folder that has it, then run the command again.</p></div>
+
+<div class="box tip"><span class="h">Bonus: you already have a web server</span><p>Run <code>python3 -m http.server 8000</code> in any folder, then open <code>http://localhost:8000</code> in a browser. Python just served files over HTTP, a small preview of Part 3. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop it.</p></div>
+
+<h2>Check yourself</h2>
+<div class="quiz" data-answer="a">
+  <p class="qq">Which command runs a saved Python file named <code>hello.py</code>?</p>
+  <div class="opts">
+    <button class="opt" data-val="a">python3 hello.py</button>
+    <button class="opt" data-val="b">run hello.py</button>
+    <button class="opt" data-val="c">hello.py</button>
+    <button class="opt" data-val="d">python3 run hello</button>
+  </div>
+  <p class="quiz-msg"></p>
+</div>
+
+<div class="box try"><span class="h"></span><p>In <code>hello.py</code>, call <code>greet</code> two more times with different names so it prints three welcomes. Then make the greeting include the length of the name by putting <code>{len(name)}</code> inside the f-string, for example "Welcome, Steve (5 letters)." Run the file after each change and watch the output update.</p></div>
 </div></template>
 
 <template data-id="p1-2"><div class="content">
-<p>A <strong>variable</strong> is a name pointing at a value. Python figures out the type for you.</p>
-<pre><code class="language-python">name    = <span class="s">"Alex"</span>        <span class="c"># str</span>
-health  = <span class="n">20</span>            <span class="c"># int</span>
-speed   = <span class="n">4.3</span>           <span class="c"># float</span>
-is_op   = <span class="k">True</span>          <span class="c"># bool</span>
-nothing = <span class="k">None</span>          <span class="c"># the absence of a value</span></code></pre>
-<h2>Strings are powerful</h2>
+<p>Programs need to remember things: a player's name, how much health they have, where they are standing. You store those with <strong>variables</strong>. This lesson covers variables, the basic kinds of values Python has, and the two you will use most, text and numbers.</p>
+
+<h2>Variables: names for values</h2>
+<p>A variable is a name that points at a value. You create one with a single <code>=</code>, which means "store the value on the right under the name on the left."</p>
+<pre><code class="language-python">name    = <span class="s">"Alex"</span>        <span class="c"># text (a string)</span>
+health  = <span class="n">20</span>            <span class="c"># a whole number (an int)</span>
+speed   = <span class="n">6.7</span>           <span class="c"># a number with a decimal (a float)</span>
+is_op   = <span class="k">True</span>          <span class="c"># True or False (a bool)</span>
+nothing = <span class="k">None</span>          <span class="c"># "no value yet" (None)</span></code></pre>
+<p>After this, typing <code>health</code> gives you <code>20</code>. You did not tell Python which kind of value each one is. It figures that out from what you assigned. Those five kinds (<strong>str</strong>, <strong>int</strong>, <strong>float</strong>, <strong>bool</strong>, <strong>None</strong>) cover most of what you will start with.</p>
+<p>Variables can change. Assign again and the name points at the new value:</p>
+<pre><code class="language-python">health = <span class="n">20</span>
+health = health <span class="o">-</span> <span class="n">5</span>     <span class="c"># now 15</span>
+<span class="k">print</span>(health)         <span class="c"># 15</span></code></pre>
+<div class="box tip"><span class="h">Naming rules</span><p>Use lowercase words joined by underscores, like <code>player_name</code>. Names can contain letters, numbers, and underscores, but cannot start with a number. Names are case sensitive, so <code>Health</code> and <code>health</code> are different. Pick clear names. <code>health</code> beats <code>h</code> every time.</p></div>
+
+<h2>Text: strings</h2>
+<p>A string is text wrapped in quotes. Single or double quotes both work, just be consistent. You can join strings, repeat them, and measure them:</p>
+<pre><code class="language-python">first = <span class="s">"Steve"</span>
+greeting = <span class="s">"hi "</span> + first      <span class="c"># "hi Steve"  (joining is called concatenation)</span>
+line = <span class="s">"="</span> * <span class="n">10</span>             <span class="c"># "==========" (repeat 10 times)</span>
+<span class="k">print</span>(<span class="f">len</span>(first))           <span class="c"># 5</span></code></pre>
+<p>Strings come with handy built-in actions called <strong>methods</strong>, which you call with a dot:</p>
 <pre><code class="language-python">player = <span class="s">"notch"</span>
 <span class="k">print</span>(player.<span class="f">upper</span>())          <span class="c"># NOTCH</span>
 <span class="k">print</span>(player.<span class="f">capitalize</span>())     <span class="c"># Notch</span>
-<span class="k">print</span>(<span class="s">"creep"</span> <span class="k">in</span> <span class="s">"creeper"</span>)    <span class="c"># True</span>
-
-<span class="c"># f-strings: embed values directly</span>
+<span class="k">print</span>(<span class="s">"creep"</span> <span class="k">in</span> <span class="s">"creeper"</span>)    <span class="c"># True  (is one inside the other?)</span></code></pre>
+<h3>f-strings: the clean way to build text</h3>
+<p>Putting an <code>f</code> right before the opening quote lets you drop values straight into the text using curly braces. This is the way you will format almost everything:</p>
+<pre><code class="language-python">player = <span class="s">"notch"</span>
 coords = (<span class="n">100</span>, <span class="n">64</span>, <span class="o">-</span><span class="n">200</span>)
-<span class="k">print</span>(<span class="s">f"Teleporting {player} to {coords}"</span>)</code></pre>
-<h2>Numbers &amp; conversion</h2>
+<span class="k">print</span>(<span class="s">f"Teleporting {player} to {coords}"</span>)
+<span class="c"># Teleporting notch to (100, 64, -200)</span></code></pre>
+<p>You can even put math inside the braces: <code>f"Half health is {health / 2}"</code>.</p>
+
+<h2>Numbers: int and float</h2>
+<p>Whole numbers are <strong>int</strong>, numbers with a decimal point are <strong>float</strong>. The usual math works, plus a few that are very handy in games:</p>
 <pre><code class="language-python">ticks = <span class="n">24000</span>
-seconds = ticks / <span class="n">20</span>            <span class="c"># 1200.0  (float division)</span>
-whole   = ticks // <span class="n">20</span>           <span class="c"># 1200    (integer division)</span>
-text    = <span class="f">str</span>(ticks)            <span class="c"># "24000"</span>
-back    = <span class="f">int</span>(<span class="s">"24000"</span>)         <span class="c"># 24000</span></code></pre>
-<div class="box try"><span class="h">Try it</span><p>Given <code>day_ticks = 24000</code>, compute and print how many real-world minutes a Minecraft day lasts (a day is 20 minutes). Use an f-string in your answer.</p></div>
+seconds = ticks / <span class="n">20</span>            <span class="c"># 1200.0   normal division, always a float</span>
+whole   = ticks // <span class="n">20</span>           <span class="c"># 1200     floor division, drops the decimal</span>
+left    = <span class="n">7</span> % <span class="n">3</span>                <span class="c"># 1        remainder (modulo)</span>
+power   = <span class="n">2</span> ** <span class="n">10</span>              <span class="c"># 1024     2 to the 10th</span></code></pre>
+<p><code>%</code> (modulo) gives the remainder, which is perfect for "every Nth time" checks later. <code>//</code> throws away the fractional part.</p>
+
+<h2>Converting between text and numbers</h2>
+<p>This trips up every beginner once, so here it is up front. A number typed by a user arrives as <em>text</em>, and Python will not add text to a number:</p>
+<pre><code class="language-python">age = <span class="s">"12"</span>            <span class="c"># this is text, not a number</span>
+age + <span class="n">1</span>               <span class="c"># TypeError: can only concatenate str to str</span></code></pre>
+<p>Convert first with <code>int(...)</code>, <code>float(...)</code>, or <code>str(...)</code>:</p>
+<pre><code class="language-python">age = <span class="f">int</span>(<span class="s">"12"</span>)        <span class="c"># the number 12</span>
+<span class="k">print</span>(age + <span class="n">1</span>)         <span class="c"># 13</span>
+label = <span class="s">"HP: "</span> + <span class="f">str</span>(<span class="n">20</span>)  <span class="c"># "HP: 20"  (number turned into text)</span></code></pre>
+
+<h2>Check yourself</h2>
+<p>A Minecraft day is 24000 ticks, and the game runs 20 ticks per second. Work out how many real-world minutes one day lasts (ticks to seconds, then seconds to minutes), then pick your answer.</p>
+<div class="quiz" data-answer="20">
+  <p class="qq">How many real-world minutes does one Minecraft day last?</p>
+  <div class="opts">
+    <button class="opt" data-val="12">12 minutes</button>
+    <button class="opt" data-val="20">20 minutes</button>
+    <button class="opt" data-val="60">60 minutes</button>
+    <button class="opt" data-val="1200">1200 minutes</button>
+  </div>
+  <p class="quiz-msg"></p>
+</div>
+
+<div class="box try"><span class="h"></span><p>Make a file <code>player.py</code> with variables for a player's <code>name</code>, <code>health</code>, and <code>x</code>, <code>y</code>, <code>z</code> position. Print one f-string line that reads like "Alex has 20 HP at (100, 64, -200)." Then subtract 5 from health and print it again to confirm the variable changed.</p></div>
 </div></template>
 
 <template data-id="p1-3"><div class="content">
 <p>Programs make decisions and repeat work. Python uses <strong>indentation</strong> (4 spaces) to define blocks, no curly braces.</p>
 <h2>if / elif / else</h2>
-<pre><code class="language-python">hp = <span class="n">6</span>
+<pre><code class="language-python">hp = <span class="n">20</span>
 <span class="k">if</span> hp &lt;= <span class="n">0</span>:
     <span class="k">print</span>(<span class="s">"You died."</span>)
 <span class="k">elif</span> hp &lt; <span class="n">8</span>:
@@ -585,7 +691,7 @@ fuel = <span class="n">5</span>
     <span class="k">print</span>(<span class="s">f"Smelting... {fuel} fuel left"</span>)
     fuel <span class="o">-</span>= <span class="n">1</span></code></pre>
 <div class="box note"><span class="h">break &amp; continue</span><p><code>break</code> exits a loop early; <code>continue</code> skips to the next iteration. Both are essential for real logic.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Loop over <code>range(1, 21)</code> and print "FizzBuzz" rules: multiples of 3 → "Fizz", of 5 → "Buzz", both → "FizzBuzz", else the number. The classic.</p></div>
+<div class="box try"><span class="h"></span><p>Loop over <code>range(1, 21)</code> and print "FizzBuzz" rules: multiples of 3 → "Fizz", of 5 → "Buzz", both → "FizzBuzz", else the number. The classic.</p></div>
 </div></template>
 
 <template data-id="p1-4"><div class="content">
@@ -607,7 +713,7 @@ player[<span class="s">"gamemode"</span>] = <span class="s">"survival"</span>  <
 <pre><code class="language-python">spawn = (<span class="n">0</span>, <span class="n">64</span>, <span class="n">0</span>)         <span class="c"># tuple: fixed, ordered (great for coords)</span>
 online = {<span class="s">"alex"</span>, <span class="s">"steve"</span>}   <span class="c"># set: unique, unordered</span>
 online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span class="c"># still just two, no duplicates</span></code></pre>
-<div class="box try"><span class="h">Try it</span><p>Build a dict mapping mob names to their health. Loop over it and print only mobs with more than 20 HP. Then add the mob names to a set and print how many unique mobs you have.</p></div>
+<div class="box try"><span class="h"></span><p>Build a dict mapping mob names to their health. Loop over it and print only mobs with more than 20 HP. Then add the mob names to a set and print how many unique mobs you have.</p></div>
 </div></template>
 
 <template data-id="p1-5"><div class="content">
@@ -622,7 +728,7 @@ online.<span class="f">add</span>(<span class="s">"alex"</span>)          <span 
 <span class="k">print</span>(<span class="f">ticks_for_time</span>(<span class="n">18</span>, <span class="n">30</span>))   <span class="c"># sunset-ish</span></code></pre>
 <p>This is the <em>exact</em> math your time-sync mod uses, Python is a perfect place to prototype mod logic before writing Java.</p>
 <div class="box note"><span class="h">Default &amp; keyword arguments</span><p><code>minute=0</code> is a default. Call <code>ticks_for_time(hour=9, minute=15)</code> with keywords for readability. Functions that do one thing and return a value are easy to test and reuse.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Write <code>damage(hp, amount)</code> that returns the new HP but never below 0 (use <code>max()</code>). Then write <code>heal(hp, amount)</code> capped at 20 (use <code>min()</code>). Chain them.</p></div>
+<div class="box try"><span class="h"></span><p>Write <code>damage(hp, amount)</code> that returns the new HP but never below 0 (use <code>max()</code>). Then write <code>heal(hp, amount)</code> capped at 20 (use <code>min()</code>). Chain them.</p></div>
 </div></template>
 
 <template data-id="p1-6"><div class="content">
@@ -652,7 +758,7 @@ config = {<span class="s">"timezone"</span>: <span class="s">"America/Los_Angele
     hp = <span class="f">int</span>(<span class="f">input</span>(<span class="s">"HP? "</span>))
 <span class="k">except</span> ValueError:
     <span class="k">print</span>(<span class="s">"That wasn't a number."</span>)</code></pre>
-<div class="box try"><span class="h">Try it</span><p>Write a script that loads <code>config.json</code>, but if the file is missing (<code>FileNotFoundError</code>), creates it with defaults instead of crashing. This is exactly what your mod's config loader does.</p></div>
+<div class="box try"><span class="h"></span><p>Write a script that loads <code>config.json</code>, but if the file is missing (<code>FileNotFoundError</code>), creates it with defaults instead of crashing. This is exactly what your mod's config loader does.</p></div>
 </div></template>
 
 <template data-id="p1-7"><div class="content">
@@ -675,7 +781,7 @@ deactivate                     <span class="c"># leave it</span></code></pre>
 <h2>Pin your dependencies</h2>
 <pre><code class="language-bash">pip freeze &gt; requirements.txt   <span class="c"># record exact versions</span>
 pip install -r requirements.txt <span class="c"># reproduce anywhere</span></code></pre>
-<div class="box try"><span class="h">Try it</span><p>Make a project folder, create a venv, <code>pip install requests</code>, write <code>requirements.txt</code>, and confirm <code>requests</code> imports. You'll use it next to call APIs.</p></div>
+<div class="box try"><span class="h"></span><p>Make a project folder, create a venv, <code>pip install requests</code>, write <code>requirements.txt</code>, and confirm <code>requests</code> imports. You'll use it next to call APIs.</p></div>
 </div></template>
 
 <template data-id="p1-8"><div class="content">
@@ -700,7 +806,7 @@ alex.<span class="f">take_damage</span>(<span class="n">5</span>)
     <span class="k">def</span> <span class="f">take_damage</span>(self, amount):
         <span class="k">return</span> self.hp        <span class="c"># admins are invincible</span></code></pre>
 <div class="box note"><span class="h">self</span><p><code>self</code> is the object the method is called on. You never pass it explicitly, Python does. <code>__init__</code> is the constructor, run when you create the object.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Add an <code>Inventory</code> class with <code>add(item)</code>, <code>remove(item)</code>, and a <code>__len__</code> method so <code>len(inv)</code> works. Give your <code>Player</code> an inventory attribute.</p></div>
+<div class="box try"><span class="h"></span><p>Add an <code>Inventory</code> class with <code>add(item)</code>, <code>remove(item)</code>, and a <code>__len__</code> method so <code>len(inv)</code> works. Give your <code>Player</code> an inventory attribute.</p></div>
 </div></template>
 
 <template data-id="p1-9"><div class="content">
@@ -723,7 +829,7 @@ lookup  = {p: <span class="f">len</span>(p) <span class="k">for</span> p <span c
     <span class="k">return</span> <span class="f">min</span>(<span class="n">20</span>, hp + amount)</code></pre>
 <p>Hints don't change runtime behavior, but editors and tools (like <code>mypy</code>) use them to catch bugs. FastAPI in Part 3 uses them to validate API requests automatically.</p>
 <div class="box note"><span class="h">Decorators</span><p>A <code>@decorator</code> wraps a function to add behavior. You'll meet them in FastAPI (<code>@app.get("/")</code>), just know that <code>@thing</code> above a function transforms it.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Rewrite a loop that filters online admins from a player list as a single list comprehension. Add type hints to one of your earlier functions.</p></div>
+<div class="box try"><span class="h"></span><p>Rewrite a loop that filters online admins from a player list as a single list comprehension. Add type hints to one of your earlier functions.</p></div>
 </div></template>
 
 <template data-id="p1-10"><div class="content">
@@ -748,7 +854,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
     names = resp.<span class="f">split</span>(<span class="s">":"</span>, <span class="n">1</span>)[<span class="n">1</span>].<span class="f">strip</span>()
     <span class="k">return</span> [n.<span class="f">strip</span>() <span class="k">for</span> n <span class="k">in</span> names.<span class="f">split</span>(<span class="s">","</span>) <span class="k">if</span> n.<span class="f">strip</span>()]</code></pre>
 <div class="box warn"><span class="h">Secrets don't belong in code</span><p>Hard-coding the RCON password is fine for learning, but in real apps read it from an environment variable: <code>os.environ["RCON_PASSWORD"]</code>. Part 3 does this properly.</p>
-<div class="box try"><span class="h">Try it</span><p>Write a script that connects, lists online players using <code>online_players()</code>, and gives each of them a loaf of bread with <code>mcr.command(f"give {name} bread")</code>. You just wrote your first automation.</p></div>
+<div class="box try"><span class="h"></span><p>Write a script that connects, lists online players using <code>online_players()</code>, and gives each of them a loaf of bread with <code>mcr.command(f"give {name} bread")</code>. You just wrote your first automation.</p></div>
 </div></template>
 
 <!-- ===== PART 2: MINECRAFT ===== -->
@@ -763,7 +869,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 <h2>Mappings: why versions matter</h2>
 <p>Minecraft ships <em>obfuscated</em> (class/method names scrambled). <strong>Mappings</strong> translate those into readable names. Because the scrambling differs per version, <strong>a mod must be built against the exact MC version it runs on</strong>, which is why your server is pinned to 1.21.11.</p>
 <div class="box note"><span class="h">The toolchain</span><p><strong>Gradle</strong> builds the project. <strong>Loom</strong> is the Gradle plugin that fetches Minecraft + mappings. <strong>Fabric API</strong> provides the hooks (events, registries) your mod uses. <strong>Fabric Loader</strong> loads everything at runtime.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Open your two mod projects in <code>~/Dev</code>. Find the <code>"environment"</code> field in each <code>fabric.mod.json</code>. One says <code>server</code>, one says <code>client</code>. Now you know why.</p></div>
+<div class="box try"><span class="h"></span><p>Open your two mod projects in <code>~/Dev</code>. Find the <code>"environment"</code> field in each <code>fabric.mod.json</code>. One says <code>server</code>, one says <code>client</code>. Now you know why.</p></div>
 </div></template>
 
 <template data-id="p2-2"><div class="content">
@@ -795,7 +901,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 <p>The <strong>entrypoint</strong> tells Fabric which class to run and when. <code>server</code> for dedicated-server mods, <code>client</code> for client mods, <code>main</code> for both.</p>
 <div class="box tip"><span class="h">No JDK? Build in Docker</span><p>You've been doing this already:</p><pre style="margin:8px 0"><code class="language-bash">docker run --rm -v "$PWD":/work -w /work \
   eclipse-temurin:21-jdk ./gradlew --no-daemon build</code></pre><p>The jar lands in <code>build/libs/</code>.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Open <code>realtime-time-sync/gradle.properties</code> and identify the four pinned versions (Minecraft, loader, Fabric API, your mod). This file is where you'd bump versions later.</p></div>
+<div class="box try"><span class="h"></span><p>Open <code>realtime-time-sync/gradle.properties</code> and identify the four pinned versions (Minecraft, loader, Fabric API, your mod). This file is where you'd bump versions later.</p></div>
 </div></template>
 
 <template data-id="p2-3"><div class="content">
@@ -829,7 +935,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 <li>The lambda runs every tick. Counting to 20 throttles work to once a second.</li>
 </ul>
 <div class="box note"><span class="h">Java vs. Python</span><p>Java is <em>statically typed</em> and verbose (types everywhere, semicolons, braces). The upside: the compiler catches whole classes of bugs before the game ever runs. Your Python instincts transfer, it's the same logic, more ceremony.</p></div>
-<div class="box try"><span class="h">Try it</span><p>In your time-sync project, find the real <code>currentDayTimeTicks()</code> method and compare it to the Python <code>ticks_for_time()</code> you wrote in Part 1. Same math, two languages.</p></div>
+<div class="box try"><span class="h"></span><p>In your time-sync project, find the real <code>currentDayTimeTicks()</code> method and compare it to the Python <code>ticks_for_time()</code> you wrote in Part 1. Same math, two languages.</p></div>
 </div></template>
 
 <template data-id="p2-4"><div class="content">
@@ -849,7 +955,7 @@ ServerPlayConnectionEvents.JOIN.<span class="f">register</span>((handler, sender
     player.<span class="f">sendSystemMessage</span>(Component.<span class="f">literal</span>(<span class="s">"Welcome back!"</span>));
 });</code></pre>
 <div class="box tip"><span class="h">Discovering events</span><p>Fabric API groups events by area: <code>ServerTickEvents</code>, <code>ServerLifecycleEvents</code>, <code>ServerPlayConnectionEvents</code>, <code>AttackBlockCallback</code>, and many more. In VS Code, type the class name and let autocomplete show you what's available.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Sketch (on paper or in comments) which event you'd use for: a daily reward at midnight, a welcome message on join, and a "no PvP" rule. You're learning to think in events.</p></div>
+<div class="box try"><span class="h"></span><p>Sketch (on paper or in comments) which event you'd use for: a daily reward at midnight, a welcome message on join, and a "no PvP" rule. You're learning to think in events.</p></div>
 </div></template>
 
 <template data-id="p2-5"><div class="content">
@@ -874,7 +980,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
     );
 });</code></pre>
 <p>Now <code>/heal</code> works in-game. Commands use Brigadier, Mojang's command framework.</p>
-<div class="box try"><span class="h">Try it</span><p>Design a <code>/spawnpoint here</code> command in pseudocode: which event registers it, what the source gives you, and what method sets the spawn. Then look up the real method names with the next lesson's technique.</p></div>
+<div class="box try"><span class="h"></span><p>Design a <code>/spawnpoint here</code> command in pseudocode: which event registers it, what the source gives you, and what method sets the spawn. Then look up the real method names with the next lesson's technique.</p></div>
 </div></template>
 
 <template data-id="p2-6"><div class="content">
@@ -903,7 +1009,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 <li>While on, force the <strong>forward key</strong> down, the game thinks you're holding W.</li>
 </ol>
 <div class="box note"><span class="h">Same skeleton, different entrypoint</span><p><code>ClientModInitializer</code> + <code>"environment": "client"</code>. Everything you learned about server mods applies; only the APIs (keybinds, options) are client-only.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Extend the idea: also hold <code>client.options.keySprint</code> so it's auto-<em>sprint</em>. One line. Rebuild and drop it in your client's mods folder.</p></div>
+<div class="box try"><span class="h"></span><p>Extend the idea: also hold <code>client.options.keySprint</code> so it's auto-<em>sprint</em>. One line. Rebuild and drop it in your client's mods folder.</p></div>
 </div></template>
 
 <template data-id="p2-7"><div class="content">
@@ -919,7 +1025,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 <p>You list mixins in a <code>mymod.mixins.json</code> file and reference it from <code>fabric.mod.json</code>. Common injection points: <code>@At("HEAD")</code> (before the method), <code>@At("RETURN")</code> (after), and <code>@Inject(... cancellable = true)</code> to <em>cancel</em> vanilla behavior.</p>
 <div class="box warn"><span class="h">Use sparingly</span><p>Mixins touch internal code that can change between versions and can conflict with other mods. <strong>Always prefer a Fabric API event if one exists.</strong> Reach for a mixin only when there's no other hook.</p></div>
 <div class="box note"><span class="h">When you'd need one</span><p>Changing mob AI, altering damage calculations, injecting into the render pipeline, tweaking world generation, places vanilla offers no event.</p></div>
-<div class="box try"><span class="h">Try it</span><p>You don't have to write one yet. Instead, browse a popular open-source Fabric mod on GitHub and find its <code>mixins</code> folder. Read one mixin and identify the target class, method, and injection point.</p></div>
+<div class="box try"><span class="h"></span><p>You don't have to write one yet. Instead, browse a popular open-source Fabric mod on GitHub and find its <code>mixins</code> folder. Read one mixin and identify the target class, method, and injection point.</p></div>
 </div></template>
 
 <template data-id="p2-8"><div class="content">
@@ -935,7 +1041,7 @@ docker run --rm -v "$JAR":/mc.jar eclipse-temurin:21-jdk bash -c '
 <pre><code class="language-text">public void setDayTime(long);</code></pre>
 <p>Now you <em>know</em> the exact method signature, no guessing, no failed builds.</p>
 <div class="box tip"><span class="h">Verify before you write</span><p>When porting to a new Minecraft version, <code>javap</code> the classes you touch first. Five minutes of inspection saves an hour of cryptic compile errors. This is a pro workflow most tutorials never teach.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Use the technique to confirm <code>net.minecraft.client.Options</code> really has a public <code>keyUp</code> field. Grep for <code>KeyMapping key</code> and you'll see all the movement keys.</p></div>
+<div class="box try"><span class="h"></span><p>Use the technique to confirm <code>net.minecraft.client.Options</code> really has a public <code>keyUp</code> field. Grep for <code>KeyMapping key</code> and you'll see all the movement keys.</p></div>
 </div></template>
 
 <!-- ===== PART 3: FULL STACK ===== -->
@@ -955,7 +1061,7 @@ docker run --rm -v "$JAR":/mc.jar eclipse-temurin:21-jdk bash -c '
 <li><strong>200</strong> OK, <strong>404</strong> not found, <strong>500</strong> server error, <strong>401</strong> unauthorized.</li>
 </ul>
 <div class="box note"><span class="h">The architecture you'll build</span><p>A FastAPI backend (Python) exposes <code>/api/status</code>. It talks to Minecraft over RCON. A frontend (HTML/CSS/JS) fetches that endpoint and renders live server stats. All of it runs in Docker Compose next to the game.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Open your browser's DevTools (<kbd>F12</kbd>) → Network tab, reload any site, and watch the requests fly. Click one and read its request/response headers. This is the whole web, visible.</p></div>
+<div class="box try"><span class="h"></span><p>Open your browser's DevTools (<kbd>F12</kbd>) → Network tab, reload any site, and watch the requests fly. Click one and read its request/response headers. This is the whole web, visible.</p></div>
 </div></template>
 
 <template data-id="p3-2"><div class="content">
@@ -978,7 +1084,7 @@ docker run --rm -v "$JAR":/mc.jar eclipse-temurin:21-jdk bash -c '
 <span class="f">#count</span> { color: <span class="s">#5fcf80</span>; font-weight: bold; } <span class="c">/* id selector */</span>
 <span class="f">button:hover</span> { background: <span class="s">#5fcf80</span>; }   <span class="c">/* state */</span></code></pre>
 <div class="box tip"><span class="h">The box model</span><p>Every element is a box: <strong>content</strong> → <strong>padding</strong> → <strong>border</strong> → <strong>margin</strong>. Layout today is mostly <strong>flexbox</strong> (<code>display:flex</code>) and <strong>grid</strong> (<code>display:grid</code>). This very page uses both.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Save that HTML to <code>dashboard.html</code>, open it in your browser, then add CSS to center the heading and give the button rounded corners (<code>border-radius</code>). Reload to see changes.</p></div>
+<div class="box try"><span class="h"></span><p>Save that HTML to <code>dashboard.html</code>, open it in your browser, then add CSS to center the heading and give the button rounded corners (<code>border-radius</code>). Reload to see changes.</p></div>
 </div></template>
 
 <template data-id="p3-3"><div class="content">
@@ -999,7 +1105,7 @@ button.<span class="f">addEventListener</span>(<span class="s">"click"</span>, (
 <span class="f">loadStatus</span>();
 <span class="f">setInterval</span>(loadStatus, <span class="n">5000</span>);             <span class="c">// refresh every 5s</span></code></pre>
 <div class="box note"><span class="h">async / await</span><p>Network calls take time. <code>await</code> pauses until the response arrives without freezing the page. It's the JS cousin of waiting for a server reply, you'll see the same shape in Python.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Without a backend yet, fake it: <code>const data = {online: 3}</code> instead of fetching, and wire the button to display it. You'll swap in the real <code>fetch</code> in lesson 3.6.</p></div>
+<div class="box try"><span class="h"></span><p>Without a backend yet, fake it: <code>const data = {online: 3}</code> instead of fetching, and wire the button to display it. You'll swap in the real <code>fetch</code> in lesson 3.6.</p></div>
 </div></template>
 
 <template data-id="p3-4"><div class="content">
@@ -1022,7 +1128,7 @@ app = <span class="f">FastAPI</span>()
 <pre><code class="language-bash">fastapi dev main.py     <span class="c"># runs at http://localhost:8000</span></code></pre>
 <p>Visit <code>http://localhost:8000/api/health</code> → JSON. Visit <code>/docs</code> → interactive API docs FastAPI built for you, free.</p>
 <div class="box note"><span class="h">That @app.get is a decorator</span><p>Remember decorators from Part 1? <code>@app.get("/api/health")</code> wraps your function so FastAPI calls it whenever someone GETs that URL. The function's return value becomes JSON automatically.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Add a <code>GET /api/add/{a}/{b}</code> endpoint that returns their sum. Type-hint <code>a: int, b: int</code> and watch FastAPI reject <code>/api/add/x/2</code> with a clean 422 error, validation for free.</p></div>
+<div class="box try"><span class="h"></span><p>Add a <code>GET /api/add/{a}/{b}</code> endpoint that returns their sum. Type-hint <code>a: int, b: int</code> and watch FastAPI reject <code>/api/add/x/2</code> with a clean 422 error, validation for free.</p></div>
 </div></template>
 
 <template data-id="p3-5"><div class="content">
@@ -1052,7 +1158,7 @@ RCON_PASS = os.<span class="f">getenv</span>(<span class="s">"RCON_PASSWORD"</sp
     <span class="k">return</span> {<span class="s">"online"</span>: <span class="f">len</span>(players), <span class="s">"players"</span>: players}</code></pre>
 <div class="box warn"><span class="h">Secrets via environment</span><p>Notice <code>os.getenv("RCON_PASSWORD")</code>, the password comes from the environment, not the source. In Compose you'll pass it in, and it never touches git.</p></div>
 <div class="box tip"><span class="h">CORS</span><p>If your frontend is served from a different origin than the API, browsers block the request. Add FastAPI's <code>CORSMiddleware</code>, or, simpler, serve the frontend from the same FastAPI app (next lesson).</p></div>
-<div class="box try"><span class="h">Try it</span><p>Run <code>RCON_PASSWORD=... fastapi dev main.py</code> and hit <code>/api/status</code> while you're logged into the game. See your own name come back as JSON.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>RCON_PASSWORD=... fastapi dev main.py</code> and hit <code>/api/status</code> while you're logged into the game. See your own name come back as JSON.</p></div>
 </div></template>
 
 <template data-id="p3-6"><div class="content">
@@ -1216,7 +1322,7 @@ ALLOWED = {
 RCON_PASSWORD=your-rcon-password fastapi dev main.py</code></pre>
 <p>Open <code>http://localhost:8000</code>. The badge turns green, your name appears when you log in, and the buttons change the sky in your world. Now stop the Minecraft container, within four seconds the badge flips red on its own. That's your error handling, working.</p>
 <div class="box tip"><span class="h">Why polling, and what beats it</span><p>Re-fetching every 4 s is simple and totally fine here. For instant updates without the steady stream of requests, <strong>WebSockets</strong> let the server <em>push</em> changes the moment they happen, the upgrade waiting for you in the capstone (3.9).</p></div>
-<div class="box try"><span class="h">Try it</span><p>Ship a feature across the whole stack: add <code>"rain": "weather rain"</code> to <code>ALLOWED</code> <em>and</em> a <code>&lt;button data-cmd="rain"&gt;</code> to the HTML. Then break it on purpose, stop the server and confirm the badge goes red and the toast reads "request failed." Handling failure is half of real engineering.</p></div>
+<div class="box try"><span class="h"></span><p>Ship a feature across the whole stack: add <code>"rain": "weather rain"</code> to <code>ALLOWED</code> <em>and</em> a <code>&lt;button data-cmd="rain"&gt;</code> to the HTML. Then break it on purpose, stop the server and confirm the badge goes red and the toast reads "request failed." Handling failure is half of real engineering.</p></div>
 </div></template>
 
 <template data-id="p3-7"><div class="content">
@@ -1238,7 +1344,7 @@ con.<span class="f">commit</span>()
 <div class="box warn"><span class="h">Always use parameters</span><p>Pass values as <code>(?)</code> placeholders, never by string-building SQL. Concatenating user input into SQL is how <strong>SQL injection</strong> attacks happen.</p></div>
 <h2>The leap to Postgres</h2>
 <p>Same SQL, but a networked server that many clients can hit at once. You run it as, what else, a Docker service. An <strong>ORM</strong> like SQLAlchemy lets you work with Python objects instead of raw SQL once tables get complex.</p>
-<div class="box try"><span class="h">Try it</span><p>In your dashboard's <code>/api/status</code>, log each seen player into SQLite. Add a <code>GET /api/leaderboard</code> that returns login counts per player, ordered. Render it on the page.</p></div>
+<div class="box try"><span class="h"></span><p>In your dashboard's <code>/api/status</code>, log each seen player into SQLite. Add a <code>GET /api/leaderboard</code> that returns login counts per player, ordered. Render it on the page.</p></div>
 </div></template>
 
 <template data-id="p3-8"><div class="content">
@@ -1267,7 +1373,7 @@ RUN pip install -r requirements.txt
 COPY . .
 CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
 <div class="box note"><span class="h">You've come full circle</span><p>The Docker/Compose skills from Part 0 now deploy software <em>you wrote</em>. This is real deployment, the same pattern scales to a cloud VM.</p></div>
-<div class="box try"><span class="h">Try it</span><p>Write the Dockerfile, add the service, run <code>docker compose up -d --build</code>, and load the dashboard. Your whole stack now starts with one command.</p></div>
+<div class="box try"><span class="h"></span><p>Write the Dockerfile, add the service, run <code>docker compose up -d --build</code>, and load the dashboard. Your whole stack now starts with one command.</p></div>
 </div></template>
 
 <template data-id="p3-9"><div class="content">
@@ -1292,7 +1398,7 @@ CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
 </ol>
 <div class="box tip"><span class="h">The meta-skill</span><p>You already practiced the thing senior engineers do that juniors don't: <strong>verify against the source of truth</strong> (you decompiled jars instead of trusting tutorials). Apply that everywhere, read the docs, read the code, test your assumptions.</p></div>
 <div class="box note"><span class="h">Build in public</span><p>Push every project to GitHub with a clear README. Your Minecraft dashboard, your two mods, your scripts, that's a portfolio that tells a story. Employers hire the story.</p></div>
-<div class="box try"><span class="h">Final quest</span><p>Pick one capstone upgrade above and ship it this week. Then write a README explaining what it does and how to run it. You're not "learning to code" anymore, you're building.</p></div>
+<div class="box try"><span class="h"></span><p>Pick one capstone upgrade above and ship it this week. Then write a README explaining what it does and how to run it. You're not "learning to code" anymore, you're building.</p></div>
 </div></template>
 
 <template data-id="bonus"><div class="content">
@@ -1675,13 +1781,15 @@ function render(id){
   const prev = prevOf(id);
   const next = nextOf(id);
   const isDone = done.has(id);
+  // a lesson with an unanswered quiz keeps "Mark complete" locked until it's solved
+  const locked = !isDone && /class="quiz"/.test(body);
   view.innerHTML = `
     <div class="wrap">
       <div class="crumb">Part ${m.partId} · ${m.partTitle}<span class="dot"></span>Lesson ${idx+1} / ${TOTAL}</div>
       <h1 class="title">${m.title}</h1>
       ${body}
-      <button class="markbtn ${isDone?'done':''}" onclick="toggleDone('${id}')">
-        ${isDone? '✓ Completed, tap to undo' : 'Mark complete  ⛏'}
+      <button class="markbtn ${isDone?'done':''}" ${locked?'disabled title="Answer the quiz to unlock"':''} onclick="toggleDone('${id}')">
+        ${isDone? '✓ Completed, tap to undo' : (locked? 'Solve the quiz to unlock  🔒' : 'Mark complete  ⛏')}
       </button>
       <div class="pager">
         ${prev?`<a onclick="go('${prev}')"><div class="dir">◀ Previous</div><div class="nm">${META[prev].title}</div></a>`:`<a style="opacity:.3;cursor:default"><div class="dir">Start</div><div class="nm">Cover</div></a>`}
@@ -1689,9 +1797,36 @@ function render(id){
       </div>
     </div>`;
   addCopyButtons();
+  setupQuiz();
   setActive(id);
   updateXP();
   window.scrollTo(0,0);
+}
+
+// wire up an in-lesson multiple-choice quiz, if the lesson has one.
+// picking the correct option unlocks the "Mark complete" button.
+function setupQuiz(){
+  const quiz = document.querySelector(".content .quiz");
+  if(!quiz) return;
+  const answer = quiz.dataset.answer;
+  const msg = quiz.querySelector(".quiz-msg");
+  const btn = document.querySelector(".markbtn");
+  quiz.querySelectorAll(".opt").forEach(opt => {
+    opt.addEventListener("click", () => {
+      const right = opt.dataset.val === answer;
+      quiz.querySelectorAll(".opt").forEach(o => o.classList.remove("correct","wrong"));
+      opt.classList.add(right ? "correct" : "wrong");
+      if(right){
+        quiz.classList.add("solved");
+        msg.textContent = "Correct. You can mark this lesson complete.";
+        msg.className = "quiz-msg ok";
+        if(btn){ btn.disabled = false; btn.removeAttribute("title"); btn.innerHTML = "Mark complete  ⛏"; }
+      } else {
+        msg.textContent = "Not quite. Work the math again and try another option.";
+        msg.className = "quiz-msg no";
+      }
+    });
+  });
 }
 
 // ----------------- helpers -----------------
@@ -1771,7 +1906,11 @@ document.addEventListener("keydown", e=>{
   const idx = ORDER.indexOf(current);
   if(e.key==="ArrowRight" && idx>-1){ const n = nextOf(current); if(n) go(n); }
   if(e.key==="ArrowLeft"){ const p = idx>-1 ? prevOf(current) : null; if(p) go(p); else if(current!=="cover") go("cover"); }
-  if(e.key.toLowerCase()==="c" && current && current!=="cover") toggleDone(current);
+  if(e.key.toLowerCase()==="c" && current && current!=="cover"){
+    const mb = document.querySelector(".markbtn");
+    if(mb && mb.disabled) return;   // locked by an unsolved quiz
+    toggleDone(current);
+  }
 });
 
 // ----------------- search -----------------
