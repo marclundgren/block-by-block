@@ -1,0 +1,9 @@
+{
+  "time set":   { "syntax": "time set <day|night|noon|midnight|number>", "example": "time set day" },
+  "weather":    { "syntax": "weather <clear|rain|thunder> [seconds]",     "example": "weather clear" },
+  "say":        { "syntax": "say <message>",                              "example": "say Restarting soon" },
+  "give":       { "syntax": "give <player> <item> [count]",               "example": "give @a bread 3" },
+  "tp":         { "syntax": "tp <player> <target>",                       "example": "tp Alex Steve" },
+  "gamemode":   { "syntax": "gamemode <survival|creative|adventure|spectator> [player]", "example": "gamemode creative Alex" },
+  "difficulty": { "syntax": "difficulty <peaceful|easy|normal|hard>",     "example": "difficulty normal" }
+}

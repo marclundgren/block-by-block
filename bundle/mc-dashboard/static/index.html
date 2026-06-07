@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <header>
+      <h1>My Server</h1>
+      <span id="status" class="badge"><i></i> connecting...</span>
+    </header>
+
+    <p class="count"><b id="online">-</b> players online</p>
+    <ul id="players" class="roster"></ul>
+
+    <div class="controls">
+      <button data-cmd="day">Set Day</button>
+      <button data-cmd="night">Set Night</button>
+      <button data-cmd="clear">Clear Weather</button>
+    </div>
+    <p id="toast" class="toast"></p>
+
+    <h2>Admin console</h2>
+    <div id="chat" class="chat"></div>
+    <input id="msg" placeholder="tell the server what to do...">
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

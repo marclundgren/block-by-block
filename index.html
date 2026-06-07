@@ -291,55 +291,55 @@ html[data-theme="dark"]{ --gold:#e3b341; }
 <!-- ============================ LESSON CONTENT ============================ -->
 
 <template data-id="p0-1"><div class="content">
-<p>Hey, I'm glad you're here. I made this book because I learned a ton by treating my own Minecraft server as a playground for code, and I wanted to package that path for anyone who wants to follow it. You don't need any programming experience. If you can install an app and type into a terminal, you can do this.</p>
-<h2>What you'll actually build</h2>
-<p>Everything in here is anchored to one thing: a Minecraft server you run yourself. Python scripts will talk to it, mods will run inside it, and by the end you'll have a web dashboard that watches it live. I find abstract lessons hard to care about, so I tied every concept to something you can see happen in a world you control.</p>
-<p>Along the way, without making a big deal of it, you'll pick up a real high level feel for how networking works, how game servers work, and what self hosting actually means. We won't go deep into any of those, but you'll come out understanding the shape of them, which is honestly more than most people ever get.</p>
-<div class="box note"><span class="h">Pick your platform first</span><p>Setup depends on your computer. Most readers are on Windows, so that's the default path I'll guide you through. Jump to the one that fits you:</p>
-<p><strong>→ <a onclick="go('p0-3')" style="cursor:pointer">Windows + WSL2</a></strong> (my recommended default)<br>
+<p>Welcome. This book turns a Minecraft server into a place to learn real programming, step by step, block by block. No experience needed. If you can install an app and type into a terminal, you can do this.</p>
+<h2>What you'll build</h2>
+<p>Everything here is anchored to one thing: a Minecraft server you run yourself. You'll write Python that talks to it, mods that run inside it, and by the end a web dashboard that watches it live. Abstract lessons are hard to care about, so every concept is tied to something you can see happen in a world you control.</p>
+<p>Along the way you'll pick up a real, high level feel for how networking works, how game servers work, and what self hosting means. None of it goes deep, but you'll come out understanding the shape of all three, which is more than most people ever get.</p>
+<div class="box note"><span class="h">Pick your platform first</span><p>Setup depends on your computer. Most readers are on Windows, so that is the default path here. Jump to the one that fits you:</p>
+<p><strong>→ <a onclick="go('p0-3')" style="cursor:pointer">Windows + WSL2</a></strong> (the recommended default)<br>
 <strong>→ <a onclick="go('p0-4')" style="cursor:pointer">macOS</a></strong> (a little different, and a little simpler)<br>
 <strong>→ <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a></strong> (native Windows, or a Raspberry Pi)</p>
-<p>Not sure why I'm pushing WSL? The next lesson explains it.</p></div>
+<p>The next lesson explains why WSL is the pick.</p></div>
 <h2>The four parts</h2>
 <p><strong>0, Launchpad:</strong> get your machine ready and run the server.<br>
 <strong>1, Python:</strong> from your first <code>print()</code> to classes, generators, and typing.<br>
 <strong>2, Minecraft:</strong> Fabric mods, events, commands, mixins.<br>
 <strong>3, Full-Stack:</strong> HTTP, a FastAPI backend, and a live web dashboard wired to your server.</p>
-<h2>How I'd use it</h2>
+<h2>How to use it</h2>
 <ul>
 <li>Go in order your first time through. Later parts lean on earlier ones.</li>
 <li>Every lesson ends with a <span style="color:var(--purple)">⛏ Quest</span>. Do it. Reading code is not the same as writing it.</li>
-<li>Tap <strong>Mark complete</strong> to fill your XP bar. On a keyboard you can use the arrow keys to move and <kbd>c</kbd> to mark a lesson done.</li>
-<li>Your progress saves in your browser, so there's no account and nothing in the cloud.</li>
+<li>Tap <strong>Mark complete</strong> to fill your XP bar. On a keyboard, use the arrow keys to move and <kbd>c</kbd> to mark a lesson done.</li>
+<li>Your progress saves in your browser, so there is no account and nothing in the cloud.</li>
 </ul>
-<div class="box try"><span class="h"></span><p>Tap <strong>Mark complete</strong> below, then head to "Pick your path" to sort out your setup.</p></div>
+<div class="box try"><span class="h"></span><p>Tap <strong>Mark complete</strong> below, then go to "Pick your path" to sort out your setup.</p></div>
 </div></template>
 
 <template data-id="p0-2"><div class="content">
-<p>Before we install anything, let's figure out where your server and your code are going to live. There are a few valid options. I'll lay them all out, but I'm going to steer you toward one default, because choosing for yourself is hard when you're just starting.</p>
-<h2>My default: Windows with WSL2</h2>
-<p>Most people reading this are on a Windows PC, and if that's you, I recommend installing <strong>WSL2</strong> (Windows Subsystem for Linux). It gives you a real Linux system running inside Windows, with no separate machine and no dual boot.</p>
-<h3>Why I push Linux for this</h3>
-<p>Here's the honest version. Almost all of the backend and server world runs on Linux. The tools you'll use (Docker, Python, and the Minecraft server image) are happiest there. WSL2 also tends to be a lot faster than plain Windows for the kind of work developers do, especially anything that touches a lot of files, like installing packages or building a project. If you've ever heard someone say their project crawled on Windows but flew on WSL, that's the file system difference at work.</p>
-<div class="box note"><span class="h">Does WSL make Minecraft itself faster?</span><p>Honestly, not really, and I want to be straight with you. A Minecraft server runs on Java, which performs about the same on Windows and on WSL2 (WSL2 is a lightweight real Linux VM, so the raw speed is close). The reason I still use WSL here isn't some giant Minecraft speed boost. It's that the whole toolchain is cleaner, the Docker setup just works, and you get to learn Linux while you're at it.</p></div>
+<p>Before installing anything, figure out where your server and your code will live. There are a few valid options. They are all listed below, but one is the recommended default, because choosing for yourself is hard at the start.</p>
+<h2>The default: Windows with WSL2</h2>
+<p>Most people reading this are on a Windows PC. If that is you, install <strong>WSL2</strong> (Windows Subsystem for Linux). It gives you a real Linux system running inside Windows, with no separate machine and no dual boot.</p>
+<h3>Why Linux for this</h3>
+<p>Almost all of the backend and server world runs on Linux. The tools you'll use (Docker, Python, and the Minecraft server image) are happiest there. WSL2 also tends to be much faster than plain Windows for the kind of work developers do, especially anything that touches a lot of files, like installing packages or building a project. If you have heard someone say their project crawled on Windows but flew on WSL, that is the file system difference at work.</p>
+<div class="box note"><span class="h">Does WSL make Minecraft itself faster?</span><p>Not really, and that is worth being clear about. A Minecraft server runs on Java, which performs about the same on Windows and on WSL2 (WSL2 is a lightweight real Linux VM, so the raw speed is close). The reason to use WSL here is not a giant Minecraft speed boost. It is that the whole toolchain is cleaner, the Docker setup just works, and you learn Linux while you are at it.</p></div>
 <h3>The sneaky benefit: you learn Linux</h3>
-<p>Even when you're not writing code, the operating system is a big part of any real dev setup. Learning the Linux basics (moving around folders, running commands, permissions) is valuable all on its own. You'll use it for the rest of your coding life, so picking it up now while you're having fun with Minecraft is a great deal. It's not the only option, it's just my opinion that it's the one worth learning.</p>
+<p>Even when you are not writing code, the operating system is a big part of any real dev setup. Learning the Linux basics (moving around folders, running commands, permissions) is valuable on its own. You'll use it for the rest of your coding life, so picking it up now while having fun with Minecraft is a great deal. It is not the only option, but it is the one worth learning.</p>
 <h2>All the paths, quickly</h2>
-<p>Pick the line that matches you and follow that lesson. You don't need to read the others.</p>
+<p>Pick the line that matches you and follow that lesson. You do not need to read the others.</p>
 <ul>
 <li><strong>On Windows?</strong> Use <a onclick="go('p0-3')" style="cursor:pointer">Windows + WSL2</a>. This is the main path the rest of the book assumes.</li>
 <li><strong>On a Mac?</strong> Go to <a onclick="go('p0-4')" style="cursor:pointer">Set up on a Mac</a>. macOS is already Unix underneath, so you skip WSL entirely.</li>
-<li><strong>On Windows but your hardware can't run WSL2?</strong> It's rare, but it happens. See <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a> for a native Windows setup and the trade-offs.</li>
-<li><strong>Got a Raspberry Pi or a little home server?</strong> You can host on those too. I cover the idea, and the catch, in <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a>.</li>
+<li><strong>On Windows but your hardware can't run WSL2?</strong> Rare, but it happens. See <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a> for a native Windows setup and the trade-offs.</li>
+<li><strong>Got a Raspberry Pi or a little home server?</strong> You can host on those too. The idea, and the catch, are in <a onclick="go('p0-5')" style="cursor:pointer">Other paths</a>.</li>
 </ul>
-<div class="box tip"><span class="h">You can change your mind</span><p>None of this locks you in. The Python, the mods, and the web app are the same no matter where the server runs. The only thing that changes is these first few setup steps.</p></div>
-<div class="box try"><span class="h"></span><p>Decide your path and open its setup lesson. If you're on Windows and unsure, just go with WSL2. That's what I'd do.</p></div>
+<div class="box tip"><span class="h">You can change your mind</span><p>None of this locks you in. The Python, the mods, and the web app are the same no matter where the server runs. Only these first few setup steps change.</p></div>
+<div class="box try"><span class="h"></span><p>Decide your path and open its setup lesson. On Windows and unsure? Go with WSL2.</p></div>
 </div></template>
 
 <template data-id="p0-4"><div class="content">
-<p>Good news if you're on a Mac: you've got an easier road than the Windows folks. macOS is built on Unix, which is close enough to Linux that you don't need WSL at all. The built in <strong>Terminal</strong> app is already a real shell.</p>
+<p>On a Mac, the road is easier than on Windows. macOS is built on Unix, which is close enough to Linux that you do not need WSL at all. The built in <strong>Terminal</strong> app is already a real shell.</p>
 <h2>1. Open Terminal</h2>
-<p>Press <kbd>Cmd</kbd>+<kbd>Space</kbd>, type <strong>Terminal</strong>, and hit enter. This is where you'll run commands. Try one:</p>
+<p>Press <kbd>Cmd</kbd>+<kbd>Space</kbd>, type <strong>Terminal</strong>, and hit enter. This is where you run commands. Try one:</p>
 <pre><code class="language-bash">uname -a</code></pre>
 <h2>2. Install Docker Desktop</h2>
 <p>Download <strong>Docker Desktop for Mac</strong> from docker.com, and grab the build for your chip:</p>
@@ -352,36 +352,36 @@ html[data-theme="dark"]{ --gold:#e3b341; }
 <pre><code class="language-bash">docker --version
 docker compose version
 docker run --rm hello-world</code></pre>
-<p>If you get a friendly hello message, you're set.</p>
-<div class="box tip"><span class="h">Optional: Homebrew</span><p>Homebrew is a package manager for Mac that makes installing dev tools easy. It's not required for this book, but it's handy. If you want it, the one line installer is at brew.sh, and later you could install things like git with <code>brew install git</code> (newer Macs often already have git).</p></div>
-<div class="box note"><span class="h">From here, you're with everyone else</span><p>The rest of the book's commands run the same in your Terminal as they do in Linux. When a lesson mentions WSL or PowerShell, that's a Windows thing, so you can ignore it. Wherever you see a path like <code>~/Dev</code>, that works for you too.</p></div>
-<div class="box try"><span class="h"></span><p>Run <code>docker run --rm hello-world</code>, make your project folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>, then continue to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a> for the core concepts. You've already installed it, so just skip the Windows-only steps there.</p></div>
+<p>A friendly hello message means you are set.</p>
+<div class="box tip"><span class="h">Optional: Homebrew</span><p>Homebrew is a package manager for Mac that makes installing dev tools easy. It is not required for this book, but it is handy. The one line installer is at brew.sh, and later you could install tools like git with <code>brew install git</code> (newer Macs often already have git).</p></div>
+<div class="box note"><span class="h">From here, you're with everyone else</span><p>The rest of the book's commands run the same in your Terminal as they do in Linux. When a lesson mentions WSL or PowerShell, that is a Windows thing, so ignore it. Wherever you see a path like <code>~/Dev</code>, that works for you too.</p></div>
+<div class="box try"><span class="h"></span><p>Run <code>docker run --rm hello-world</code>, make your project folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>, then continue to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a> for the core concepts. Docker is already installed, so skip the Windows-only steps there.</p></div>
 </div></template>
 
 <template data-id="p0-5"><div class="content">
-<p>WSL2 on Windows, or Terminal on a Mac, will cover almost everyone. But a few of you have a different setup, so here are the alternatives with my honest take on each. If one of these is you, skim it and then meet everyone back at the Docker lesson.</p>
+<p>WSL2 on Windows, or Terminal on a Mac, covers almost everyone. A few setups are different, so here are the alternatives with a straight take on each. If one is yours, skim it and meet everyone back at the Docker lesson.</p>
 <h2>Windows without WSL2</h2>
-<p>A small number of machines can't run WSL2, usually because virtualization is turned off in the BIOS or the hardware is fairly old. First, it's worth trying to turn on virtualization in your BIOS settings, since that often fixes it. If you truly can't, you still have an option: install <strong>Docker Desktop for Windows</strong> and let it use its <strong>Hyper-V</strong> backend instead of WSL2.</p>
-<p>The trade-off, and I want to be honest about it, is that this is the less optimized path in my opinion. You give up the nice Linux environment and some speed, and a few commands in this book that assume Linux will need small tweaks. It works, it's just not as smooth. If this is you, install Docker Desktop, then continue to the Docker lesson and use Windows PowerShell wherever I show a Linux shell.</p>
+<p>A small number of machines can't run WSL2, usually because virtualization is turned off in the BIOS or the hardware is fairly old. First, try turning on virtualization in your BIOS settings, since that often fixes it. If it still won't work, there is another option: install <strong>Docker Desktop for Windows</strong> and let it use its <strong>Hyper-V</strong> backend instead of WSL2.</p>
+<p>The trade-off is real: this is the less optimized path. You give up the nice Linux environment and some speed, and a few commands in this book that assume Linux need small tweaks. It works, it is just not as smooth. If this is you, install Docker Desktop, then continue to the Docker lesson and use Windows PowerShell wherever the book shows a Linux shell.</p>
 <h2>Raspberry Pi or a small home server</h2>
-<p>This one is fun. A Raspberry Pi (a tiny, cheap computer) can run Docker and a Minecraft server. It's a great way to learn self hosting on hardware you can hold in your hand.</p>
-<p>The catch is performance. A Pi will happily run the tools and a small server, but Minecraft is heavy, so don't expect a big, busy world to feel smooth. For one or two people poking around and learning, it's totally fine. You'd want a Raspberry Pi 4 or 5 with as much memory as you can get.</p>
-<div class="box note"><span class="h">It's the same book either way</span><p>On a Pi you're already on Linux, so you'd install Docker for your Pi's operating system and then follow along normally. Everything in Parts 1 to 3 is identical. Only the speed of your server changes.</p></div>
-<div class="box warn"><span class="h">My advice</span><p>If you have a normal Windows PC or a Mac, use that as your default and treat a Pi as a fun second project later. Start where it's easiest, then branch out once you know the ropes.</p></div>
+<p>A Raspberry Pi (a tiny, cheap computer) can run Docker and a Minecraft server. It is a great way to learn self hosting on hardware you can hold in your hand.</p>
+<p>The catch is performance. A Pi will happily run the tools and a small server, but Minecraft is heavy, so a big, busy world will not feel smooth. For one or two people poking around and learning, it is fine. Use a Raspberry Pi 4 or 5 with as much memory as you can get.</p>
+<div class="box note"><span class="h">It's the same book either way</span><p>On a Pi you are already on Linux, so you install Docker for your Pi's operating system and then follow along normally. Everything in Parts 1 to 3 is identical. Only the speed of your server changes.</p></div>
+<div class="box warn"><span class="h">Recommendation</span><p>If you have a normal Windows PC or a Mac, use that as your default and treat a Pi as a fun second project later. Start where it is easiest, then branch out once you know the ropes.</p></div>
 <div class="box try"><span class="h"></span><p>If one of these paths is yours, get Docker installed for your setup, then jump to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a> for the shared concepts and keep going from there.</p></div>
 </div></template>
 
 <template data-id="p0-3"><div class="content">
-<p>This is the main path, and the one the rest of the book assumes. We're going to install WSL2, a full Linux system that lives inside your Windows machine. It takes about ten minutes, and most of that is just waiting.</p>
+<p>This is the main path, and the one the rest of the book assumes. You'll install WSL2, a full Linux system that lives inside your Windows machine. It takes about ten minutes, and most of that is waiting.</p>
 <h2>1. Install WSL2</h2>
 <p>Open the Start menu, type <strong>PowerShell</strong>, right click it, and choose <strong>Run as administrator</strong>. In that window, run:</p>
 <pre><code class="language-powershell">wsl --install</code></pre>
-<p>That one command turns on the Windows features you need, installs Ubuntu (a friendly, popular flavor of Linux), and sets WSL2 as the default. When it tells you to reboot, do it.</p>
-<div class="box warn"><span class="h">If that command isn't found</span><p>On older Windows builds <code>wsl --install</code> might not exist. The fix is to update Windows first (Settings, then Windows Update), then try again. You want Windows 10 version 2004 or newer, or any Windows 11.</p></div>
+<p>That one command turns on the Windows features you need, installs Ubuntu (a friendly, popular flavor of Linux), and sets WSL2 as the default. When it asks you to reboot, do it.</p>
+<div class="box warn"><span class="h">If that command isn't found</span><p>On older Windows builds <code>wsl --install</code> might not exist. Update Windows first (Settings, then Windows Update), then try again. You want Windows 10 version 2004 or newer, or any Windows 11.</p></div>
 <h2>2. First launch</h2>
-<p>After the reboot, Ubuntu finishes setting itself up and asks you to create a <strong>username</strong> and <strong>password</strong>. These are just for Linux and are separate from your Windows login. Pick something you'll remember, because you'll type that password whenever you run a command as admin (you'll see <code>sudo</code> for that).</p>
+<p>After the reboot, Ubuntu finishes setting itself up and asks you to create a <strong>username</strong> and <strong>password</strong>. These are just for Linux and are separate from your Windows login. Pick something you will remember, because you will type that password whenever you run a command as admin (you'll see <code>sudo</code> for that).</p>
 <h2>3. Confirm it worked</h2>
-<p>You can open Ubuntu any time from the Start menu. Run a few checks:</p>
+<p>Open Ubuntu any time from the Start menu, and run a few checks:</p>
 <pre><code class="language-bash"><span class="c"># from PowerShell, confirm you're on version 2</span>
 wsl -l -v
 <span class="c"># inside Ubuntu, see who and where you are</span>
@@ -390,27 +390,27 @@ uname -a</code></pre>
 <h2>4. Update your system</h2>
 <p>Linux installs software through a package manager. Freshen everything once:</p>
 <pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade -y</code></pre>
-<div class="box tip"><span class="h">The one habit that really matters: where files live</span><p>Your Linux home is <code>/home/&lt;you&gt;</code>. Your Windows C: drive shows up at <code>/mnt/c</code>. Keep your projects on the Linux side (I use <code>~/Dev</code>). Working out of <code>/mnt/c</code> is much slower and Docker likes it less. This single habit saves a lot of frustration later.</p></div>
-<div class="box try"><span class="h"></span><p>Open Ubuntu, run the update command, then make your workshop folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>. That's where everything in this book will live. Then skip ahead to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a>. You can ignore the Mac and other-paths lessons.</p></div>
+<div class="box tip"><span class="h">The habit that really matters: where files live</span><p>Your Linux home is <code>/home/&lt;you&gt;</code>. Your Windows C: drive shows up at <code>/mnt/c</code>. Keep your projects on the Linux side (use <code>~/Dev</code>). Working out of <code>/mnt/c</code> is much slower and Docker likes it less. This single habit saves a lot of frustration later.</p></div>
+<div class="box try"><span class="h"></span><p>Open Ubuntu, run the update command, then make your workshop folder with <code>mkdir -p ~/Dev &amp;&amp; cd ~/Dev</code>. That is where everything in this book will live. Then skip ahead to <a onclick="go('p0-6')" style="cursor:pointer">Installing Docker</a>. You can ignore the Mac and other-paths lessons.</p></div>
 </div></template>
 
 <template data-id="p0-6"><div class="content">
-<div class="box note"><span class="h">Already installed Docker?</span><p>If you set up on a Mac or another path, you already have Docker running. Skim this for the concepts (the difference between an image and a container) and skip the Windows-only install steps.</p></div>
-
 <p><strong>Docker</strong> packages software and everything it needs into a <em>container</em>, a sealed box that runs the same on your machine, your friend's, or a cloud server. Your Minecraft server runs in a container, which is why you never had to manually install Java or the Fabric launcher.</p>
-<h2>Install Docker Desktop</h2>
+<p>How you install Docker depends on your platform. Pick your line, do the install, then everyone meets back at <strong>Image vs. container</strong> below.</p>
+<div class="box note"><span class="h">Already installed Docker?</span><p>The Mac path and the Raspberry Pi path both installed Docker back in their setup lessons. If that's you, skip straight to <strong>Image vs. container</strong> below. The install steps here are for the Windows + WSL2 path.</p></div>
+<h2>Install Docker on Windows + WSL2</h2>
 <ol>
-<li>Download <strong>Docker Desktop for Windows</strong> from docker.com.</li>
+<li>Download <strong>Docker Desktop for Windows</strong> from <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank" rel="noopener">docs.docker.com</a>.</li>
 <li>During install, keep <strong>"Use WSL 2 based engine"</strong> checked.</li>
 <li>After install: Docker Desktop → <strong>Settings → Resources → WSL Integration</strong> → enable your Ubuntu distro.</li>
 </ol>
-<p>Now Docker commands work <em>inside</em> WSL. Verify from Ubuntu:</p>
+<p>Now Docker commands work <em>inside</em> WSL. Verify from Ubuntu (on a Mac or Pi, run the same checks in your terminal):</p>
 <pre><code class="language-bash">docker --version
 docker compose version
 docker run --rm hello-world</code></pre>
 <p>That last line pulls a tiny image and runs it. If you see a "Hello from Docker!" message, your whole toolchain is alive.</p>
 <div class="box note"><span class="h">Image vs. container</span><p>An <strong>image</strong> is the blueprint (read-only, e.g. <code>itzg/minecraft-server</code>). A <strong>container</strong> is a running instance of that blueprint. You can start many containers from one image.</p></div>
-<div class="box warn"><span class="h">Docker Desktop must be running</span><p>On Windows, the Docker engine lives in Docker Desktop. If <code>docker</code> commands hang in WSL, check that the Docker Desktop app is open.</p></div>
+<div class="box warn"><span class="h">The engine has to be running</span><p>If <code>docker</code> commands hang or report they can't connect, the engine isn't up. On Windows and Mac that means the Docker Desktop app needs to be open; on Linux or a Raspberry Pi it means starting the service with <code>sudo systemctl start docker</code>.</p></div>
 <div class="box try"><span class="h">Try it</span><p>Run <code>docker run --rm hello-world</code>, then <code>docker ps -a</code> to see the stopped container, then <code>docker image ls</code> to see the downloaded image.</p></div>
 </div></template>
 
@@ -427,17 +427,35 @@ docker run --rm hello-world</code></pre>
     <span class="k">volumes</span>:
       - <span class="s">./data:/data</span>        <span class="c"># persist files on the host</span>
     <span class="k">restart</span>: <span class="s">unless-stopped</span></code></pre>
+<h3>Reading the two lines that trip everyone up</h3>
+<p>Both <code>ports</code> and <code>volumes</code> use the same shape: <code>outside:inside</code>. The part <em>before</em> the colon is on your computer (the <strong>host</strong>); the part <em>after</em> is <strong>inside the container</strong>. A container is a sealed box, so anything that has to cross the wall, a network port or a folder, gets bridged across with that colon.</p>
+<ul>
+<li><code>"8080:80"</code> under <code>ports</code>: traffic hitting port <strong>8080 on your machine</strong> is forwarded to port <strong>80 inside the container</strong>. The program inside only listens on 80 and has no idea about 8080; that outside number is just the door you knock on. The two can match (<code>"80:80"</code>) or differ. This is the whole idea of port mapping: an external port wired to an internal one.</li>
+<li><code>./data:/data</code> under <code>volumes</code>: the folder <strong><code>./data</code> on your machine</strong> is mounted as <strong><code>/data</code> inside the container</strong>. The <code>./</code> means "right here, in the same folder as the <code>compose.yml</code>", and <code>/data</code> is an absolute path in the container's own filesystem. The two names don't have to match; this example just reuses <code>data</code> on both sides. Anything the container writes to <code>/data</code> actually lands in <code>./data</code> on your disk, which is how it survives the container being thrown away.</li>
+</ul>
+<div class="box note"><span class="h">The official docs</span><p>This is the short version. The full Compose file reference, every key you can use, lives at <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docs.docker.com/compose</a>. Keep it bookmarked; it's the source of truth.</p></div>
 <h2>The four commands you'll use constantly</h2>
 <pre><code class="language-bash">docker compose up -d        <span class="c"># start everything in the background</span>
 docker compose ps           <span class="c"># what's running?</span>
 docker compose logs -f      <span class="c"># follow the logs live (Ctrl+C to stop)</span>
 docker compose down         <span class="c"># stop and remove the containers</span></code></pre>
 <div class="box tip"><span class="h">Volumes are your save game</span><p>Containers are disposable; <strong>volumes</strong> are not. The <code>./minecraft-data:/data</code> line is why your world survives a <code>down</code>/<code>up</code> cycle. Delete the container, fine. Delete the volume folder, you lose the world.</p></div>
-<div class="box try"><span class="h">Try it</span><p>In <code>~/Games/Minecraft/fabric-minecraft-server</code>, run <code>docker compose ps</code> and <code>docker compose logs --tail 20</code>. Read what your server is telling you.</p></div>
+<div class="box try"><span class="h">Try it</span><p>Practice the cycle on something throwaway before building the real server next lesson. Make a scratch folder, write a tiny compose file, and run it through:</p>
+<pre style="margin:8px 0"><code class="language-bash">mkdir -p ~/Dev/compose-test &amp;&amp; cd ~/Dev/compose-test
+printf 'services:\n  hello:\n    image: hashicorp/http-echo\n    command: ["-text=it works"]\n    ports:\n      - "5678:5678"\n' &gt; compose.yml
+docker compose up -d
+docker compose ps
+curl localhost:5678        <span class="c"># -> it works (port 5678 outside reaches 5678 inside)</span>
+docker compose down</code></pre></div>
 </div></template>
 
 <template data-id="p0-8"><div class="content">
-<p>Here's the actual stack you're running. Let's read it line by line so it's not magic.</p>
+<p>First, why Fabric at all? Plain "vanilla" Minecraft is the game exactly as Mojang ships it, with no way to load mods. <strong>Fabric</strong> is a lightweight mod loader: the server boots the loader first, and the loader then runs any mods you drop in, while leaving normal gameplay untouched for anyone who just wants vanilla. That's the whole reason this book runs Fabric. Part 2 is about writing your own mods, and a mod needs a loader to run inside. The <code>itzg/minecraft-server</code> image wires all of that up the moment you set <code>TYPE: "FABRIC"</code>.</p>
+<p>Time to build the real server from nothing. First give it a home and move in:</p>
+<pre><code class="language-bash">mkdir -p ~/Games/Minecraft/fabric-minecraft-server
+cd ~/Games/Minecraft/fabric-minecraft-server</code></pre>
+<p>That folder is the whole project: the <code>compose.yml</code> you're about to write, plus a <code>minecraft-data/</code> directory Docker will create for the world and mods. The path can be anything you like; this is just the one the rest of the book refers to.</p>
+<p>Now make a file called <code>compose.yml</code> in that folder (<code>code compose.yml</code> opens it in VS Code) and paste in the stack below. Read it line by line so it's not magic:</p>
 <pre><code class="language-yaml"><span class="k">services</span>:
   <span class="f">minecraft-fabric</span>:
     <span class="k">image</span>: <span class="s">itzg/minecraft-server</span>
@@ -449,12 +467,16 @@ docker compose down         <span class="c"># stop and remove the containers</sp
       <span class="f">EULA</span>: <span class="s">"TRUE"</span>
       <span class="f">TYPE</span>: <span class="s">"FABRIC"</span>        <span class="c"># mod loader</span>
       <span class="f">VERSION</span>: <span class="s">"1.21.11"</span>    <span class="c"># pinned so mappings match your mods</span>
-      <span class="f">MEMORY</span>: <span class="s">"6G"</span>
+      <span class="f">MEMORY</span>: <span class="s">"2G"</span>         <span class="c"># RAM allocated to this server container</span>
       <span class="f">ENABLE_RCON</span>: <span class="s">"TRUE"</span>
       <span class="f">RCON_PASSWORD</span>: <span class="s">"..."</span>
     <span class="k">volumes</span>:
       - <span class="s">./minecraft-data:/data</span>   <span class="c"># world, mods, configs live here</span>
     <span class="k">restart</span>: <span class="s">unless-stopped</span></code></pre>
+<p>Set <code>RCON_PASSWORD</code> to something only you know (you'll need it again in Part 1), save the file, then start the server:</p>
+<pre><code class="language-bash">docker compose up -d        <span class="c"># pull the image and boot the server in the background</span>
+docker compose logs -f      <span class="c"># watch it build the world (Ctrl+C stops watching, not the server)</span></code></pre>
+<p>The first run takes a minute or two: it downloads the image, accepts the EULA, fetches Fabric, and generates a fresh world into <code>minecraft-data/</code>. When the log prints <code>Done</code>, the server is live. Open Minecraft (Java Edition, version 1.21.11), add a server pointing at <code>localhost</code>, and join your own world.</p>
 <h2>The mental model</h2>
 <ul>
 <li><strong>Mods</strong> go in <code>minecraft-data/mods/</code>, that maps to <code>/data/mods</code> inside the container.</li>
@@ -471,16 +493,16 @@ docker exec minecraft-fabric rcon-cli list</code></pre>
 <template data-id="p0-9"><div class="content">
 <p>A few tools will make everything smoother. Install them once.</p>
 <h2>VS Code + the WSL extension</h2>
-<p>Install <strong>VS Code</strong> on Windows, then the <strong>WSL</strong> extension. Now from Ubuntu you can run:</p>
-<pre><code class="language-bash">cd ~/Dev/block-by-block
+<p>Install <strong>VS Code</strong>. On Windows, also add the <strong>WSL</strong> extension so the editor can reach into Ubuntu (on a Mac it just opens local folders directly). Now open the server project you built last lesson:</p>
+<pre><code class="language-bash">cd ~/Games/Minecraft/fabric-minecraft-server
 code .</code></pre>
-<p>VS Code opens <em>connected to Linux</em>, editing Linux files with a Windows UI. Best of both worlds. Also grab the <strong>Python</strong> and <strong>Docker</strong> extensions.</p>
+<p>On Windows the editor opens <em>connected to Linux</em>, editing Linux files with a Windows UI. Best of both worlds. Also grab the <strong>Python</strong> and <strong>Docker</strong> extensions.</p>
 <h2>Git: your time machine</h2>
 <pre><code class="language-bash">sudo apt install -y git
 git config --global user.name  "Your Name"
 git config --global user.email "you@example.com"</code></pre>
 <p>Git records snapshots of your code so you can experiment fearlessly and undo mistakes. Every project in this book is a git repo.</p>
-<pre><code class="language-bash">cd ~/Dev/myproject
+<pre><code class="language-bash">mkdir -p ~/Dev/myproject &amp;&amp; cd ~/Dev/myproject
 git init
 git add -A
 git commit -m "first commit"</code></pre>
@@ -705,7 +727,7 @@ lookup  = {p: <span class="f">len</span>(p) <span class="k">for</span> p <span c
 </div></template>
 
 <template data-id="p1-10"><div class="content">
-<p>Time to connect Python to your world. The server has <strong>RCON</strong> enabled, a protocol for sending console commands over the network. We'll drive it from Python.</p>
+<p>Time to connect Python to your world. The server has <strong>RCON</strong> enabled, a protocol for sending console commands over the network. You'll drive it from Python.</p>
 <pre><code class="language-bash">source .venv/bin/activate
 pip install mcrcon</code></pre>
 <pre><code class="language-python"><span class="k">from</span> mcrcon <span class="k">import</span> MCRcon
@@ -725,7 +747,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
         <span class="k">return</span> []
     names = resp.<span class="f">split</span>(<span class="s">":"</span>, <span class="n">1</span>)[<span class="n">1</span>].<span class="f">strip</span>()
     <span class="k">return</span> [n.<span class="f">strip</span>() <span class="k">for</span> n <span class="k">in</span> names.<span class="f">split</span>(<span class="s">","</span>) <span class="k">if</span> n.<span class="f">strip</span>()]</code></pre>
-<div class="box warn"><span class="h">Secrets don't belong in code</span><p>Hard-coding the RCON password is fine for learning, but in real apps read it from an environment variable: <code>os.environ["RCON_PASSWORD"]</code>. We'll do this properly in Part 3.</p></div>
+<div class="box warn"><span class="h">Secrets don't belong in code</span><p>Hard-coding the RCON password is fine for learning, but in real apps read it from an environment variable: <code>os.environ["RCON_PASSWORD"]</code>. Part 3 does this properly.</p>
 <div class="box try"><span class="h">Try it</span><p>Write a script that connects, lists online players using <code>online_players()</code>, and gives each of them a loaf of bread with <code>mcr.command(f"give {name} bread")</code>. You just wrote your first automation.</p></div>
 </div></template>
 
@@ -737,7 +759,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 <li><strong>Server-side</strong> mods change <em>world state</em> the server owns, time, blocks, entities, game rules. Installed on the server; all players see the effect. (Your time-sync mod.)</li>
 <li><strong>Client-side</strong> mods change <em>your own game</em>, keybinds, rendering, input, UI. Installed in your client; the server doesn't know. (Your auto-run mod.)</li>
 </ul>
-<p>Ask: <em>whose machine owns the thing I'm changing?</em> That answers where the mod runs.</p>
+<p>Ask: <em>whose machine owns the thing you're changing?</em> That answers where the mod runs.</p>
 <h2>Mappings: why versions matter</h2>
 <p>Minecraft ships <em>obfuscated</em> (class/method names scrambled). <strong>Mappings</strong> translate those into readable names. Because the scrambling differs per version, <strong>a mod must be built against the exact MC version it runs on</strong>, which is why your server is pinned to 1.21.11.</p>
 <div class="box note"><span class="h">The toolchain</span><p><strong>Gradle</strong> builds the project. <strong>Loom</strong> is the Gradle plugin that fetches Minecraft + mappings. <strong>Fabric API</strong> provides the hooks (events, registries) your mod uses. <strong>Fabric Loader</strong> loads everything at runtime.</p></div>
@@ -777,7 +799,7 @@ PASSWORD = <span class="s">"your-rcon-password"</span>   <span class="c"># from 
 </div></template>
 
 <template data-id="p2-3"><div class="content">
-<p>Let's read a complete, minimal server mod, the core of your time-sync project, stripped to essentials.</p>
+<p>Here's a complete, minimal server mod, the core of your time-sync project, stripped to essentials.</p>
 <pre><code class="language-java"><span class="k">package</span> dev.you.example;
 
 <span class="k">import</span> net.fabricmc.api.DedicatedServerModInitializer;
@@ -888,7 +910,7 @@ ServerLifecycleEvents.SERVER_STARTED.<span class="f">register</span>(server -&gt
 <p><strong>Mixins</strong> are the advanced superpower of Fabric: they let you weave code <em>into Minecraft's own classes</em> at load time, changing vanilla behavior that no event exposes. Power comes with sharp edges.</p>
 <pre><code class="language-java"><span class="nd">@Mixin</span>(Zombie.class)
 <span class="k">public class</span> <span class="f">ZombieMixin</span> {
-    <span class="c">// run our code at the start of the zombie's tick</span>
+    <span class="c">// run your code at the start of the zombie's tick</span>
     <span class="nd">@Inject</span>(method = <span class="s">"tick"</span>, at = <span class="nd">@At</span>(<span class="s">"HEAD"</span>))
     <span class="k">private void</span> <span class="f">onTick</span>(CallbackInfo ci) {
         <span class="c">// e.g. make zombies glow, count them, etc.</span>
@@ -981,7 +1003,7 @@ button.<span class="f">addEventListener</span>(<span class="s">"click"</span>, (
 </div></template>
 
 <template data-id="p3-4"><div class="content">
-<p><strong>FastAPI</strong> is a modern Python web framework. It uses the type hints you learned in Part 1 to validate data and auto-generate docs. Let's build the backend.</p>
+<p><strong>FastAPI</strong> is a modern Python web framework. It uses the type hints you learned in Part 1 to validate data and auto-generate docs. You'll build the backend.</p>
 <pre><code class="language-bash">mkdir ~/Dev/mc-dashboard &amp;&amp; cd ~/Dev/mc-dashboard
 python3 -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install "fastapi[standard]" mcrcon</code></pre>
@@ -1220,7 +1242,7 @@ con.<span class="f">commit</span>()
 </div></template>
 
 <template data-id="p3-8"><div class="content">
-<p>Tie the room together: run your dashboard as another service in the <em>same</em> Compose stack as Minecraft, so one <code>docker compose up</code> launches everything.</p>
+<p>Now bring it all together: run your dashboard as another service in the <em>same</em> Compose stack as Minecraft, so one <code>docker compose up</code> launches everything.</p>
 <pre><code class="language-yaml"><span class="k">services</span>:
   <span class="f">minecraft-fabric</span>:
     <span class="k">image</span>: <span class="s">itzg/minecraft-server</span>
@@ -1274,7 +1296,7 @@ CMD ["fastapi", "run", "main.py", "--port", "8000"]</code></pre>
 </div></template>
 
 <template data-id="bonus"><div class="content">
-<p>You did it. Every lesson, every quest, all the way through. This chapter was hidden until now, and it's the most fun thing in the whole book, so let's go out with a bang. We're going to bolt an AI brain onto your server.</p>
+<p>You did it. Every lesson, every quest, all the way through. This chapter stayed hidden until now, and it's the most fun thing in the whole book. Time to bolt an AI brain onto your server.</p>
 <p>The goal: a chat box where you type plain English like "make it day and stop the rain," and an AI turns that into real server commands and runs them. It's the natural next step after the dashboard you built in Part 3, and it ties together RCON, your backend, and a language model.</p>
 
 <h2>The big picture</h2>
@@ -1293,9 +1315,9 @@ Browser chat  ──►  FastAPI  ──►  local AI model  (+ a local copy of 
                                    │
                    result or error fed back into the chat ──► model can retry</code></pre>
 
-<h2>Local or paid API? For this book, local.</h2>
-<p>You can run the AI two ways. A paid cloud API (like the big-name providers) is the easy button, but it needs an account and a credit card, which is a hard no if you're a kid or just don't want a bill. So the default here is a <strong>local model</strong> that runs on your own machine. It's free, it's private, it works offline, and honestly it's more impressive to say you ran your own AI.</p>
-<div class="box note"><span class="h">Honest trade-offs</span><p>Small local models are not as smart as the giant cloud ones. Two things keep them reliable for us: we give the model the real command reference to work from, and we double check its answer before running anything. On a Raspberry Pi or an older laptop, replies take a few seconds. That's fine for an admin console.</p></div>
+<h2>Local or paid API? This book stays local.</h2>
+<p>You can run the AI two ways. A paid cloud API (like the big-name providers) is the easy button, but it needs an account and a credit card, which is a hard no if you're a kid or just don't want a bill. So the default here is a <strong>local model</strong> that runs on your own machine. It's free, it's private, it works offline, and there's something satisfying about running your own AI.</p>
+<div class="box note"><span class="h">The trade-offs</span><p>Small local models are not as smart as the giant cloud ones. Two things keep them reliable here: the model gets the real command reference to work from, and its answer gets double checked before anything runs. On a Raspberry Pi or an older laptop, replies take a few seconds. That's fine for an admin console.</p></div>
 
 <h2>1. Install Ollama and pull a model</h2>
 <p>Ollama is the easiest way to run a model locally. On Linux or WSL:</p>
@@ -1312,8 +1334,8 @@ source .venv/bin/activate
 pip install ollama</code></pre>
 
 <h2>2. Give it the real commands (grounding)</h2>
-<p>Here's the key insight, and it's a good one: a small model is great at understanding language, but I would not trust it to have memorized every Minecraft command and its exact syntax. Left on its own it might invent a command that doesn't exist. The fix is to stop relying on its memory and hand it the real reference instead.</p>
-<p>So we prefetch the commands we want to support into a local file once, store it next to our code, and feed it to the model in the prompt. The model then works from the actual commands, not its guesses. This trick has a name: <strong>grounding</strong>. It's the simple cousin of what people call RAG.</p>
+<p>Here's the key insight: a small model is great at understanding language, but it can't be trusted to have memorized every Minecraft command and its exact syntax. Left on its own it might invent a command that doesn't exist. The fix is to stop relying on its memory and hand it the real reference instead.</p>
+<p>So prefetch the commands you want to support into a local file once, store it next to your code, and feed it to the model in the prompt. The model then works from the actual commands, not its guesses. This trick has a name: <strong>grounding</strong>. It's the simple cousin of what people call RAG.</p>
 <p>Save this as <code>commands.json</code>. It's your own copy of the documentation, and you own it, so you can add to it any time:</p>
 <pre><code class="language-json">{
   <span class="s">"time set"</span>:   { <span class="s">"syntax"</span>: <span class="s">"time set &lt;day|night|noon|midnight|number&gt;"</span>, <span class="s">"example"</span>: <span class="s">"time set day"</span> },
@@ -1324,10 +1346,10 @@ pip install ollama</code></pre>
   <span class="s">"gamemode"</span>:   { <span class="s">"syntax"</span>: <span class="s">"gamemode &lt;survival|creative|adventure|spectator&gt; [player]"</span>, <span class="s">"example"</span>: <span class="s">"gamemode creative Alex"</span> },
   <span class="s">"difficulty"</span>: { <span class="s">"syntax"</span>: <span class="s">"difficulty &lt;peaceful|easy|normal|hard&gt;"</span>,   <span class="s">"example"</span>: <span class="s">"difficulty normal"</span> }
 }</code></pre>
-<div class="box tip"><span class="h">Where this list comes from</span><p>I seeded it with the common admin commands so you can run right away. The full, official list lives on the Minecraft Wiki's commands page. Whenever you want a new power, copy that command's syntax into this file. The model can only use what's in here, so this one file is both its instruction manual and your safety list.</p></div>
+<div class="box tip"><span class="h">Where this list comes from</span><p>This list is seeded with the common admin commands so you can run right away. The full, official list lives on the Minecraft Wiki's commands page. Whenever you want a new power, copy that command's syntax into this file. The model can only use what's in here, so this one file is both its instruction manual and your safety list.</p></div>
 
 <h2>3. Build the prompt from that file</h2>
-<p>We load <code>commands.json</code>, turn it into a short reference, and put it in the system prompt. We also ask the model to answer in a strict JSON shape so a small model can't wander off: just the <code>command</code> to run and a friendly <code>say</code> line.</p>
+<p>Load <code>commands.json</code>, turn it into a short reference, and put it in the system prompt. Also ask the model to answer in a strict JSON shape so a small model can't wander off: just the <code>command</code> to run and a friendly <code>say</code> line.</p>
 <pre><code class="language-python"><span class="k">import</span> json
 <span class="k">from</span> ollama <span class="k">import</span> chat
 <span class="k">from</span> pydantic <span class="k">import</span> BaseModel
@@ -1357,7 +1379,7 @@ SCHEMA = {
 }</code></pre>
 
 <h2>4. The backend endpoint</h2>
-<p>The model proposes a command, but <strong>your code</strong> decides whether it runs. We check that the command starts with one of the names from <code>commands.json</code>. If it isn't in the reference, we refuse it. That refusal is the most important part of the whole project.</p>
+<p>The model proposes a command, but <strong>your code</strong> decides whether it runs. The check: the command must start with one of the names from <code>commands.json</code>. If it isn't in the reference, it gets refused. That refusal is the most important part of the whole project.</p>
 <pre><code class="language-python"><span class="k">class</span> <span class="f">AiRequest</span>(BaseModel):
     message: <span class="f">str</span>
     history: <span class="f">list</span> = []     <span class="c"># prior turns, so it remembers context</span>
@@ -1383,10 +1405,10 @@ SCHEMA = {
     <span class="k">return</span> {<span class="s">"say"</span>: data.<span class="f">get</span>(<span class="s">"say"</span>),
             <span class="s">"command"</span>: cmd <span class="k">if</span> <span class="f">is_allowed</span>(cmd) <span class="k">else</span> <span class="k">None</span>,
             <span class="s">"result"</span>: result, <span class="s">"error"</span>: error}</code></pre>
-<div class="box warn"><span class="h">The model never runs commands. You do.</span><p>This is the whole safety story. The model can only suggest a command, and <code>is_allowed</code> only lets through commands that are actually in your reference file. Even if the model goes sideways, the worst it can do is suggest something off the list, and your code throws it away. Never send raw model text straight to RCON.</p></div>
+<div class="box warn"><span class="h">The model never runs commands. Your code does.</span><p>This is the whole safety story. The model can only suggest a command, and <code>is_allowed</code> only lets through commands that are actually in your reference file. Even if the model goes sideways, the worst it can do is suggest something off the list, and your code throws it away. Never send raw model text straight to RCON.</p></div>
 
 <h2>5. Let it learn from mistakes</h2>
-<p>This is your idea, and it's a good one. When a command fails, hand the error back to the model so it can try again, the same way you would. Because we send <code>history</code> on every call, the conversation remembers what happened. Here's a version that gives the model one automatic retry with the error as a hint:</p>
+<p>Here's a nice touch. When a command fails, hand the error back to the model so it can try again, the same way a person would. Because <code>history</code> goes on every call, the conversation remembers what happened. This version gives the model one automatic retry with the error as a hint:</p>
 <pre><code class="language-python"><span class="k">def</span> <span class="f">ask_with_retry</span>(req: AiRequest):
     messages = [SYSTEM] + req.history + [{<span class="s">"role"</span>:<span class="s">"user"</span>,<span class="s">"content"</span>: req.message}]
     last_error = <span class="k">None</span>
@@ -1448,7 +1470,7 @@ document.getElementById("msg").addEventListener("keydown", e => {
 &lt;/script&gt;</code></pre>
 <p>Run Ollama in the background, start your FastAPI app, open the page, and type "make it day and clear the weather." Watch your world change from a sentence.</p>
 
-<div class="box note"><span class="h">If you're an adult and want the easy mode</span><p>You can swap the local model for a paid cloud API. The shape is identical: send the same system prompt with the same reference, ask for the same JSON, and keep the exact same <code>is_allowed</code> check. The only changes are an API key (kept in an environment variable, never in your code) and the cost per call. For kids and for learning, I'd stay local.</p></div>
+<div class="box note"><span class="h">Want the easy mode later?</span><p>You can swap the local model for a paid cloud API. The shape is identical: send the same system prompt with the same reference, ask for the same JSON, and keep the exact same <code>is_allowed</code> check. The only changes are an API key (kept in an environment variable, never in your code) and the cost per call. For kids and for learning, local is the better call.</p></div>
 
 <h2>Where to go from here</h2>
 <p>You now have an AI that controls a real game server through a reference you prefetched and a safety check you wrote. That same pattern, ground the model in real docs and validate its output, is exactly how serious AI agents work. Make it yours: add commands to <code>commands.json</code>, give the model the live player list so it can teleport people by name, or add a login so only you can use it (see the capstone in 3.9). If your reference ever grows huge, that's when you'd reach for real RAG: store the docs as embeddings and pull in only the relevant lines per request.</p>
@@ -1467,7 +1489,7 @@ const PARTS = [
     ["p0-5","Other paths: native Windows & Pi"],
     ["p0-6","Installing Docker"],
     ["p0-7","Docker Compose basics"],
-    ["p0-8","Your Fabric 1.21.11 server"],
+    ["p0-8","Your Fabric Minecraft server"],
     ["p0-9","Dev toolkit: VS Code, Git, terminal"],
   ]},
   { id:"1", title:"Python", sub:"from print() to classes & generators", lessons:[
@@ -1514,6 +1536,37 @@ PARTS.forEach(p => p.lessons.forEach(([id,title]) => {
 }));
 const TOTAL = ORDER.length;
 
+// ----------------- branching navigation -----------------
+// The three platform-setup lessons are alternatives: a reader picks one
+// (Windows/WSL2, Mac, or other) and the rest of the book is identical. So
+// they all flow forward into "Installing Docker", and finishing ANY one of
+// them counts as clearing the group, both for the pager and for completion.
+const ALT = ["p0-3", "p0-4", "p0-5"];     // pick one
+const NAV = {                              // per-lesson prev/next overrides
+  "p0-3": { prev: "p0-2", next: "p0-6" },
+  "p0-4": { prev: "p0-2", next: "p0-6" },
+  "p0-5": { prev: "p0-2", next: "p0-6" },
+  "p0-6": { prev: "p0-2" },               // back goes to the path hub, not Mac/other
+};
+function nextOf(id){
+  if(NAV[id] && "next" in NAV[id]) return NAV[id].next;
+  const i = ORDER.indexOf(id);
+  return (i > -1 && i < TOTAL - 1) ? ORDER[i+1] : null;
+}
+function prevOf(id){
+  if(NAV[id] && "prev" in NAV[id]) return NAV[id].prev;
+  const i = ORDER.indexOf(id);
+  return i > 0 ? ORDER[i-1] : null;
+}
+function altPicked(){ return ALT.some(id => done.has(id)); }
+// effective progress treats the whole ALT group as a single step
+const EFF_TOTAL = TOTAL - ALT.length + 1;
+function effDone(){
+  let n = 0;
+  for(const id of ORDER){ if(ALT.includes(id)) continue; if(done.has(id)) n++; }
+  return n + (altPicked() ? 1 : 0);
+}
+
 // ----------------- progress (localStorage) -----------------
 const KEY = "bxb-progress-v1";
 let done = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
@@ -1521,7 +1574,7 @@ function saveProgress(){ localStorage.setItem(KEY, JSON.stringify([...done])); }
 
 // ----------------- build the sidebar -----------------
 const toc = document.getElementById("toc");
-function allUnlocked(){ return ORDER.every(id=>done.has(id)); }
+function allUnlocked(){ return effDone() === EFF_TOTAL; }
 function buildToc(){
   toc.innerHTML = "";
   if(allUnlocked()){
@@ -1556,14 +1609,14 @@ let current = null;
 
 function renderCover(){
   current = "cover";
-  const pct = Math.round(done.size/TOTAL*100);
+  const pct = Math.round(effDone()/EFF_TOTAL*100);
   view.innerHTML = `
   <div class="cover">
     <div class="kick">A hands-on field guide</div>
     <h1>Block by Block<em>Python → Mods → Full-Stack</em></h1>
     <p class="sub">Go from your first <code>print()</code> to a live web dashboard wired into a Minecraft server you host yourself. Three disciplines, one throughline.</p>
     <div class="meta">
-      <span>🧩 <b>${TOTAL}</b> lessons</span>
+      <span>🧩 <b>${EFF_TOTAL}</b> lessons</span>
       <span>🐍 Python</span>
       <span>⛏ Fabric 1.21.11</span>
       <span>🌐 FastAPI + JS</span>
@@ -1573,7 +1626,7 @@ function renderCover(){
     <button class="begin" onclick="go(resumeId())">${done.size? "Resume where you left off ▸":"Begin · Part 0 ▸"}</button>
     ${allUnlocked()
       ? `<p style="margin-top:18px;font-size:14px">★ <a onclick="go('bonus')" style="cursor:pointer;color:var(--gold);font-weight:600">Secret Chapter unlocked: The AI Admin Console</a></p>`
-      : `<p style="color:var(--faint);font-family:var(--mono);font-size:12px;margin-top:18px">🔒 Finish all ${TOTAL} lessons to unlock the secret chapter.</p>`}
+      : `<p style="color:var(--faint);font-family:var(--mono);font-size:12px;margin-top:18px">🔒 Finish all ${EFF_TOTAL} lessons to unlock the secret chapter.</p>`}
     <div class="parts-grid">
       ${PARTS.map(p=>`<div class="pcard" onclick="go('${p.lessons[0][0]}')">
         <div class="pn">${p.id}</div><h3>${p.title}</h3><p>${p.sub}</p>
@@ -1619,8 +1672,8 @@ function render(id){
   const tpl = document.querySelector(`template[data-id="${id}"]`);
   const body = tpl ? tpl.innerHTML : "<div class='content'><p>Coming soon.</p></div>";
   const idx = ORDER.indexOf(id);
-  const prev = idx>0 ? ORDER[idx-1] : null;
-  const next = idx<TOTAL-1 ? ORDER[idx+1] : null;
+  const prev = prevOf(id);
+  const next = nextOf(id);
   const isDone = done.has(id);
   view.innerHTML = `
     <div class="wrap">
@@ -1670,17 +1723,20 @@ function toggleDone(id){
   if(nowUnlocked && !wasUnlocked) celebrateUnlock();
 }
 function resumeId(){
-  for(const id of ORDER) if(!done.has(id)) return id;
+  for(const id of ORDER){
+    if(ALT.includes(id) && altPicked()) continue;  // once a platform is chosen, don't nag about the others
+    if(!done.has(id)) return id;
+  }
   return ORDER[0];
 }
 function updateXP(){
-  const n = done.size;
+  const n = effDone();
   document.getElementById("done").textContent = n;
-  document.getElementById("total").textContent = TOTAL;
+  document.getElementById("total").textContent = EFF_TOTAL;
   document.getElementById("lvlnum").textContent = n;
-  document.getElementById("fill").style.width = (n/TOTAL*100)+"%";
+  document.getElementById("fill").style.width = (n/EFF_TOTAL*100)+"%";
   // ring around level badge = progress toward the very end
-  document.getElementById("ring").style.strokeDashoffset = 107 - (107*n/TOTAL);
+  document.getElementById("ring").style.strokeDashoffset = 107 - (107*n/EFF_TOTAL);
 }
 function resetProgress(){
   if(confirm("Reset all progress? Your XP returns to zero.")){
@@ -1713,8 +1769,8 @@ window.addEventListener("hashchange", route);
 document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT") return;
   const idx = ORDER.indexOf(current);
-  if(e.key==="ArrowRight" && idx>-1 && idx<TOTAL-1) go(ORDER[idx+1]);
-  if(e.key==="ArrowLeft"){ if(idx>0) go(ORDER[idx-1]); else if(current!=="cover") go("cover"); }
+  if(e.key==="ArrowRight" && idx>-1){ const n = nextOf(current); if(n) go(n); }
+  if(e.key==="ArrowLeft"){ const p = idx>-1 ? prevOf(current) : null; if(p) go(p); else if(current!=="cover") go("cover"); }
   if(e.key.toLowerCase()==="c" && current && current!=="cover") toggleDone(current);
 });
 

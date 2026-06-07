@@ -1,0 +1,29 @@
+:root { --bg:#0c0f13; --card:#141a22; --line:#222a36; --ink:#ece9e0; --grass:#5fcf80; --red:#e0573d; }
+* { box-sizing:border-box; }
+body { margin:0; min-height:100vh; display:grid; place-items:center;
+       background:var(--bg); color:var(--ink); font-family:system-ui,sans-serif; }
+.card { width:min(460px,92vw); background:var(--card); border:1px solid var(--line);
+        border-radius:16px; padding:28px; }
+header { display:flex; align-items:center; justify-content:space-between; }
+h1 { font-size:22px; margin:0; }
+h2 { font-size:15px; margin:24px 0 10px; color:#8a93a0; }
+.badge { font-size:13px; display:flex; align-items:center; gap:7px; color:#8a93a0; }
+.badge i { width:9px; height:9px; border-radius:50%; background:#8a93a0; }
+.badge.up { color:var(--grass); } .badge.up i { background:var(--grass); box-shadow:0 0 8px var(--grass); }
+.badge.down { color:var(--red); } .badge.down i { background:var(--red); }
+.count { font-size:18px; margin:22px 0 6px; }
+.count b { color:var(--grass); font-size:26px; }
+.roster { list-style:none; padding:0; margin:0 0 20px; display:flex; flex-wrap:wrap; gap:8px; min-height:24px; }
+.roster li { background:#0a0d11; border:1px solid var(--line); border-radius:8px; padding:4px 10px; font-size:14px; }
+.controls { display:flex; gap:10px; flex-wrap:wrap; }
+button { flex:1; cursor:pointer; background:#0a0d11; color:var(--ink); border:1px solid var(--line);
+         border-radius:10px; padding:11px; font-size:14px; transition:.15s; }
+button:hover:not(:disabled) { border-color:var(--grass); color:var(--grass); }
+button:disabled { opacity:.4; cursor:not-allowed; }
+.toast { min-height:18px; margin:14px 0 0; font-size:13px; }
+.chat { display:flex; flex-direction:column; gap:8px; max-height:240px; overflow-y:auto; margin-bottom:10px; }
+.bubble { padding:8px 12px; border-radius:10px; font-size:14px; max-width:85%; }
+.bubble.you { align-self:flex-end; background:#1d2a3a; }
+.bubble.ai { align-self:flex-start; background:#0a0d11; border:1px solid var(--line); }
+#msg { width:100%; background:#0a0d11; color:var(--ink); border:1px solid var(--line);
+       border-radius:10px; padding:11px; font-size:14px; }
